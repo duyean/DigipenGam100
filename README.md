@@ -12,7 +12,7 @@ This is the main __Development__ to __Live__ build for the module csd1401f25. :s
 <sub>Descriptions of artstyle and Game Setting(Eg. European Middle Ages/Dystopian Cyberpunk/Chinese Tang Dynastic/Japanese Meiji Era/Modern Fantasy/Modern Contemporary) goes here!</sub>
 
 ### Design Document
-View the design document [here!](https://docs.google.com/document/d/1oKJ7A4ikOBVbLrEZtMDL1zuX-_TP0hlUDsNAywDLqRA/edit?usp=sharing)
+View the design document [here!](temporarily empty!)
 
 ## Project Members
 <sub>Disclaimer: Each project member contributed to the codebase and worked on coding in conjunction to the "Main Role" they fufilled written here. The "Main Role" serves to highlight other work done besides coding the game program!</sub>
