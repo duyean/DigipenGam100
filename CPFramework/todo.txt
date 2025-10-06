@@ -1,0 +1,42 @@
+Game States: Using enums
+1. Main Menu
+2. Play
+3. Settings
+	a. Audio
+	b. Keybind
+4. Credits
+5. Loading Screen
+
+# A S S E T S
+
+SPRITES
+Player Character - Idle, Walk/Run
+Enemy 1 - Walk
+Enemy 2 - Walk
+
+ENVIRONMENTAL
+Hide Locker - Open, Closed
+Oil Leak - Leaking Loop
+Rocks - Static Variants (Different Sizes)
+Support Beams - Static Variants (Wooden, Metal)
+Light Sources - Lamps, Electric Wiring
+Walls/Floor - Mining Stone Walls
+
+SOUND
+Atmosphere - Water Dripping, Echo Footsteps, Echo Monster
+Interactions - Locker, Collecting Oil, Footsteps
+Player - Heartbeat when monster nearby
+
+VFX
+Particles - Oil Dripping, Footsteps in water, Locker Slam, Monster Footsteps
+Camera - Monster Nearby Occlusion
+Light Effects - Light Glow
+
+User Interface:
+Main Menu - Play, Settings, Quit
+Settings (Own Game States for Each Setting)
+	Audio - Master, Music, Voice, Effects
+	Keybinds - Movement, Interact
+Oil Meter - Bucket Sprite
+Heart System - Gas Tank Sprite
+Sprint Meter -  Wind Sprite
