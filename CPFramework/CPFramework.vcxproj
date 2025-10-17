@@ -19,7 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio.c" />
+    <ClCompile Include="game.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="mainmenu.c" />
+    <ClCompile Include="monster.c" />
+    <ClCompile Include="player.c" />
+    <ClCompile Include="settingsmenu.c" />
+    <ClCompile Include="utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="audio.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="mainmenu.h" />
+    <ClInclude Include="monster.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="settingsmenu.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
