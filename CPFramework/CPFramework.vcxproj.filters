@@ -39,6 +39,9 @@
     <ClCompile Include="monster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="intro.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="mainmenu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="intro.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

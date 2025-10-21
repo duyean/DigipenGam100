@@ -5,7 +5,8 @@ int main(void)
 {
 	//CP_Engine_SetNextGameState(splash_screen_init, game_update, game_exit);
 	InitUtils();
-	SetScene(Main);
+	SetScene(Intro);
+	
 	CP_Engine_Run(1);
 	return 0;
 }

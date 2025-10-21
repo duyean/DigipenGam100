@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="audio.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="intro.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mainmenu.c" />
     <ClCompile Include="monster.c" />
@@ -31,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="intro.h" />
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="player.h" />
