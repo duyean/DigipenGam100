@@ -5,42 +5,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-CP_Image myImage;
+CP_Image characterSheetImage;
+CP_Image buttonUIImage;
+CP_Image menuBackground;
+
 Spritesheet characterSheet;
+Animation characterAnimation;
+
+Button playButton;
+Button settingsButton;
+Button quitButton;
+float buttonHorizontalAlignment;
+TextTemplate mainMenuTextTemplate;
+
+int rowFrames[4] = { 0,1,0,1 };
+int columnFrames[4] = { 0,0,1,1 };
+float frameDuration = 15.f;
 
 void main_menu_init(void) {
 	CP_System_SetWindowSize(1600, 900);
 
-    // Load an image
-    myImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
+	menuBackground = CP_Image_Load("./Assets/deepismLogo.png");
 
-	characterSheet = CreateSpritesheet(myImage, 256, 256);
+	mainMenuTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
+	buttonUIImage = CP_Image_Load("./Assets/MainMenuButton.png");
+	CP_Font_Set(mainMenuTextTemplate.font);
+	buttonHorizontalAlignment = 350.0f;
+
+	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
+	characterSheet = CreateSpritesheet(characterSheetImage, 258, 258);
+	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
+		sizeof(columnFrames)/sizeof(columnFrames[0]), sizeof(rowFrames) / sizeof(rowFrames[0]));
+
+	playButton = CreateButton(buttonHorizontalAlignment, 350, 480, 60, 255);
+	playButton = AddTextToButton(&playButton, "Play", -100, 0);
+
+	settingsButton = CreateButton(buttonHorizontalAlignment, 450, 480, 60, 255);
+	settingsButton = AddTextToButton(&settingsButton, "Settings", -100, 0);
+
+	quitButton = CreateButton(buttonHorizontalAlignment, 550, 480, 60, 255);
+	quitButton = AddTextToButton(&quitButton, "Quit", -100, 0);
+
+	CP_Settings_ImageMode(CP_POSITION_CENTER);
 }
 
 void main_menu_update(void) {
-	CP_Graphics_ClearBackground(CP_Color_Create(255, 255, 255, 255));
-	CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
-	CP_Settings_RectMode(CP_POSITION_CENTER);
-	CP_Settings_Fill(CP_Color_Create(150, 150, 255, 255));
-	CP_Graphics_DrawRectAdvanced(800,450, 200, 50,0,5);
+	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
-    //CP_Image_Draw(myImage, 800, 450, CP_Image_GetWidth(myImage), CP_Image_GetHeight(myImage), 255);
-	//CP_Image_DrawSubImage(myImage, 650, 450, 256, 256, 0, 0, 256, 256, 255);
-	//CP_Image_DrawSubImage(myImage, 900, 450, 256, 256, 256, 256, 256*2, 256 * 2, 255);
-
-	if (CP_Input_KeyDown(KEY_A)) {
-		DrawSprite(characterSheet, 1 ,0, 800, 450);
-	}
-	else {
-		DrawSprite(characterSheet, 1, 1, 800, 450);
-	}
+	DrawButtonUsingImage(buttonUIImage, &playButton, mainMenuTextTemplate);
+	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);
+	DrawButtonUsingImage(buttonUIImage, &quitButton, mainMenuTextTemplate);
 	
+	//Animate(&characterAnimation, 800, 450);
+	CP_Image_Draw(menuBackground, 1000, 400, 500, 500, 255);
 
-	if (CP_Input_KeyReleased(KEY_Q)) {
+	/*if (CP_Input_KeyReleased(KEY_Q)) {
 		StartTransition();
-	}
-	TransitionFadeIn(.5f, 0,0,0, 255);
-	TransitionFadeOut(.5f, Settings);
+	}*/
+	TransitionFadeIn(1.f, 0,0,0, 255);
+	//TransitionFadeOut(.5f, Settings);
 }
 
 void main_menu_exit(void) {

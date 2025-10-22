@@ -29,7 +29,6 @@ void intro_update(void) {
 				transitionState = 1;
 				printf("Transition state 0 completed\n");
 			}
-
 			break;
 		case 1:
 			transition -= .5f * CP_System_GetDt();
