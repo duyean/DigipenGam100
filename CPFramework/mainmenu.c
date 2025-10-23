@@ -17,6 +17,8 @@ Button settingsButton;
 Button quitButton;
 float buttonHorizontalAlignment;
 TextTemplate mainMenuTextTemplate;
+SceneEnum nextScene;
+
 
 int rowFrames[4] = { 0,1,0,1 };
 int columnFrames[4] = { 0,0,1,1 };
@@ -37,14 +39,15 @@ void main_menu_init(void) {
 	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
 		sizeof(columnFrames)/sizeof(columnFrames[0]), sizeof(rowFrames) / sizeof(rowFrames[0]));
 
-	playButton = CreateButton(buttonHorizontalAlignment, 350, 480, 60, 255);
+	playButton = CreateButton(buttonHorizontalAlignment, 350, 480, 60, 255, &PlayButtonPressed);
 	playButton = AddTextToButton(&playButton, "Play", -100, 0);
 
-	settingsButton = CreateButton(buttonHorizontalAlignment, 450, 480, 60, 255);
+	settingsButton = CreateButton(buttonHorizontalAlignment, 450, 480, 60, 255, &SettingsButtonPressed);
 	settingsButton = AddTextToButton(&settingsButton, "Settings", -100, 0);
 
-	quitButton = CreateButton(buttonHorizontalAlignment, 550, 480, 60, 255);
+	quitButton = CreateButton(buttonHorizontalAlignment, 550, 480, 60, 255, &QuitButtonPressed);
 	quitButton = AddTextToButton(&quitButton, "Quit", -100, 0);
+
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 }
@@ -63,9 +66,35 @@ void main_menu_update(void) {
 		StartTransition();
 	}*/
 	TransitionFadeIn(1.f, 0,0,0, 255);
-	//TransitionFadeOut(.5f, Settings);
+	TransitionFadeOut(.5f, nextScene);
+
+	if (IsDebugging()) {
+		ShowDebugInfo();
+	}
+
+	if (CP_Input_KeyReleased(KEY_BACKSLASH)) {
+		ToggleDebug();
+	}
 }
 
 void main_menu_exit(void) {
 	//free(myImage);
+}
+
+void PlayButtonPressed() {
+	printf("PLayerButtonPressed in mainmenu.c\n");
+	StartTransition();
+	nextScene = GAME;
+}
+
+void SettingsButtonPressed() {
+	printf("SettingsButtonPressed in mainmenu.c\n");
+	StartTransition();
+	nextScene = SETTINGS;
+}
+
+void QuitButtonPressed() {
+	printf("QuitButtonPressed in mainmenu.c\n");
+	//nextScene = QUIT;
+	CP_Engine_Terminate();
 }

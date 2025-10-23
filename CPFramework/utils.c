@@ -13,6 +13,7 @@ float transitionAlpha = 0;
 void (*transitionToSceneFunc) (SceneEnum);
 SceneEnum currentScene;
 
+int IsDebug = 0;
 
 //Initialize any utils, will be ran at main.c
 void InitUtils(void) {
@@ -27,20 +28,20 @@ void InitUtils(void) {
 * Sub-uses: Used in main.c and FadeInOut Functions
 */
 void SetScene(SceneEnum scene) {
-	printf("Changing from Scene: %s\n", sceneNames[currentScene]);
+	printf("\nChanging from Scene: %s\n", sceneNames[currentScene]);
 	currentScene = scene;
-	printf("Changing to Scene: %s\n", sceneNames[currentScene]);
+	printf("Changing to Scene: %s\n\n", sceneNames[currentScene]);
 	switch (scene){
-	case Intro:
+	case INTRO:
 		CP_Engine_SetNextGameState(intro_init, intro_update, intro_exit);
 		break;
-	case Main:
+	case MAIN:
 		CP_Engine_SetNextGameState(main_menu_init, main_menu_update, main_menu_exit);
 		break;
-	case Settings:
+	case SETTINGS:
 		CP_Engine_SetNextGameState(settings_menu_init, settings_menu_update, settings_menu_exit);
 		break;
-	case Game:
+	case GAME:
 		CP_Engine_SetNextGameState(game_init, game_update, game_exit);
 	default:
 		CP_Engine_SetNextGameState(main_menu_init, main_menu_update, main_menu_exit);
@@ -66,7 +67,7 @@ void TransitionFadeOut(float transitionSpeed, SceneEnum scene) {
 	if (alpha >= 255) {
 		isFadeOut = 0;
 		isFadeIn = 1;
-		printf("Fade Out Completed, Transition to Scene: %d\n", scene);
+		printf("Fade Out Completed, Transition to Scene: %s\n", sceneNames[scene]);
 		transitionToSceneFunc(scene);
 	}
 }
@@ -148,23 +149,24 @@ CP_Image DrawButtonUsingImage(CP_Image loadedImage, Button *button, TextTemplate
 	}
 	if (!CP_Input_MouseClicked()) return loadedImage;
 	if (IsAreaClicked(button->x, button->y, button->w, button->h, GetMousePosition().x, GetMousePosition().y)) {
-		printf("Button %s is pressed!\n", button->text);
+		if(button->OnButtonPress != NULL) button->OnButtonPress();
 	}
 	return loadedImage;
 }
 
 /*
-* Takes in position and size in floats, and alpha in int
+* Takes in position and size in floats, and alpha in int, and Pointer Function of the button
 * Returns: Initialized Button
 * Uses: To set basic values a Button to be used later
 */
-Button CreateButton(float x, float y, float w, float h, int a) {
+Button CreateButton(float x, float y, float w, float h, int a, void* buttonFunc) {
 	Button newButton;
 	newButton.x = x;
 	newButton.y = y;
 	newButton.w = w;
 	newButton.h = h;
 	newButton.a = a;
+	newButton.OnButtonPress = buttonFunc;
 	return newButton;
 }
 
@@ -318,3 +320,28 @@ float ElapsedTimeMiliseconds() {
 }
 
 //### TIME RELATED END ###
+
+
+
+//### DEBUG RELATED ###
+
+void ShowDebugInfo(void) {
+	CP_Settings_TextSize(15.0f);
+	CP_Font_DrawText("Debug Info:", 1500, 800);
+	ShowCurrentScene();
+}
+
+static void ShowCurrentScene(void) {
+	CP_Font_DrawText("Current Scene: ", 1480, 820);
+	CP_Font_DrawText(sceneNames[currentScene], 1540, 820);
+}
+
+int IsDebugging(void) {
+	return IsDebug;
+}
+
+void ToggleDebug(void) {
+	IsDebug = IsDebug == 1 ? 0 : 1;
+}
+
+//### DEBUG RELATED END ###

@@ -2,7 +2,7 @@
 
 typedef enum 
 {
-	Intro, Main, Settings, Game, Pause
+	INTRO, MAIN, SETTINGS, GAME, PAUSE
 }SceneEnum;
 
 static char* sceneNames[] = { "Intro", "Main", "Settings", "Game", "Pause" };
@@ -37,6 +37,7 @@ typedef struct {
 	int a;
 	char* text;
 	float textOffsetX, textOffsetY;
+	void (*OnButtonPress)(void);
 }Button;
 
 void InitUtils(void);
@@ -48,7 +49,7 @@ int GetScreenHorizontalSize(void);
 int GetScreenVerticalSize(void);
 
 CP_Image DrawButtonUsingImage(CP_Image loadedImage, Button* button, TextTemplate texT);
-Button CreateButton(float x, float y, float w, float h, int a);
+Button CreateButton(float x, float y, float w, float h, int a, void* buttonFunc);
 Button AddTextToButton(Button* button, char* text, int xOffset, int yOffset);
 TextTemplate CreateTextTemplate(char* font, CP_Color color);
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y);
@@ -64,3 +65,8 @@ CP_Vector GetMousePosition(void);
 float DeltaTime();
 float ElapsedTimeSeconds();
 float ElapsedTimeMiliseconds();
+
+void ShowDebugInfo(void);
+void ShowCurrentScene(void);
+int IsDebugging(void);
+void ToggleDebug(void);

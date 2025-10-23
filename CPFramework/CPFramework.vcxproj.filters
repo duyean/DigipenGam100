@@ -42,6 +42,9 @@
     <ClCompile Include="intro.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="guide.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">

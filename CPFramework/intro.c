@@ -64,8 +64,12 @@ void intro_update(void) {
 		default:
 			break;
 		}
+
+		if (CP_Input_KeyDown(KEY_SPACE)) {
+			StartTransition();
+		}
 	}
-	TransitionFadeOut(2.f, Main);
+	TransitionFadeOut(2.f, MAIN);
 }
 
 void intro_exit(void) {

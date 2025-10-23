@@ -20,7 +20,7 @@ void settings_menu_update(void) {
 	}
 
 	TransitionFadeIn(.5f, 0, 0, 0, 255);
-	TransitionFadeOut(.5f, Main);
+	TransitionFadeOut(.5f, MAIN);
 }
 
 void settings_menu_exit(void) {
