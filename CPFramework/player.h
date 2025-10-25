@@ -1,6 +1,20 @@
 #pragma once
 
 typedef struct {
-	float x;
-	float y;
+	float currentPositionX;
+	float currentPositionY;
+	int isMoving, isInteracting;
+	int faceDirection;
 }Player;
+
+typedef enum {
+	IDLE, MOVING, INTERACTING
+} PlayerState;
+
+void InitPlayer(Player *player);
+void DrawPlayer(Player *player);
+void PlayerMovement(int direction, Player* player);
+void PlayerInput(Player* player);
+
+static void PlayerStateMachine(void);
+static void PlayerStateLogic(Player* player);

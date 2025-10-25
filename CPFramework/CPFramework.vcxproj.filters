@@ -51,25 +51,25 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="settingsmenu.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="monster.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainmenu.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="intro.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settingsmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

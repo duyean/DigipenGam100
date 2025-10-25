@@ -5,12 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-CP_Image characterSheetImage;
+
 CP_Image buttonUIImage;
 CP_Image menuBackground;
-
-Spritesheet characterSheet;
-Animation characterAnimation;
 
 Button playButton;
 Button settingsButton;
@@ -19,25 +16,17 @@ float buttonHorizontalAlignment;
 TextTemplate mainMenuTextTemplate;
 SceneEnum nextScene;
 
-
-int rowFrames[4] = { 0,1,0,1 };
-int columnFrames[4] = { 0,0,1,1 };
-float frameDuration = 15.f;
-
 void main_menu_init(void) {
 	CP_System_SetWindowSize(1600, 900);
 
 	menuBackground = CP_Image_Load("./Assets/deepismLogo.png");
+	buttonUIImage = CP_Image_Load("./Assets/MainMenuButton.png");
 
 	mainMenuTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
-	buttonUIImage = CP_Image_Load("./Assets/MainMenuButton.png");
+	
 	CP_Font_Set(mainMenuTextTemplate.font);
-	buttonHorizontalAlignment = 350.0f;
 
-	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
-	characterSheet = CreateSpritesheet(characterSheetImage, 258, 258);
-	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
-		sizeof(columnFrames)/sizeof(columnFrames[0]), sizeof(rowFrames) / sizeof(rowFrames[0]));
+	buttonHorizontalAlignment = 350.0f;
 
 	playButton = CreateButton(buttonHorizontalAlignment, 350, 480, 60, 255, &PlayButtonPressed);
 	playButton = AddTextToButton(&playButton, "Play", -100, 0);
@@ -59,7 +48,6 @@ void main_menu_update(void) {
 	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &quitButton, mainMenuTextTemplate);
 	
-	//Animate(&characterAnimation, 800, 450);
 	CP_Image_Draw(menuBackground, 1000, 400, 500, 500, 255);
 
 	/*if (CP_Input_KeyReleased(KEY_Q)) {
