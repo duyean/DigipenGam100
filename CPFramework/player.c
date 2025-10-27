@@ -2,6 +2,8 @@
 #include "player.h"
 #include "utils.h"
 
+#define ArraySize(a) (sizeof(a)/sizeof(a[0]))
+
 CP_Image characterSheetImage;
 Spritesheet characterSheet;
 Animation characterAnimation;
@@ -9,7 +11,7 @@ int rowFrames[4] = { 0,1,0,1 };
 int columnFrames[4] = { 0,0,1,1 };
 float frameDuration = 15.f;
 
-float movementSpeed = 0.f;
+float movementSpeed = 100.f;
 
 PlayerState currentPlayerState = IDLE;
 
@@ -17,7 +19,7 @@ void InitPlayer(Player *player) {
 	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
 	characterSheet = CreateSpritesheet(characterSheetImage, 258, 258);
 	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
-		sizeof(columnFrames) / sizeof(columnFrames[0]), sizeof(rowFrames) / sizeof(rowFrames[0]));
+		ArraySize(columnFrames), ArraySize(rowFrames));
 
 	player->currentPositionX = 800;
 	player->currentPositionY = 450;
@@ -26,24 +28,25 @@ void InitPlayer(Player *player) {
 }
 
 void DrawPlayer(Player *player) {
-	/*Animate(&characterAnimation, 800, 450);*/
-	PlayerInput(player);
-	PlayerMovement(player->faceDirection, player);
 	PlayerStateLogic(player);
-	PlayerStateMachine();
+	PlayerStateMachine(player);
 }
 
-void PlayerMovement(int direction, Player *player) {
+void MovePlayer(Player* player) {
+	PlayerMovement(player->faceDirection, player);
+}
+
+static void PlayerMovement(int direction, Player *player) {
 	player->currentPositionX += direction * movementSpeed * DeltaTime();
 }
 
-static void PlayerStateMachine(void) {
+static void PlayerStateMachine(Player *player) {
 	switch (currentPlayerState){
 	case IDLE:
-		DrawSprite(characterSheet, 1, 0, 800, 450);
+		DrawSprite(characterSheet, 1, 0, player->currentPositionX, 450);
 		break;
 	case MOVING:
-		Animate(&characterAnimation, 800, 450);
+		Animate(&characterAnimation, player->currentPositionX, 450);
 		break;
 	case INTERACTING:
 		break;

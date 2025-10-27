@@ -13,8 +13,9 @@ typedef enum {
 
 void InitPlayer(Player *player);
 void DrawPlayer(Player *player);
-void PlayerMovement(int direction, Player* player);
 void PlayerInput(Player* player);
+void MovePlayer(Player* player);
+void PlayerMovement(int direction, Player* player);
 
-static void PlayerStateMachine(void);
+static void PlayerStateMachine(Player* player);
 static void PlayerStateLogic(Player* player);

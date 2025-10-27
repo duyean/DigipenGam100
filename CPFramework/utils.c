@@ -43,7 +43,9 @@ void SetScene(SceneEnum scene) {
 		break;
 	case GAME:
 		CP_Engine_SetNextGameState(game_init, game_update, game_exit);
+		break;
 	default:
+		printf("DEFAULT SET SCENE USED!!! CHECK FOR SWITCH FALL! OR NON-EXISTING ENUM!");
 		CP_Engine_SetNextGameState(main_menu_init, main_menu_update, main_menu_exit);
 		break;
 	}
@@ -281,14 +283,14 @@ void Animate(Animation *animation, float x, float y) {
 	int rowFrame = animation->rowFrames[animation->currentRowFrame];
 	int columnFrame = animation->columnFrames[animation->currentColumnFrame];
 
-	DrawSprite(animation->sheet, rowFrame, columnFrame, 800, 450);
+	DrawSprite(animation->sheet, rowFrame, columnFrame, x, y);
 }
 
 //### SPRITE RELATED END ###
 
 
 
-//### INTERACTION RELATED ###
+//### INPUT RELATED ###
 
 /*
 * GetMouseClickPosition takes in nothing
@@ -301,7 +303,7 @@ CP_Vector GetMousePosition(void) {
 	return CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 }
 
-//### INTERACTION RELATED END ###
+//### INPUT RELATED END ###
 
 
 
