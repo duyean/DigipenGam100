@@ -1,6 +1,7 @@
 #include "cprocessing.h"
 #include "utils.h"
 
+//THIS IS THE STARTING FILE. GENESIS, THE BEGINNING AND THE END
 int main(void)
 {
 	//CP_Engine_SetNextGameState(splash_screen_init, game_update, game_exit);
