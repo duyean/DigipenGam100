@@ -1,11 +1,12 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "player.h"
+#include "camera.h"
+#include "game.h"
+#include <stdio.h>
 
 CP_Color background;
 Player player;
-
-float tX = 0, tY = 0;
 
 void game_init(void) {
 	background = CP_Color_Create(150, 150, 150, 255);
@@ -13,29 +14,16 @@ void game_init(void) {
 }
 
 void game_update(void) {
+	CP_Vector position = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
+	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
-	if (CP_Input_KeyDown(KEY_A)) {
-		tX -= 100.0f * DeltaTime();
-	}
-	else if (CP_Input_KeyDown(KEY_D)) {
-		tX += 100.0f * DeltaTime();
-	}
+	MoveCamera(player.currentPositionX, player.currentPositionY, &TestMidFunc);
 
-	CP_Settings_ResetMatrix();
-	CP_Graphics_ClearBackground(background);
-	CP_Matrix translate = CP_Matrix_Translate(CP_Vector_Set(tX, 0));
-	CP_Matrix scale = CP_Matrix_Scale(CP_Vector_Set(100, 100));
-	CP_Matrix rotate = CP_Matrix_Rotate(0.0f);
+	PlayerUpdate(&player);
 
-	// Combine transform (translate * rotation * scale)
-	CP_Matrix transform = CP_Matrix_Multiply(translate, CP_Matrix_Multiply(rotate, scale));
-	CP_Settings_ApplyMatrix(translate);
-	CP_Settings_ResetMatrix();
-	
-	PlayerInput(&player);
-	MovePlayer(&player);
-	DrawPlayer(&player);
-
+	// Draw a red box in the center of the screen
+	CP_Settings_Fill(CP_Color_Create(255, 100, 255, 255));
+	CP_Graphics_DrawRect(position.x, position.y, 50, 50);
 
 	if (CP_Input_KeyReleased(KEY_Q)) {
 		StartTransition();
@@ -43,13 +31,13 @@ void game_update(void) {
 
 	TransitionFadeIn(.5f, 0, 0, 0, 255);
 	TransitionFadeOut(.5f, MAIN);
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-
-	CP_Graphics_DrawRect(100, 100, 150, 100);
-	CP_Graphics_DrawCircle(180, 220, 100);
 }
 
 void game_exit(void) {
 
+}
+
+void TestMidFunc(void) {
+	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+	CP_Graphics_DrawRect(0, 0, 150, 150);
 }

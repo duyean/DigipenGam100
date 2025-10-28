@@ -48,11 +48,8 @@ void main_menu_update(void) {
 	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &quitButton, mainMenuTextTemplate);
 	
-	CP_Image_Draw(menuBackground, 1000, 400, 500, 500, 255);
+	CP_Image_Draw(menuBackground, 1000.f, 400.f, 500.f, 500.f, 255.f);
 
-	/*if (CP_Input_KeyReleased(KEY_Q)) {
-		StartTransition();
-	}*/
 	TransitionFadeIn(1.f, 0,0,0, 255);
 	TransitionFadeOut(.5f, nextScene);
 
