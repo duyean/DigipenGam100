@@ -226,7 +226,7 @@ Spritesheet CreateSpritesheet(CP_Image source, int w, int h) {
 * Uses: Animate(), Any place that needs to draw a sprite from a spritesheet
 * Sub-uses: NIL
 */
-void DrawSprite(Spritesheet sheet, int column, int row, int x, int y) {
+void DrawSprite(Spritesheet sheet, int column, int row, int x, int y, int flipX, int flipY) {
 	int horizontal = sheet.width / sheet.spriteWidth;
 	int vertical = sheet.height / sheet.spriteHeight;
 
@@ -235,7 +235,7 @@ void DrawSprite(Spritesheet sheet, int column, int row, int x, int y) {
 	int rightMostPixel = leftmostPixel + sheet.spriteWidth;
 	int bottomMostPixel = topMostPixel + sheet.spriteHeight;
 
-	CP_Image_DrawSubImage(sheet.source, (float)x, (float)y, (float)sheet.spriteWidth, (float)sheet.spriteHeight,
+	CP_Image_DrawSubImage(sheet.source, (float)x, (float)y, (float)sheet.spriteWidth * flipX, (float)sheet.spriteHeight * flipY,
 		(float)leftmostPixel, (float)topMostPixel, (float)rightMostPixel, (float)bottomMostPixel, 255);
 }
 
@@ -264,7 +264,7 @@ Animation CreateAnimation(Spritesheet sheet, int cFrames[10], int rFrames[10], f
 * Uses: To Animate the passed in animation of whatever game object
 * Sub-uses: NIL
 */
-void Animate(Animation *animation, float x, float y) {
+void Animate(Animation *animation, float x, float y, int flipX, int flipY) {
 	float currentTime = ElapsedTimeSeconds();
 	if (animation->lastFrameTime <= currentTime) {
 		animation->lastFrameTime = currentTime + animation->frameDuration * DeltaTime();
@@ -283,7 +283,7 @@ void Animate(Animation *animation, float x, float y) {
 	int rowFrame = animation->rowFrames[animation->currentRowFrame];
 	int columnFrame = animation->columnFrames[animation->currentColumnFrame];
 
-	DrawSprite(animation->sheet, rowFrame, columnFrame, x, y);
+	DrawSprite(animation->sheet, rowFrame, columnFrame, x, y, flipX, flipY);
 }
 
 //### SPRITE RELATED END ###

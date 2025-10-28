@@ -56,9 +56,9 @@ int IsAreaClicked(float area_center_x, float area_center_y, float area_width, fl
 int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y);
 
 Spritesheet CreateSpritesheet(CP_Image source, int w, int h);
-void DrawSprite(Spritesheet sheet, int xRow, int rRow, int x, int y);
+void DrawSprite(Spritesheet sheet, int column, int row, int x, int y, int flipX, int flipY);
 Animation CreateAnimation(Spritesheet sheet, int cFrames[10], int rFrames[10], float animationSpeed, int cSize, int rSize);
-void Animate(Animation *animation, float x, float y);
+void Animate(Animation *animation, float x, float y, int flipX, int flipY);
 
 CP_Vector GetMousePosition(void);
 

@@ -13,10 +13,8 @@ float frameDuration = 15.f;
 
 float movementSpeed = 100.f;
 
-PlayerState currentPlayerState = IDLE;
-
 void InitPlayer(Player *player) {
-	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
+	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet_Reversed.png");
 	characterSheet = CreateSpritesheet(characterSheetImage, 258, 258);
 	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
 		ArraySize(columnFrames), ArraySize(rowFrames));
@@ -27,40 +25,7 @@ void InitPlayer(Player *player) {
 	player->isInteracting = player->isMoving = 0;
 }
 
-void DrawPlayer(Player *player) {
-	PlayerStateLogic(player);
-	PlayerStateMachine(player);
-}
-
-void MovePlayer(Player* player) {
-	PlayerMovement(player->faceDirection, player);
-}
-
-static void PlayerMovement(int direction, Player *player) {
-	player->currentPositionX += direction * movementSpeed * DeltaTime();
-}
-
-static void PlayerStateMachine(Player *player) {
-	switch (currentPlayerState){
-	case IDLE:
-		DrawSprite(characterSheet, 1, 0, player->currentPositionX, 450);
-		break;
-	case MOVING:
-		Animate(&characterAnimation, player->currentPositionX, 450);
-		break;
-	case INTERACTING:
-		break;
-	default:
-		break;
-	}
-}
-
-static void PlayerStateLogic(Player *player) {
-	currentPlayerState = player->isInteracting ? INTERACTING :
-		(player->isMoving ? MOVING : IDLE);
-}
-
-void PlayerInput(Player *player) {
+void PlayerUpdate(Player *player) {
 	if (CP_Input_KeyDown(KEY_D)) {
 		player->faceDirection = 1;
 		player->isMoving = 1;
@@ -70,7 +35,19 @@ void PlayerInput(Player *player) {
 		player->isMoving = 1;
 	}
 	else {
-		player->faceDirection = 0;
 		player->isMoving = 0;
 	}
+
+	if (player->isMoving) {
+		player->currentPositionX += player->faceDirection * movementSpeed * DeltaTime();
+		Animate(&characterAnimation, player->currentPositionX, player->currentPositionY, player->faceDirection, 1);
+		printf("Player current position: %.3f\n", player->currentPositionX);
+	}
+	else {
+		DrawSprite(characterSheet, 0, 0, player->currentPositionX, player->currentPositionY, player->faceDirection, 1);
+	}
+}
+
+Spritesheet GetPlayerSheet(void) {
+	return characterSheet;
 }
