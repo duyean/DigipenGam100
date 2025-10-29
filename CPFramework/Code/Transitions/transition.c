@@ -1,4 +1,5 @@
 #include "cprocessing.h"
+#include "../CMP_Core_Pak.h"
 #include "sceneEnum.h"
 #include "../CMP_Scene_Pak.h"
 #include <stdio.h>

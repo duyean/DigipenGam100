@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "cprocessing.h"
 #include "player.h"
+#include "../../CMP_Sprite_Pak.h"
+#include "../../CMP_Core_Pak.h"
 
 
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))

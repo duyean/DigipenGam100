@@ -9,7 +9,7 @@
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
 	//simplified for you hehe, no need to create extra variables or ternary/if-else! -day
-	return fabs(area_center_x - click_x) <= area_width/2 || fabs(area_center_y - click_y) <= area_height/2;
+	return abs(area_center_x - click_x) <= area_width / 2 && abs(area_center_y - click_y) <= area_height / 2;
 }
 
 int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y)

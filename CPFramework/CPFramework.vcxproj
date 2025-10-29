@@ -24,7 +24,7 @@
     <ClCompile Include="Code\Characters\Monster A\monster.c" />
     <ClCompile Include="Code\Characters\Player\camera.c" />
     <ClCompile Include="Code\Characters\Player\player.c" />
-    <ClCompile Include="Code\Debug\dbg.c" />
+    <ClCompile Include="Code\Dbg\dbg.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
     <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c" />
     <ClCompile Include="Code\Scenes\State - Play\game.c" />
@@ -51,7 +51,7 @@
     <ClInclude Include="Code\CMP_Scene_Pak.h" />
     <ClInclude Include="Code\CMP_Sprite_Pak.h" />
     <ClInclude Include="Code\CMP_Text_Pak.h" />
-    <ClInclude Include="Code\Debug\dbg.h" />
+    <ClInclude Include="Code\Dbg\dbg.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
     <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h" />
     <ClInclude Include="Code\Scenes\State - Play\game.h" />
