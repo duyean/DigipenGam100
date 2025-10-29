@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils.h"
+#include "../../CMP_Sprite_Pak.h"
 
 typedef struct {
 	float currentPositionX;

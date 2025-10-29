@@ -1,6 +1,7 @@
+#include <stdio.h>
 #include "cprocessing.h"
 #include "player.h"
-#include "utils.h"
+
 
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
 

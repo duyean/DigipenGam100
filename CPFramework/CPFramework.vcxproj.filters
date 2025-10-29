@@ -13,69 +13,222 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{be6aecb3-4bc6-425d-954f-db5a3e7b518b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{fd9fc32b-2342-4f01-9551-db24654d2c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters">
+      <UniqueIdentifier>{5f88ca45-4850-4cd0-9420-b4920e36a3f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buttons">
+      <UniqueIdentifier>{e52c2d5e-5e28-42ff-83a6-c61a0dbda823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Buttons">
+      <UniqueIdentifier>{ad2fe135-1d4e-4af5-8556-7336c4e84c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters">
+      <UniqueIdentifier>{3edb19e3-e0fc-4bc1-a7c8-32f2f085aca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{1be4ea89-4545-4310-a353-ecb4a386ab36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{aa4c9338-c988-4ada-91a5-8f763d112053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Monster A">
+      <UniqueIdentifier>{74327cd3-f1d2-4464-9e06-1c56a8085c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Player">
+      <UniqueIdentifier>{493a67c9-ea1f-4d5d-bc4c-cc7e48cf2bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Monster A">
+      <UniqueIdentifier>{e1913170-63ad-49cd-956d-905085437e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Player">
+      <UniqueIdentifier>{91652723-552d-46ab-9dfc-4c4b546450cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Master Import Handlers">
+      <UniqueIdentifier>{0a5f0463-1316-4a0c-8ee5-907a4600d034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Player\Camera">
+      <UniqueIdentifier>{3833f1f3-9a05-45b6-951a-c065d67c28ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Player\Camera">
+      <UniqueIdentifier>{a67bda7a-8475-4ee2-9a87-6acb1de14497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Transitions">
+      <UniqueIdentifier>{18cb553a-8494-4b52-a9ed-32cbd35e13e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Transitions">
+      <UniqueIdentifier>{4a355f95-0128-44b7-a290-ae0f96842678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text">
+      <UniqueIdentifier>{29936487-3966-4258-ab35-6dadce1b3a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Text">
+      <UniqueIdentifier>{4df48d99-e886-4158-a213-e14f70e78236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Debug">
+      <UniqueIdentifier>{8add03a7-4c96-45b0-b969-80ebd2a3ad5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debug">
+      <UniqueIdentifier>{91e0f225-062f-46a3-a9b8-7f9200794bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\QOL">
+      <UniqueIdentifier>{e02b6462-ff58-43ed-a025-8afb0c646b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Spritesheet">
+      <UniqueIdentifier>{437051f2-17bb-4260-9446-12b37a0eac75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Spritesheet">
+      <UniqueIdentifier>{ef417854-dd20-43d0-b8ab-d81bc1d213d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Struct Classes">
+      <UniqueIdentifier>{18755a21-4cf0-436e-80d5-4ec87fce29d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QOL">
+      <UniqueIdentifier>{18505a1d-6ce4-4a12-8f1d-ea348749e879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
+    <ClCompile Include="Code\Characters\Monster A\monster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainmenu.c">
+    <ClCompile Include="Code\Characters\Player\camera.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="settingsmenu.c">
+    <ClCompile Include="Code\Characters\Player\player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.c">
+    <ClCompile Include="Code\Buttons\button.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Debug\debug.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rewrites\qol.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Spritesheet\animation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Spritesheet\spritesheet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Text\text.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Transitions\transition.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scenes\State - Play\game.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scenes\State - Title Card\intro.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scenes\State - Settings\settingsmenu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Audio\audio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="monster.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="intro.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="guide.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="audio.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="camera.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="audio.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="intro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainmenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="monster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="settingsmenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="Code\Buttons\button.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Player\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Player\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Audio\audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Button_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Core_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Debug_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Player_Package.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Scene_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Sprite_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Text_Pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Debug\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Spritesheet\animateClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Buttons\buttonClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Text\textClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Spritesheet\spriteClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Spritesheet\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Spritesheet\spritesheet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rewrites\qol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Text\text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Transitions\transition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\State - Play\game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\State - Title Card\intro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\State - Settings\settingsmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Transitions\sceneEnum.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

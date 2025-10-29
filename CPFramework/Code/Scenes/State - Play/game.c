@@ -1,7 +1,6 @@
 #include "cprocessing.h"
-#include "utils.h"
-#include "player.h"
-#include "camera.h"
+#include "../../CMP_Scene_Pak.h"
+#include "../../CMP_Player_Package.h"
 #include "game.h"
 #include <stdio.h>
 

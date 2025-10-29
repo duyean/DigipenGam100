@@ -1,6 +1,8 @@
 #include "cprocessing.h"
 #include "mainmenu.h"
-#include "utils.h"
+#include "../../CMP_Scene_Pak.h"
+#include "../../CMP_Core_Pak.h"
+#include "../../CMP_Debug_Pak.h"
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
