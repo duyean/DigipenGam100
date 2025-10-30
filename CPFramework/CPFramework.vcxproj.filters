@@ -33,7 +33,7 @@
     <ClCompile Include="player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="monster.c">
+    <ClCompile Include="monsterBaby.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="intro.c">
@@ -46,6 +46,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="camera.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListFile.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListFile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +68,7 @@
     <ClInclude Include="mainmenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="monster.h">
+    <ClInclude Include="monsterBaby.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="settingsmenu.h">
@@ -75,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="monsterBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

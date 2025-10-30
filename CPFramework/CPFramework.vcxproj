@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="audio.c" />
     <ClCompile Include="camera.c" />
+    <ClCompile Include="ListFile.c" />
+    <ClCompile Include="ListFile.h" />
     <ClCompile Include="game.c" />
     <ClCompile Include="guide.c" />
     <ClCompile Include="intro.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mainmenu.c" />
-    <ClCompile Include="monster.c" />
+    <ClCompile Include="monsterBaby.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="settingsmenu.c" />
     <ClCompile Include="utils.c" />
@@ -37,7 +39,8 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="intro.h" />
     <ClInclude Include="mainmenu.h" />
-    <ClInclude Include="monster.h" />
+    <ClInclude Include="monsterBaby.h" />
+    <ClInclude Include="monsterBase.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="settingsmenu.h" />
     <ClInclude Include="utils.h" />

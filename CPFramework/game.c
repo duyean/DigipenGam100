@@ -1,6 +1,7 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "player.h"
+#include "monsterBaby.h"
 
 CP_Color background;
 Player player;
@@ -10,6 +11,7 @@ float tX = 0, tY = 0;
 void game_init(void) {
 	background = CP_Color_Create(150, 150, 150, 255);
 	InitPlayer(&player);
+	initializeBaby();
 }
 
 void game_update(void) {
@@ -35,7 +37,7 @@ void game_update(void) {
 	PlayerInput(&player);
 	MovePlayer(&player);
 	DrawPlayer(&player);
-
+	UpdateMonsterBaby();
 
 	if (CP_Input_KeyReleased(KEY_Q)) {
 		StartTransition();
