@@ -23,23 +23,27 @@
     <ClCompile Include="camera.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="guide.c" />
+    <ClCompile Include="interactable.c" />
     <ClCompile Include="intro.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mainmenu.c" />
     <ClCompile Include="monster.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="settingsmenu.c" />
+    <ClCompile Include="sound.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="interactable.h" />
     <ClInclude Include="intro.h" />
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="settingsmenu.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
