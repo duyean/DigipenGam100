@@ -1,4 +1,5 @@
 #pragma once
+#include "cprocessing.h"
 
 typedef struct {
 	CP_Sound sound;
