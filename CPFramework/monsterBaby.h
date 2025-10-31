@@ -3,6 +3,8 @@
 #define _monster_Baby_
 #include "monsterBase.h"
 
+// WORK IN PROGRESS DO NOT REFACTOR
+
 typedef enum BABY_AI_STATE
 {
 	STATE_IDLE,

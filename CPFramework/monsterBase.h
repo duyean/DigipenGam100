@@ -6,6 +6,8 @@
 #include "utils.h"
 #include <stdbool.h>
 
+// WORK IN PROGRESS DO NOT REFACTOR
+
 typedef struct MonsterObject
 {
 	CP_Vector transform;

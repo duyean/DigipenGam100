@@ -3,15 +3,15 @@
 #include <string.h>
 #include <stdio.h>
 
-List* listCreate(size_t initial_capacity)
+List* listCreate(size_t initialCapacity)
 {
 	List* list = (List*)malloc(sizeof(List));
 	if (!list) return NULL;
 
 	list->size = 0;
-	if (initial_capacity > 0)
+	if (initialCapacity > 0)
 	{
-		list->capacity = initial_capacity;
+		list->capacity = initialCapacity;
 	}
 	else
 	{

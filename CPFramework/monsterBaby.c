@@ -5,6 +5,8 @@
 #include "ListFile.h"
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
 
+// WORK IN PROGRESS DO NOT REFACTOR
+
 List* babyList;
 
 MonsterBabyObject* createBabyMonster(int x, int y, int patrolMax, float movementSpeed)
@@ -158,6 +160,7 @@ void processing_state_baby_logic(MonsterBabyObject *baby)
 	}
 	case STATE_CHASE:
 	{
+
 		baby->itself.transform.x -= baby->itself.movementSpeed * CP_System_GetDt();
 		break;
 	}
