@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Audio\audio.c" />
+    <ClCompile Include="Code\Audio\sound.c" />
     <ClCompile Include="Code\Buttons\button.c" />
     <ClCompile Include="Code\Characters\Monster A\monster.c" />
     <ClCompile Include="Code\Characters\Player\camera.c" />
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Audio\audio.h" />
+    <ClCompile Include="Code\Audio\sound.c" />
     <ClInclude Include="Code\Buttons\button.h" />
     <ClInclude Include="Code\Buttons\buttonClass.h" />
     <ClInclude Include="Code\Characters\Monster A\monster.h" />

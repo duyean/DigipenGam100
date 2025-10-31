@@ -102,6 +102,12 @@
     <ClCompile Include="Code\Characters\Player\player.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="sound.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interactable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -187,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="Code\Transitions\sceneEnum.h">
       <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interactable.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
