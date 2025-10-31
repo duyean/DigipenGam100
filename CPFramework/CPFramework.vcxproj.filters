@@ -188,5 +188,8 @@
     <ClInclude Include="Code\Transitions\sceneEnum.h">
       <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
+    <ClInclude Include="audioClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
