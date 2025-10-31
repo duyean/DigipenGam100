@@ -35,3 +35,4 @@ What is day listening to right now,
 #include "CMP_Text_Pak.h"
 
 #include "Rewrites/qol.h"
+#include "Rewrites/ListFile.h"

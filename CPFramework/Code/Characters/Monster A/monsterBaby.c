@@ -1,8 +1,8 @@
 #include "monsterBaby.h"
 #include <stdlib.h>
 #include <stdbool.h>
-#include "player.h"
-#include "ListFile.h"
+#include "../../CMP_Player_Package.h"
+#include "../../CMP_Core_Pak.h"
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
 
 // WORK IN PROGRESS DO NOT REFACTOR
@@ -188,6 +188,6 @@ void UpdateMonsterBaby()
 		}
 		processing_state_baby_logic(obj);
 		//Animate(&obj->itself.monsterAnimation, obj->itself.transform.x, 450);
-		DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y);
+		DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
 	}
 }
