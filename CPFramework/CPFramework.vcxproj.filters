@@ -194,14 +194,17 @@
     <ClInclude Include="Code\Audio\audioClass.h">
       <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
-    <ClInclude Include="audioClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Code\CMP_Interactable_Pak.h">
       <Filter>Header Files\Inherit Packages</Filter>
     </ClInclude>
     <ClInclude Include="Code\Interactables\interactableClass.h">
       <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Interactables\interactable.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Audio_Pak.h">
+      <Filter>Header Files\Inherit Packages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

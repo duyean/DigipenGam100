@@ -39,7 +39,6 @@
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="audioClass.h" />
     <ClInclude Include="Code\Audio\audio.h" />
     <ClInclude Include="Code\Audio\audioClass.h" />
     <ClInclude Include="Code\Buttons\button.h" />
@@ -47,6 +46,7 @@
     <ClInclude Include="Code\Characters\Monster A\monster.h" />
     <ClInclude Include="Code\Characters\Player\camera.h" />
     <ClInclude Include="Code\Characters\Player\player.h" />
+    <ClInclude Include="Code\CMP_Audio_Pak.h" />
     <ClInclude Include="Code\CMP_Button_Pak.h" />
     <ClInclude Include="Code\CMP_Core_Pak.h" />
     <ClInclude Include="Code\CMP_Debug_Pak.h" />
@@ -56,6 +56,7 @@
     <ClInclude Include="Code\CMP_Sprite_Pak.h" />
     <ClInclude Include="Code\CMP_Text_Pak.h" />
     <ClInclude Include="Code\Dbg\dbg.h" />
+    <ClInclude Include="Code\Interactables\interactable.h" />
     <ClInclude Include="Code\Interactables\interactableClass.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
     <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h" />
