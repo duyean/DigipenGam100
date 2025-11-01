@@ -25,6 +25,7 @@
     <ClCompile Include="Code\Characters\Player\camera.c" />
     <ClCompile Include="Code\Characters\Player\player.c" />
     <ClCompile Include="Code\Dbg\dbg.c" />
+    <ClCompile Include="Code\Interactables\interactable.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
     <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c" />
     <ClCompile Include="Code\Scenes\State - Play\game.c" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <ClInclude Include="audioClass.h" />
     <ClInclude Include="Code\Audio\audio.h" />
+    <ClInclude Include="Code\Audio\audioClass.h" />
     <ClInclude Include="Code\Buttons\button.h" />
     <ClInclude Include="Code\Buttons\buttonClass.h" />
     <ClInclude Include="Code\Characters\Monster A\monster.h" />
@@ -48,11 +50,13 @@
     <ClInclude Include="Code\CMP_Button_Pak.h" />
     <ClInclude Include="Code\CMP_Core_Pak.h" />
     <ClInclude Include="Code\CMP_Debug_Pak.h" />
+    <ClInclude Include="Code\CMP_Interactable_Pak.h" />
     <ClInclude Include="Code\CMP_Player_Package.h" />
     <ClInclude Include="Code\CMP_Scene_Pak.h" />
     <ClInclude Include="Code\CMP_Sprite_Pak.h" />
     <ClInclude Include="Code\CMP_Text_Pak.h" />
     <ClInclude Include="Code\Dbg\dbg.h" />
+    <ClInclude Include="Code\Interactables\interactableClass.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
     <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h" />
     <ClInclude Include="Code\Scenes\State - Play\game.h" />

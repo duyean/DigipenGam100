@@ -1,6 +1,6 @@
-#include "cprocessing.h"
-#include "textClass.h"
 #include <stdio.h>
+#include "cprocessing.h"
+#include "../CMP_Text_Pak.h"
 
 /*
 * Takes in filePath of the font and the CP_Color

@@ -102,6 +102,9 @@
     <ClCompile Include="Code\Characters\Player\player.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Interactables\interactable.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -188,7 +191,16 @@
     <ClInclude Include="Code\Transitions\sceneEnum.h">
       <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Audio\audioClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
     <ClInclude Include="audioClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\CMP_Interactable_Pak.h">
+      <Filter>Header Files\Inherit Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Interactables\interactableClass.h">
       <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
   </ItemGroup>

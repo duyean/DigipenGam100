@@ -1,5 +1,5 @@
 #include "cprocessing.h"
-#include "audio.h"
+#include "../CMP_Audio_Pak.h"
 #include <stdio.h>
 
 SoundAsset CreateSound(char const* file, float volume, float pitch, CP_SOUND_GROUP group, CP_BOOL loop) {

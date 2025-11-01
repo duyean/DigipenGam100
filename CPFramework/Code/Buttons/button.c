@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "cprocessing.h"
-#include "buttonClass.h"
-#include "../CMP_Text_Pak.h" //required for TextTemplate type
+#include "../CMP_Button_Pak.h"
 #include "../CMP_Core_Pak.h" //required for GetMousePosition()
 
 
