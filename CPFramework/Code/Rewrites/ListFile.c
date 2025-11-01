@@ -1,9 +1,9 @@
-#include "../CMP_Core_Pak.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../CMP_Core_Pak.h"
 
-List* listCreate(size_t initialCapacity)
+List* ListCreate(size_t initialCapacity)
 {
 	List* list = (List*)malloc(sizeof(List));
 	if (!list) return NULL;
@@ -26,7 +26,7 @@ List* listCreate(size_t initialCapacity)
 	return list;
 }
 
-void listDestroy(List* list)
+void ListDestroy(List* list)
 {
 	if (list)
 	{
@@ -35,7 +35,7 @@ void listDestroy(List* list)
 	}
 }
 
-void resize_if_needed(List* list)
+static void ResizeIfNeeded(List* list)
 {
 	if (list->size == list->capacity)
 	{
@@ -53,13 +53,13 @@ void resize_if_needed(List* list)
 	}
 }
 
-void listAdd(List* list, void* item)
+void ListAdd(List* list, void* item)
 {
-	resize_if_needed(list);
+	ResizeIfNeeded(list);
 	list->items[list->size++] = item;
 }
 
-void* listGet(List* list, size_t index)
+void* ListGet(List* list, size_t index)
 {
 	if (index >= list->size)
 	{
@@ -69,7 +69,7 @@ void* listGet(List* list, size_t index)
 	return list->items[index];
 }
 
-void listRemoveAt(List* list, size_t index)
+void ListRemoveAt(List* list, size_t index)
 {
 	if (index >= list->size)
 	{

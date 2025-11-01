@@ -10,10 +10,11 @@ typedef struct List{
 	size_t capacity;
 }List;
 
-List* listCreate(size_t initial_capacity);
-void listDestroy(List* list);
-void listAdd(List* list, void* item);
-void* listGet(List* list, size_t index);
-void listRemoveAt(List* list, size_t index);
+List* ListCreate(size_t initial_capacity);
+void ListDestroy(List* list);
+void ListAdd(List* list, void* item);
+void* ListGet(List* list, size_t index);
+static void ResizeIfNeeded(List* list);
+void ListRemoveAt(List* list, size_t index);
 
 #endif

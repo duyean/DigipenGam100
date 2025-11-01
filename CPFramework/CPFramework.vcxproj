@@ -26,6 +26,7 @@
     <ClCompile Include="Code\Characters\Player\player.c" />
     <ClCompile Include="Code\Dbg\dbg.c" />
     <ClCompile Include="Code\Interactables\interactable.c" />
+    <ClCompile Include="Code\Rewrites\listfile.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
     <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c" />
     <ClCompile Include="Code\Scenes\State - Play\game.c" />
@@ -58,6 +59,7 @@
     <ClInclude Include="Code\Dbg\dbg.h" />
     <ClInclude Include="Code\Interactables\interactable.h" />
     <ClInclude Include="Code\Interactables\interactableClass.h" />
+    <ClInclude Include="Code\Rewrites\listfile.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
     <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h" />
     <ClInclude Include="Code\Scenes\State - Play\game.h" />
