@@ -20,5 +20,4 @@ What is day listening to right now,
  #include "CMP_Sprite_Pak.h"
 
 #include "Characters/Player/player.h"
-#include "Characters/Player/camera.h"
-
+#include "Camera/camera.h"

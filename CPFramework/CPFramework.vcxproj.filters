@@ -60,9 +60,6 @@
     <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Transitions\transition.c">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Scenes\State - Settings\settingsmenu.c">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -70,9 +67,6 @@
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Buttons\button.c">
-      <Filter>Source Files\Standard Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Characters\Player\camera.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="main.c">
@@ -106,6 +100,15 @@
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rewrites\listfile.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Transitions\transition.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Camera\camera.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Camera\layer.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,12 +179,6 @@
     <ClInclude Include="Code\Scenes\State - Settings\settingsmenu.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Transitions\transition.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Characters\Player\camera.h">
-      <Filter>Header Files\Standard Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Characters\Player\player.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
@@ -211,6 +208,24 @@
     </ClInclude>
     <ClInclude Include="Code\Rewrites\listfile.h">
       <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Transitions\transition.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\camera.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\layer.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\cameraClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\layerClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\layerEnum.h">
+      <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

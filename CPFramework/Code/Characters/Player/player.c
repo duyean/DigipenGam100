@@ -22,8 +22,8 @@ void InitPlayer(Player *player) {
 	characterAnimation = CreateAnimation(characterSheet, columnFrames, rowFrames, frameDuration,
 		ArraySize(columnFrames), ArraySize(rowFrames));
 
-	player->currentPositionX = 800;
-	player->currentPositionY = 450;
+	player->currentPositionX = 0;
+	player->currentPositionY = 0;
 	player->faceDirection = 1;
 	player->isInteracting = player->isMoving = 0;
 }
@@ -43,11 +43,11 @@ void PlayerUpdate(Player *player) {
 
 	if (player->isMoving) {
 		player->currentPositionX += player->faceDirection * movementSpeed * DeltaTime();
-		Animate(&characterAnimation, player->currentPositionX, player->currentPositionY, player->faceDirection, 1);
+		Animate(&characterAnimation, 800, 450, player->faceDirection, 1);
 		printf("Player current position: %.3f\n", player->currentPositionX);
 	}
 	else {
-		DrawSprite(characterSheet, 0, 0, player->currentPositionX, player->currentPositionY, player->faceDirection, 1);
+		DrawSprite(characterSheet, 0, 0, 800, 450, player->faceDirection, 1);
 	}
 }
 

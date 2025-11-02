@@ -21,8 +21,9 @@
   <ItemGroup>
     <ClCompile Include="Code\Audio\audio.c" />
     <ClCompile Include="Code\Buttons\button.c" />
+    <ClCompile Include="Code\Camera\camera.c" />
+    <ClCompile Include="Code\Camera\layer.c" />
     <ClCompile Include="Code\Characters\Monster A\monster.c" />
-    <ClCompile Include="Code\Characters\Player\camera.c" />
     <ClCompile Include="Code\Characters\Player\player.c" />
     <ClCompile Include="Code\Dbg\dbg.c" />
     <ClCompile Include="Code\Interactables\interactable.c" />
@@ -44,8 +45,12 @@
     <ClInclude Include="Code\Audio\audioClass.h" />
     <ClInclude Include="Code\Buttons\button.h" />
     <ClInclude Include="Code\Buttons\buttonClass.h" />
+    <ClInclude Include="Code\Camera\camera.h" />
+    <ClInclude Include="Code\Camera\cameraClass.h" />
+    <ClInclude Include="Code\Camera\layer.h" />
+    <ClInclude Include="Code\Camera\layerClass.h" />
+    <ClInclude Include="Code\Camera\layerEnum.h" />
     <ClInclude Include="Code\Characters\Monster A\monster.h" />
-    <ClInclude Include="Code\Characters\Player\camera.h" />
     <ClInclude Include="Code\Characters\Player\player.h" />
     <ClInclude Include="Code\CMP_Audio_Pak.h" />
     <ClInclude Include="Code\CMP_Button_Pak.h" />
