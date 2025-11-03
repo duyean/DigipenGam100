@@ -1,0 +1,19 @@
+Interviewer
+What? You don't even know what kind of job you applied to?  #bg:../assets/bg_morning.png #music:../assets/audio/mainmenu/officeSounds.mp3
+../assets/Inverviewer.png
+
+Shaker
+I'm going to shake... #shake #sound:assets/audio/assshaker/assshake.wav
+../assets/THESHAKER.png
+
+Interviewer
+... what was that? #pause:2.0
+../assets/Inverviewer.png
+
+Interviewer
+The ASS SHAKER??? #bg:assets/assShakerReveal.png #sound:assets/voices/gasp.wav
+../assets/InverviewerShocked.png
+
+Shaker
+I'm going to shake... #pause:3.0 #music:assets/audio/assShakerAnthem.mp3
+../assets/THESHAKER.png

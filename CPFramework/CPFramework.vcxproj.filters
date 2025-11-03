@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Characters">
       <UniqueIdentifier>{f680657e-df38-484c-b382-a68be4df1b54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Dialogue Systems">
+      <UniqueIdentifier>{2ac7fc46-e955-429c-8cff-822cfe4c4044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialogue Systems">
+      <UniqueIdentifier>{2781ccc5-16e1-4b44-b947-6ae6ff97a5cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Scenes\State - Play\game.c">
@@ -110,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="Code\Camera\layer.c">
       <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\DialogueSystem\fileReader.c">
+      <Filter>Source Files\Dialogue Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\DialogueSystem\dialogueHandler.c">
+      <Filter>Source Files\Dialogue Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="Code\Camera\layerEnum.h">
       <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\DialogueSystem\fileReader.h">
+      <Filter>Header Files\Dialogue Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\DialogueSystem\dialogueLineClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\DialogueSystem\dialogueSystemClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\DialogueSystem\dialogueHandler.h">
+      <Filter>Header Files\Dialogue Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

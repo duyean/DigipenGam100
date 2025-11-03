@@ -26,6 +26,8 @@
     <ClCompile Include="Code\Characters\Monster A\monster.c" />
     <ClCompile Include="Code\Characters\Player\player.c" />
     <ClCompile Include="Code\Dbg\dbg.c" />
+    <ClCompile Include="Code\DialogueSystem\dialogueHandler.c" />
+    <ClCompile Include="Code\DialogueSystem\fileReader.c" />
     <ClCompile Include="Code\Interactables\interactable.c" />
     <ClCompile Include="Code\Rewrites\listfile.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
@@ -62,6 +64,10 @@
     <ClInclude Include="Code\CMP_Sprite_Pak.h" />
     <ClInclude Include="Code\CMP_Text_Pak.h" />
     <ClInclude Include="Code\Dbg\dbg.h" />
+    <ClInclude Include="Code\DialogueSystem\dialogueHandler.h" />
+    <ClInclude Include="Code\DialogueSystem\dialogueLineClass.h" />
+    <ClInclude Include="Code\DialogueSystem\dialogueSystemClass.h" />
+    <ClInclude Include="Code\DialogueSystem\fileReader.h" />
     <ClInclude Include="Code\Interactables\interactable.h" />
     <ClInclude Include="Code\Interactables\interactableClass.h" />
     <ClInclude Include="Code\Rewrites\listfile.h" />
