@@ -1,14 +1,11 @@
 #pragma once
 
 #include "../../CMP_Sprite_Pak.h"
+#include "../../CMP_Interactable_Pak.h"
+#include "../Player/playerClass.h"
 
-typedef struct {
-	float currentPositionX;
-	float currentPositionY;
-	int isMoving, isInteracting;
-	int faceDirection;
-}Player;
-
-void InitPlayer(Player *player);
-void PlayerUpdate(Player *player);
+void Player_Initialise(Player *player);
+void Player_Update(Player *player);
 Spritesheet GetPlayerSheet(void);
+Player* GetPlayer(void);
+void Player_CheckInteractables(Interactable* interactables[], int count);

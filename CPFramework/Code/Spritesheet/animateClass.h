@@ -2,12 +2,12 @@
 
 typedef struct {
 	Spritesheet sheet;
-	int currentColumnFrame;
-	int currentRowFrame;
-	int columnSize;
-	int rowSize;
-	int *columnFrames;
-	int *rowFrames;
+	SpriteData* frames;
+	int noOfSprites;
+	int currFrameIndex;
+	int toLoop;
+	int played;
+	int isPlaying;
 	float frameDuration;
 	float lastFrameTime;
 } Animation;

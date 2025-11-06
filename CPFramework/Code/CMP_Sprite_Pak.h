@@ -7,7 +7,7 @@
 
 		- CMP Sprite Pak - 
 Contains everything to do with the
-sprites and animations.
+frames and animations.
 
 Used in Player, Enemies, NPCs,
 dialogue system and any animations.

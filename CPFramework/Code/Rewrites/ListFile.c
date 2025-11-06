@@ -53,7 +53,7 @@ static void ResizeIfNeeded(List* list)
 	}
 }
 
-void ListAdd(List* list, void* item)
+void ListAppend(List* list, void* item)
 {
 	ResizeIfNeeded(list);
 	list->items[list->size++] = item;

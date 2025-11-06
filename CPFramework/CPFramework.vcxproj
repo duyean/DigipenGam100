@@ -54,6 +54,7 @@
     <ClInclude Include="Code\Camera\layerEnum.h" />
     <ClInclude Include="Code\Characters\Monster A\monster.h" />
     <ClInclude Include="Code\Characters\Player\player.h" />
+    <ClInclude Include="Code\Characters\Player\playerClass.h" />
     <ClInclude Include="Code\CMP_Audio_Pak.h" />
     <ClInclude Include="Code\CMP_Button_Pak.h" />
     <ClInclude Include="Code\CMP_Core_Pak.h" />
