@@ -227,5 +227,8 @@
     <ClInclude Include="Code\Camera\layerEnum.h">
       <Filter>Header Files\Structure Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Characters\Player\playerClass.h">
+      <Filter>Header Files\Structure Classes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

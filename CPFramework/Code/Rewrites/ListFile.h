@@ -12,7 +12,7 @@ typedef struct List{
 
 List* ListCreate(size_t initial_capacity);
 void ListDestroy(List* list);
-void ListAdd(List* list, void* item);
+void ListAppend(List* list, void* item);
 void* ListGet(List* list, size_t index);
 static void ResizeIfNeeded(List* list);
 void ListRemoveAt(List* list, size_t index);
