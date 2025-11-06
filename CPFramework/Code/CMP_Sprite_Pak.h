@@ -23,3 +23,5 @@ What is day listening to right now,
 //Button Functionalities
 #include "Spritesheet/spritesheet.h"
 #include "Spritesheet/animation.h"
+
+#include "Spritesheet/spriteClass.h"

@@ -31,6 +31,7 @@
     <ClCompile Include="Code\Interactables\interactable.c" />
     <ClCompile Include="Code\Rewrites\listfile.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
+    <ClCompile Include="Code\Rooms\room.c" />
     <ClCompile Include="Code\Scenes\State - Main Menu\mainmenu.c" />
     <ClCompile Include="Code\Scenes\State - Play\game.c" />
     <ClCompile Include="Code\Scenes\State - Settings\settingsmenu.c" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Code\CMP_Debug_Pak.h" />
     <ClInclude Include="Code\CMP_Interactable_Pak.h" />
     <ClInclude Include="Code\CMP_Player_Package.h" />
+    <ClInclude Include="Code\CMP_Room_Pak.h" />
     <ClInclude Include="Code\CMP_Scene_Pak.h" />
     <ClInclude Include="Code\CMP_Sprite_Pak.h" />
     <ClInclude Include="Code\CMP_Text_Pak.h" />
@@ -73,6 +75,8 @@
     <ClInclude Include="Code\Interactables\interactableClass.h" />
     <ClInclude Include="Code\Rewrites\listfile.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
+    <ClInclude Include="Code\Rooms\room.h" />
+    <ClInclude Include="Code\Rooms\roomClass.h" />
     <ClInclude Include="Code\Scenes\State - Main Menu\mainmenu.h" />
     <ClInclude Include="Code\Scenes\State - Play\game.h" />
     <ClInclude Include="Code\Scenes\State - Settings\settingsmenu.h" />

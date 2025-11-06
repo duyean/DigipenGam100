@@ -11,9 +11,9 @@
 ===================================
 What is day listening to right now,
    while refactoring your code?
-   https://youtu.be/l-fLkRK0QXI
-*/
+   https://youtu.be/-36171aIFFs
+   */
 
-#include "Spritesheet/spritesheet.h"
-#include "Spritesheet/animation.h"
+#include "CMP_Sprite_Pak.h"
+
 #include "Interactables/interactable.h"

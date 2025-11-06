@@ -17,7 +17,7 @@ What is day listening to right now,
    https://youtu.be/EV15NM8SNr8
  */
  
- #include "CMP_Sprite_Pak.h"
+#include "CMP_Sprite_Pak.h"
 
 #include "Characters/Player/player.h"
 #include "Camera/camera.h"

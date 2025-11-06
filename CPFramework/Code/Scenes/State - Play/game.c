@@ -3,11 +3,13 @@
 #include "../../CMP_Scene_Pak.h"
 #include "../../CMP_Player_Pak.h"
 #include "../../CMP_Interactable_Pak.h"
+#include "../../CMP_Room_Pak.h"
 #include "game.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define INTERACTABLES_COUNT 2
+#define ROOM_COUNT 5
 
 CP_Color background;
 Player player;
@@ -30,6 +32,23 @@ Animation lockerAnimation;
 
 CP_Vector worldCenterPosition;
 
+//Test Background Sprites
+Room* roomList[ROOM_COUNT];
+
+Room r1;
+CP_Image Bg1_i;
+Spritesheet Bg1_ss;
+SpriteData Bg1_sd;
+
+Room r2;
+CP_Image Bg2_i;
+Spritesheet Bg2_ss;
+SpriteData Bg2_sd;
+
+Room r3;
+CP_Image Bg3_i;
+Spritesheet Bg3_ss;
+SpriteData Bg3_sd;
 
 //Just to reduce the printf occurence
 float lastFrameTime = 0;
@@ -40,6 +59,7 @@ float lastFrameTime = 0;
 /*Functions here are for testing and can be removed for FINAL*/
 void InitialiseInteractables(void);
 void LockerTest(void);
+void InitialiseRooms(void);
 
 extern CP_Sound mainMenuMusic;
 extern CP_Sound gameplayMusic;
@@ -57,18 +77,34 @@ void game_init(void) {
 	worldCenterPosition = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 
 	InitialiseInteractables();
+
+	//Test Background Sprites
+	InitialiseRooms();
+
 }
 
 void game_update(void) {
-	
 	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
 	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
 
+	for (int i = 0; i < ROOM_COUNT; i++)
+	{
+		int pX = player.currentPositionX, pY = player.currentPositionY;
+		int sightCheckR = roomList[i]->xPos, sightCheckP1 = pX % (ROOM_COUNT * 1600) + 1600, sightCheckP2 = pY % (ROOM_COUNT * 1600) - 1600;
+		if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+		{
+			printf("Room %d loads at %d, %d on screen space! \n", i, roomList[i]->xPos - pX, roomList[i]->yPos - pY);
+			loadRoom(roomList[i]->room, roomList[i]->frame, roomList[i]->xPos-pX, roomList[i]->yPos-pY, roomList[i]->interractibles, roomList[i]->interactibleCount);
+		}
+	}
+
 	for (int i = 0; i < INTERACTABLES_COUNT; i++) {
 		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
 	}
+
+
 
 	Player_Update(&player);
 	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
@@ -128,4 +164,27 @@ void InitialiseInteractables(void) {
 
 void LockerTest(void) {
 	InteractionLocker(&locker, &player);
+}
+
+void InitialiseRooms(void) {
+	Bg1_i = CP_Image_Load("Assets/BG1Back.png");
+	Bg2_i = CP_Image_Load("Assets/BG2Back.png");
+	Bg3_i = CP_Image_Load("Assets/BG3Back.png");
+
+	Bg1_sd = Bg2_sd = Bg3_sd = SpriteData_Create(1600, 900, 0, 0);
+
+	Bg1_ss = Spritesheet_Create(Bg1_i, CP_Image_GetWidth(Bg1_i), CP_Image_GetHeight(Bg1_i));
+	Bg2_ss = Spritesheet_Create(Bg2_i, CP_Image_GetWidth(Bg2_i), CP_Image_GetHeight(Bg2_i));
+	Bg3_ss = Spritesheet_Create(Bg3_i, CP_Image_GetWidth(Bg3_i), CP_Image_GetHeight(Bg3_i));
+
+	Room a = createRoom(Bg1_ss, Bg1_sd, 0, 0, interactablesArray, 0);
+	roomList[0] = &a;
+	a = createRoom(Bg2_ss, Bg2_sd, 1600, 0, interactablesArray, 0);
+	roomList[1] = &a;
+	a = createRoom(Bg2_ss, Bg2_sd, 3200, 0, interactablesArray, 0);
+	roomList[2] = &a;
+	a = createRoom(Bg3_ss, Bg3_sd, -1600, 0, interactablesArray, 0);
+	roomList[3] = &a;
+	a = createRoom(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
+	roomList[4] = &a;
 }
