@@ -34,6 +34,7 @@ CP_Vector worldCenterPosition;
 
 //Test Background Sprites
 Room* roomList[ROOM_COUNT];
+Room roomTest, r4;
 
 Room r1;
 CP_Image Bg1_i;
@@ -80,7 +81,6 @@ void game_init(void) {
 
 	//Test Background Sprites
 	InitialiseRooms();
-
 }
 
 void game_update(void) {
@@ -92,11 +92,13 @@ void game_update(void) {
 	for (int i = 0; i < ROOM_COUNT; i++)
 	{
 		int pX = player.currentPositionX, pY = player.currentPositionY;
-		int sightCheckR = roomList[i]->xPos, sightCheckP1 = pX % (ROOM_COUNT * 1600) + 1600, sightCheckP2 = pY % (ROOM_COUNT * 1600) - 1600;
+		int sightCheckR = roomList[i]->xPos;
+		int sightCheckP1 = pX % (ROOM_COUNT * 1600) + 1600; 
+		int sightCheckP2 = pY % (ROOM_COUNT * 1600) - 1600;
 		if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 		{
 			printf("Room %d loads at %d, %d on screen space! \n", i, roomList[i]->xPos - pX, roomList[i]->yPos - pY);
-			loadRoom(roomList[i]->room, roomList[i]->frame, roomList[i]->xPos-pX, roomList[i]->yPos-pY, roomList[i]->interractibles, roomList[i]->interactibleCount);
+			Room_Load(roomList[i]);
 		}
 	}
 
@@ -177,14 +179,14 @@ void InitialiseRooms(void) {
 	Bg2_ss = Spritesheet_Create(Bg2_i, CP_Image_GetWidth(Bg2_i), CP_Image_GetHeight(Bg2_i));
 	Bg3_ss = Spritesheet_Create(Bg3_i, CP_Image_GetWidth(Bg3_i), CP_Image_GetHeight(Bg3_i));
 
-	Room a = createRoom(Bg1_ss, Bg1_sd, 0, 0, interactablesArray, 0);
-	roomList[0] = &a;
-	a = createRoom(Bg2_ss, Bg2_sd, 1600, 0, interactablesArray, 0);
-	roomList[1] = &a;
-	a = createRoom(Bg2_ss, Bg2_sd, 3200, 0, interactablesArray, 0);
-	roomList[2] = &a;
-	a = createRoom(Bg3_ss, Bg3_sd, -1600, 0, interactablesArray, 0);
-	roomList[3] = &a;
-	a = createRoom(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
-	roomList[4] = &a;
+	roomTest = Room_Create(Bg1_ss, Bg1_sd, 0, 0, interactablesArray, 0);
+	roomList[0] = &roomTest;
+	r1 = Room_Create(Bg2_ss, Bg2_sd, 1600, 0, interactablesArray, 0);
+	roomList[1] = &r1;
+	r2 = Room_Create(Bg2_ss, Bg2_sd, 3200, 0, interactablesArray, 0);
+	roomList[2] = &r2;
+	r3 = Room_Create(Bg3_ss, Bg3_sd, -1600, 0, interactablesArray, 0);
+	roomList[3] = &r3;
+	r4 = Room_Create(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
+	roomList[4] = &r4;
 }

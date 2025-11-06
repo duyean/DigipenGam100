@@ -4,9 +4,9 @@
 #include "../CMP_Interactable_Pak.h"
 #include "../CMP_Sprite_Pak.h"
 
-Room createRoom(Spritesheet room, SpriteData frame, int xPos, int yPos, Interactable interactables[4], int arrNum)
+Room Room_Create(Spritesheet room, SpriteData frame, int xPos, int yPos, Interactable interactables[4], int arrNum)
 {
-	Room newRoom;
+	static Room newRoom;
 	newRoom.room = room;
 	newRoom.frame = frame;
 	newRoom.xPos = xPos;
@@ -16,14 +16,15 @@ Room createRoom(Spritesheet room, SpriteData frame, int xPos, int yPos, Interact
 	return newRoom;
 }
 
-void loadRoom(Spritesheet room, SpriteData frame, int xPos, int yPos, Interactable interactables[4], int arrNum)
+void Room_Load(Room *room)
 {
+	//Spritesheet room, SpriteData frame, int xPos, int yPos, Interactable interactables[4], int arrNum
 	// Set up background
-	Sprite_Draw(room, frame, xPos, yPos, 0, 0);
+	Sprite_Draw(room->room, room->frame, room->xPos, room->yPos, 1, 1);
 	// Set up interactable objects HERE!!! (undone)
-	for (int i = 0; i < arrNum; i++) 
-	{ 
-		// Draw each interactable here please.
-	}
+	//for (int i = 0; i < room->interactibleCount; i++) 
+	//{ 
+	//	// Draw each interactable here please.
+	//}
 	//DO NOT DRAW PARALLEX HERE BECAUSE THEN IT WILL ALWAYS BE BEHIND PLAYER!!! (ENSURE DO NOT DRAW PARALLEX HERE!) -day
 }
