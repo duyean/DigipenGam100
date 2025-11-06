@@ -10,6 +10,13 @@ Camera* camera;
 float playerX = 0, playerY = 0;
 float lastPlayerX = 0, lastPlayerY = 0;
 
+extern CP_Sound mainMenuMusic;
+extern CP_Sound gameplayMusic;
+extern CP_Sound soundEffects;
+
+extern float masterVolume;
+extern float effectiveBGM;
+extern float effectiveSFX;
 
 void game_init(void) {
 	background = CP_Color_Create(150, 150, 150, 255);

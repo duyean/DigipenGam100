@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 CP_Image buttonUIImage;
 CP_Image menuBackground;
 
@@ -18,9 +17,13 @@ float buttonHorizontalAlignment;
 TextTemplate mainMenuTextTemplate;
 SceneEnum nextScene;
 
-CP_Sound mainMenuMusic = NULL;
-CP_Sound gameplayMusic = NULL;
-float volume = 1.0f;
+extern CP_Sound mainMenuMusic;
+extern CP_Sound gameplayMusic;
+extern CP_Sound soundEffects;
+
+extern float masterVolume;
+extern float effectiveBGM;
+extern float effectiveSFX;
 
 void main_menu_init(void) {
 	CP_System_SetWindowSize(1600, 900);
@@ -44,9 +47,10 @@ void main_menu_init(void) {
 	quitButton = AddTextToButton(&quitButton, "Quit", -100, 0);
 
 	mainMenuMusic = CP_Sound_Load("./Assets/Main.wav");
-	CP_Sound_PlayAdvanced(mainMenuMusic, 1.0f, volume, TRUE, CP_SOUND_GROUP_0);
+	CP_Sound_PlayAdvanced(mainMenuMusic, 1.0f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
 
-	gameplayMusic = CP_Sound_Load("./Assets/Gameplay.wav"); // the file locations need to be edited later after push
+	// plays when transitioning in PlayButtonPressed
+	gameplayMusic = CP_Sound_Load("./Assets/Audio/Gameplay.wav"); // the file locations need to be edited later after push
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 }
@@ -79,10 +83,10 @@ void main_menu_exit(void) {
 void PlayButtonPressed() {
 	printf("PLayerButtonPressed in mainmenu.c\n");
 
-	// shuts off mainmenu and resumes gameplay
-	// note to self: gotta code the replaying of music when quitting the game and shiii
+	// jelly notes: DONT FREE THIS MUSIIIC
+	// write up the logic for transitioning music later lalalalalaa
 	CP_Sound_Free(mainMenuMusic);
-	CP_Sound_PlayAdvanced(gameplayMusic, 1.0f, volume, TRUE, CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(gameplayMusic, 1.0f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
 
 	StartTransition();
 	nextScene = GAME;
