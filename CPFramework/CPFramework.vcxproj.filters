@@ -83,6 +83,9 @@
     <ClCompile Include="Code\Rewrites\ListFile.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +118,15 @@
     </ClInclude>
     <ClInclude Include="monsterBase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rewrites\ListFile.h">
+      <Filter>Header Files\Standard Systems</Filter>
     </ClInclude>
     <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
       <Filter>Header Files\Characters</Filter>
