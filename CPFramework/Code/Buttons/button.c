@@ -24,7 +24,29 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
 */
 CP_Image DrawButtonUsingImage(CP_Image loadedImage, Button *button, TextTemplate texT) {
 	if (loadedImage == NULL) return loadedImage;
+
+	// jelly addition for button hover/press 'animation'
+	float mouseX = CP_Input_GetMouseX();
+	float mouseY = CP_Input_GetMouseY();
+
+	// checks if the mouseX and mouseY is within the boundaries of the button
+	CP_BOOL IsHovering = (mouseX > button->x - button->w / 2 && mouseX < button->x + button->w / 2 && mouseY > button->y - button->h / 2 && mouseY < button->y + button->h / 2);
+	CP_Color ButtonTint = CP_Color_Create(255, 255, 255, 255); // adds a black overlay because this will be used for the actual tinting
+
+	if (IsHovering && CP_Input_MouseDown(MOUSE_BUTTON_LEFT)) {
+		ButtonTint = CP_Color_Create(100, 100, 100, 255);
+	}
+	else if (IsHovering) {
+		ButtonTint = CP_Color_Create(180, 180, 180, 255);
+	}
+
+	CP_Settings_Tint(ButtonTint); // this wan is where it tints, gotta draw after the tint if not its just gonna be BUHLACK
+
 	CP_Image_Draw(loadedImage, button->x, button->y, button->w, button->h, button->a);
+
+	CP_Settings_Tint(CP_Color_Create(255, 255, 255, 255)); // this wan reset tint after drawing
+
+	// mr jerome's amazing code
 	if (button->text != NULL || button->text != "") {
 		CP_Settings_Fill(texT.color);
 		CP_Settings_TextSize(35.0f);
@@ -35,6 +57,15 @@ CP_Image DrawButtonUsingImage(CP_Image loadedImage, Button *button, TextTemplate
 	if (IsAreaClicked(button->x, button->y, button->w, button->h, GetMousePosition().x, GetMousePosition().y)) {
 		if(button->OnButtonPress != NULL) button->OnButtonPress();
 	}
+
+	// this wan handles the click event 
+	if (CP_Input_MouseClicked() && IsHovering)
+	{
+		if (button->OnButtonPress != NULL) {
+			button->OnButtonPress();
+		}
+	}
+
 	return loadedImage;
 }
 
