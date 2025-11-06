@@ -41,6 +41,14 @@ float lastFrameTime = 0;
 void InitialiseInteractables(void);
 void LockerTest(void);
 
+extern CP_Sound mainMenuMusic;
+extern CP_Sound gameplayMusic;
+extern CP_Sound soundEffects;
+
+extern float masterVolume;
+extern float effectiveBGM;
+extern float effectiveSFX;
+
 void game_init(void) {
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
