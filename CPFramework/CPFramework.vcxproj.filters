@@ -60,6 +60,30 @@
     <ClCompile Include="Code\Rewrites\ListFile.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="Code\Spritesheet\animation.c">
+      <Filter>Source Files\Animation and Spritesheet</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Spritesheet\spritesheet.c">
+      <Filter>Source Files\Animation and Spritesheet</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Dbg\dbg.c">
+      <Filter>Source Files\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monster.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Player\player.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rewrites\ListFile.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">
@@ -91,6 +115,15 @@
     </ClInclude>
     <ClInclude Include="monsterBase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rewrites\ListFile.h">
+      <Filter>Header Files\Standard Systems</Filter>
     </ClInclude>
     <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
       <Filter>Header Files\Characters</Filter>
