@@ -22,7 +22,11 @@ typedef struct MonsterBabyObject
 	BABY_AI_STATE current_state;
 }MonsterBabyObject;
 
-MonsterBabyObject* createBabyMonster(int x, int y, int patrolMax, float movementSpeed);
-void destroyBabyMonster(MonsterBabyObject* obj);
 
+MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float detection, float attack, float lost);
+void destroyBabyMonster(MonsterBabyObject* obj);
+void setPlayerRef(Player *player);
+void initializeBaby(void);
+void sendMonstersToTrap(float trapXPos, float trapYPos);
+void UpdateMonsterBaby();
 #endif

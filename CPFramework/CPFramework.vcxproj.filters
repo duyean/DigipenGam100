@@ -54,6 +54,12 @@
     <ClCompile Include="ListFile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rewrites\ListFile.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">
@@ -85,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="monsterBase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rewrites\ListFile.h">
+      <Filter>Header Files\Standard Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

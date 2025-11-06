@@ -11,6 +11,20 @@ int rowFrames[4] = { 0,1,0,1 };
 int columnFrames[4] = { 0,0,1,1 };
 float frameDuration = 15.f;
 
+
+
+//Extra that Edmund suggest to add something like this
+//are we importing bool.h?
+int KillPlayer(Player* player) {
+	player->playerHealth = 0;
+	if (player->playerHealth == 0)
+	{
+		return 1;
+		//End the round
+	}
+	return 0;
+}
+
 float movementSpeed = 100.f;
 
 PlayerState currentPlayerState = IDLE;
