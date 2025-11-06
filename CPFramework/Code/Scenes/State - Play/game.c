@@ -37,7 +37,8 @@ float lastFrameTime = 0;
 
 /*UPDATE THE ADDRESS HANDLING FOR INTERACTABLES*/
 
-
+/*Functions here are for testing and can be removed for FINAL*/
+void InitialiseInteractables(void);
 void LockerTest(void);
 
 void game_init(void) {
@@ -47,22 +48,7 @@ void game_init(void) {
 
 	worldCenterPosition = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 
-	oilImage = CP_Image_Load("Assets/ChocoMochiPie.png");
-	lockerImage = CP_Image_Load("Assets/LockerSpritesheet.png");
-
-	lockerSheet = Spritesheet_Create(lockerImage, CP_Image_GetWidth(lockerImage) / 2, CP_Image_GetHeight(lockerImage));
-	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0);
-	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0);
-	lockerAnimation = Animation_Create(lockerSheet, lockerSprites, 25.f, 2, 0, 0);
-	locker = Interactable_Create(0, 0, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
-	Interactable_AttachAnimation(&locker, lockerAnimation);
-
-	interactablesArray[0] = &locker;
-
-	oilSprite = SpriteData_Create(200, 200, 0, 0);
-	oilSpritesheet = Spritesheet_Create(oilImage, 1000, 1000);
-	interactableOil = Interactable_Create(300.f, 0.f, 100.f, "Sludge 1", oilSpritesheet, oilSprite, &InteractionSludge);
-	interactablesArray[1] = &interactableOil;
+	InitialiseInteractables();
 }
 
 void game_update(void) {
@@ -113,8 +99,25 @@ void game_exit(void) {
 
 }
 
+void InitialiseInteractables(void) {
+	oilImage = CP_Image_Load("Assets/ChocoMochiPie.png");
+	lockerImage = CP_Image_Load("Assets/LockerSpritesheet.png");
+
+	lockerSheet = Spritesheet_Create(lockerImage, CP_Image_GetWidth(lockerImage) / 2, CP_Image_GetHeight(lockerImage));
+	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0);
+	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0);
+	lockerAnimation = Animation_Create(lockerSheet, lockerSprites, 25.f, 2, 0, 0);
+	locker = Interactable_Create(0, 0, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
+	Interactable_AttachAnimation(&locker, lockerAnimation);
+
+	interactablesArray[0] = &locker;
+
+	oilSprite = SpriteData_Create(200, 200, 0, 0);
+	oilSpritesheet = Spritesheet_Create(oilImage, 1000, 1000);
+	interactableOil = Interactable_Create(300.f, 0.f, 100.f, "Sludge 1", oilSpritesheet, oilSprite, &InteractionSludge);
+	interactablesArray[1] = &interactableOil;
+}
+
 void LockerTest(void) {
 	InteractionLocker(&locker, &player);
-	Animation_Reset(&locker.animation);
-	Animation_PlayState(&locker.animation, 1);
 }

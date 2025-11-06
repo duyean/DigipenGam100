@@ -42,6 +42,8 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 void InteractionLocker(Interactable *interactable, Player *player) {
 	printf("Interacted with: %s\n", interactable->name);
 	player->toDraw = !player->toDraw;
+	Animation_Reset(&interactable->animation);
+	Animation_PlayState(&interactable->animation, 1);
 }
 
 void InteractionSludge(void) {
