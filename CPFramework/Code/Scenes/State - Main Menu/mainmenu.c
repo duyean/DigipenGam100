@@ -50,7 +50,7 @@ void main_menu_init(void) {
 	CP_Sound_PlayAdvanced(mainMenuMusic, 1.0f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
 
 	// plays when transitioning in PlayButtonPressed
-	gameplayMusic = CP_Sound_Load("./Assets/Audio/Gameplay.wav"); // the file locations need to be edited later after push
+	gameplayMusic = CP_Sound_Load("./Assets/Audio/Eerie.wav"); // the file locations need to be edited later after push
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 }
@@ -86,7 +86,7 @@ void PlayButtonPressed() {
 	// jelly notes: DONT FREE THIS MUSIIIC
 	// write up the logic for transitioning music later lalalalalaa
 	CP_Sound_Free(mainMenuMusic);
-	CP_Sound_PlayAdvanced(gameplayMusic, 1.0f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
+	CP_Sound_PlayAdvanced(gameplayMusic, 0.1f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
 
 	StartTransition();
 	nextScene = GAME;

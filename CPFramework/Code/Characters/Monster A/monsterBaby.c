@@ -15,6 +15,9 @@ TextTemplate babyTextTemplate;
 SpriteData monsterSprites[5][4];
 Animation AnimationList[5];
 
+
+CP_Sound monsterSfx[3];
+
 void setPlayerRef(Player* player)
 {
 	playerRef = player;
@@ -98,9 +101,16 @@ void clearBabyMonsterListMemory(void)
 }
 void initializeBaby(void)
 {
-	
+	monsterSfx[0] = CP_Sound_Load("./Assets/Audio/Cry1.wav");
+	monsterSfx[1] = CP_Sound_Load("./Assets/Audio/Cry2.wav");
+	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
+
 	babyList = ListCreate(1);
 	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 10.f, 5.f));
+	ListAppend(babyList, createBabyMonster(-600, 0, 110.f, 500.f, 10.f, 5.f));
+
+	//ListAppend(babyList, createBabyMonster(800, 0, 110.f, 500.f, 10.f, 5.f));
+	//ListAppend(babyList, createBabyMonster(-800, 0, 110.f, 500.f, 10.f, 5.f));
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
@@ -111,8 +121,16 @@ void sendMonstersToTrap(float trapXPos, float trapYPos)
 	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
 }
 
+float changeRange(float OldValue, float OldMin, float NewMax, float NewMin, float OldMax)
+{
+	return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
+}
+
 void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
 {
+	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
+	int distFromPlayer = CP_Vector_Length(dir);
+
 	Animation_Reset(&baby->itself.monsterAnimation);
 	switch (*current_state)
 	{
@@ -133,6 +151,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_PATROL:
 	{
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -147,6 +166,8 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_ALERT:
 	{
+		//JELLY HERE
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -165,6 +186,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_CHASE:
 	{
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -198,6 +220,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_LOST:
 	{
+
 		if (nextState == STATE_IDLE) //Go back to idling
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -228,6 +251,9 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
 	CP_Vector normDir = CP_Vector_Normalize(dir);
 	int distFromPlayer = CP_Vector_Length(dir);
+
+
+	
 
 	if (baby->itself.randTimerCheck > 0.f)
 	{
@@ -261,7 +287,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 		if (baby->itself.randTimerCheck <= 0.f)
 		{
-			if (CP_Random_RangeInt(0, 100) < 80) //10% chance to patrol each frame
+			if (CP_Random_RangeInt(0, 100) < 80) //80% chance to patrol each frame
 			{
 
 				if (CP_Random_RangeInt(0, 100) < 50) //50/50 for direction;
@@ -373,6 +399,8 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_LOST, baby);
 		}
+
+
 		//Go left towards player
 		if (normDir.x > 0)
 		{
@@ -382,6 +410,10 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		{
 			baby->itself.facingDir = -1;
 		}
+
+		
+		
+
 		baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
 		break;
 	}

@@ -72,7 +72,9 @@ extern float masterVolume;
 extern float effectiveBGM;
 extern float effectiveSFX;
 
+CP_Image vignette;
 void game_init(void) {
+	vignette = CP_Image_Load("./Assets/Vignette.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
 	initializeBaby();
@@ -179,6 +181,7 @@ void game_update(void) {
 	TransitionFadeIn(.5f, 0, 0, 0, 255);
 	TransitionFadeOut(.5f, MAIN);
 
+	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
 	/*if (lastFrameTime <= CP_System_GetSeconds()) {
 		lastFrameTime = CP_System_GetSeconds() + CP_System_GetDt();
 		printf("Current Player X Position: %.3f\n", playerX);

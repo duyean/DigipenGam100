@@ -96,9 +96,6 @@
     <ClCompile Include="Code\Dbg\dbg.c">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Characters\Monster A\monster.c">
-      <Filter>Source Files\Characters</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Characters\Player\player.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monster.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
   </ItemGroup>
