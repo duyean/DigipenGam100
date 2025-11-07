@@ -4,6 +4,10 @@
 #include "../../CMP_Interactable_Pak.h"
 #include "../Player/playerClass.h"
 
+//suggest to add
+int KillPlayer(Player* player);
+
+
 void Player_Initialise(Player *player);
 void Player_Update(Player *player);
 Spritesheet GetPlayerSheet(void);

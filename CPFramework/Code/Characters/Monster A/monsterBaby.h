@@ -13,6 +13,7 @@ typedef enum BABY_AI_STATE
 	STATE_CHASE,
 	STATE_ATTACK,
 	STATE_LOST,
+	STATE_DIGEST,
 	STATE_ERROR,
 } BABY_AI_STATE;
 
@@ -20,6 +21,8 @@ typedef struct MonsterBabyObject
 {
 	MonsterObject itself;
 	BABY_AI_STATE current_state;
+	CP_Image monsterSheetImage[5];
+	Spritesheet monsterSheet[5];
 }MonsterBabyObject;
 
 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h> 
+#include "../../Rewrites/ListFile.h"
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
 
 // WORK IN PROGRESS DO NOT REFACTOR
@@ -10,6 +11,9 @@ List* babyList;
 Player* playerRef;
 CP_Vector* trapTriggeredPos;
 TextTemplate babyTextTemplate;
+
+SpriteData monsterSprites[5][4];
+Animation AnimationList[5];
 
 void setPlayerRef(Player* player)
 {
@@ -29,7 +33,6 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 	int columnFrames[4] = { 0,0,1,1 };
 	float frameDuration = 15.f;
 
-
 	new->itself.transform.x = x;
 	new->itself.transform.y = y;
 	new->itself.movementSpeed = movementSpeed;//15.f;
@@ -39,13 +42,39 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 	new->itself.lostTimerOriginal = lost;
 	new->itself.randTimerCheck = 5.f;
 	new->itself.randTimerCheckOriginal = 5.f;
-	new->itself.facingDir = 1;
+	new->itself.facingDir = -1;
 	new->current_state = STATE_IDLE;
 	new->itself.isActive = true;
-	new->itself.monsterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet.png");
-	new->itself.monsterSheet = Spritesheet_Create(new->itself.monsterSheetImage, 258, 258);
-	SpriteData data = SpriteData_Create(258, 258, columnFrames, rowFrames);
-	new->itself.monsterAnimation = Animation_Create(new->itself.monsterSheet, &data, 8, 4, 1, 1);;
+	new->monsterSheetImage[0] = CP_Image_Load("./Assets/IdleSpriteSheet.png");
+	new->monsterSheetImage[1] = CP_Image_Load("./Assets/MoveSpriteSheet.png");
+	new->monsterSheetImage[2] = CP_Image_Load("./Assets/ChaseSpriteSheet.png");
+	new->monsterSheetImage[3] = CP_Image_Load("./Assets/EatSpriteSheet.png");
+	new->monsterSheetImage[4] = CP_Image_Load("./Assets/DigestSpriteSheet.png");
+
+
+	for (int p = 0; p < 5; p++)
+	{
+		int characterSpriteDimension = CP_Image_GetWidth(new->monsterSheetImage[p]) / 2;
+		int currentIndex = 0;
+		for (int i = 0; i < 4 / 2; i++) {
+			for (int j = 0; j < 4 / 2; j++) {
+				monsterSprites[p][currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i);
+				currentIndex++;
+			}
+		}
+		new->monsterSheet[p] = Spritesheet_Create(new->monsterSheetImage[p], 258, 258);
+		if (p == 3)
+		{
+			AnimationList[p] = Animation_Create(new->monsterSheet[p], monsterSprites[p], frameDuration, 4, 0, 1);
+		}
+		else
+		{
+			AnimationList[p] = Animation_Create(new->monsterSheet[p], monsterSprites[p], frameDuration, 4, 1, 1);
+		}
+	
+	}
+
+	new->itself.monsterAnimation = AnimationList[0];
 	return new;
 
 }
@@ -61,15 +90,17 @@ void clearBabyMonsterListMemory(void)
 {
 	for (int i = 0; i < babyList->size; i++)
 	{
-		MonsterBabyObject* obj = (MonsterBabyObject*)listGet(babyList, i);
+		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
 		destroyBabyMonster(obj);
 	}
-	listDestroy(babyList);
+
+	ListDestroy(babyList);
 }
 void initializeBaby(void)
 {
-	babyList = listCreate(5);
-	listAdd(babyList, createBabyMonster(500, 500, 15.f, 400.f, 10.f, 5.f));
+	
+	babyList = ListCreate(1);
+	ListAppend(babyList, createBabyMonster(600, 0, 40.f, 400.f, 10.f, 5.f));
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
@@ -80,20 +111,22 @@ void sendMonstersToTrap(float trapXPos, float trapYPos)
 	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
 }
 
-void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState)
+void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
 {
-	//Event == 0 no changes to event
-
+	Animation_Reset(&baby->itself.monsterAnimation);
 	switch (*current_state)
 	{
 	case STATE_IDLE:
 	{
+		
 		if (nextState == STATE_PATROL) //Nothing to do, go patrol
 		{
+			baby->itself.monsterAnimation = AnimationList[1];
 			*current_state = STATE_PATROL;
 		}
 		else if (nextState == STATE_ALERT) //Alerted
 		{
+			baby->itself.monsterAnimation = AnimationList[1];
 			*current_state = STATE_ALERT;
 		}
 		break;
@@ -102,10 +135,12 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	{
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
+			baby->itself.monsterAnimation = AnimationList[0];
 			*current_state = STATE_IDLE;
 		}
 		else if (nextState == STATE_ALERT) //Alerted
 		{
+			baby->itself.monsterAnimation = AnimationList[1];
 			*current_state = STATE_ALERT;
 		}
 		break;
@@ -114,13 +149,15 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	{
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
+			baby->itself.monsterAnimation = AnimationList[0];
 			*current_state = STATE_IDLE;
 		}
 		else if (nextState == STATE_CHASE) //Player Found
 		{
+			baby->itself.monsterAnimation = AnimationList[2];
 			*current_state = STATE_CHASE;
 		}
-		else if (nextState == STATE_LOST) //Player Found
+		else if (nextState == STATE_LOST) //Player lost
 		{
 			*current_state = STATE_LOST;
 		}
@@ -130,10 +167,12 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	{
 		if (nextState == STATE_LOST) //Lost player
 		{
+			baby->itself.monsterAnimation = AnimationList[0];
 			*current_state = STATE_LOST;
 		}
 		else if (nextState == STATE_ATTACK) //Player reached
 		{
+			baby->itself.monsterAnimation = AnimationList[3];
 			*current_state = STATE_ATTACK;
 		}
 		break;
@@ -142,11 +181,18 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	{
 		if (nextState == STATE_IDLE) //player dead
 		{
+			baby->itself.monsterAnimation = AnimationList[0];
 			*current_state = STATE_IDLE;
 		}
 		else if (nextState == STATE_CHASE) //Player Running
 		{
+			baby->itself.monsterAnimation = AnimationList[2];
 			*current_state = STATE_CHASE;
+		}
+		else if (nextState == STATE_DIGEST) //Player eaten
+		{
+			baby->itself.monsterAnimation = AnimationList[4];
+			*current_state = STATE_DIGEST;
 		}
 		break;
 	}
@@ -154,6 +200,21 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	{
 		if (nextState == STATE_IDLE) //Go back to idling
 		{
+			baby->itself.monsterAnimation = AnimationList[0];
+			*current_state = STATE_IDLE;
+		}
+		else if (nextState == STATE_CHASE) //Go back to chasing if found
+		{
+			baby->itself.monsterAnimation = AnimationList[2];
+			*current_state = STATE_CHASE;
+		}
+		break;
+	}
+	case STATE_DIGEST:
+	{
+		if (nextState == STATE_IDLE) //Go back to idling
+		{
+			baby->itself.monsterAnimation = AnimationList[0];
 			*current_state = STATE_IDLE;
 		}
 		break;
@@ -180,12 +241,13 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	{
 		//check facing direction, play idle animation
 		//Monster facing and player is same direction
+		
 		if (baby->itself.facingDir > 0 && normDir.x > 0 || baby->itself.facingDir < 0 && normDir.x < 0)
 		{
 			if (distFromPlayer < baby->itself.detectionRange) //Check if in range
 			{
 				//start alerted state
-				processing_state_babyFSM(&baby->current_state, STATE_ALERT);
+				processing_state_babyFSM(&baby->current_state, STATE_ALERT, baby);
 
 			}
 		}
@@ -203,7 +265,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 				{
 					baby->itself.facingDir = -1;
 				}
-				processing_state_babyFSM(&baby->current_state, STATE_PATROL);
+				processing_state_babyFSM(&baby->current_state, STATE_PATROL, baby);
 			}
 			baby->itself.randTimerCheck = baby->itself.randTimerCheckOriginal;
 		}
@@ -217,7 +279,8 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			if (distFromPlayer < baby->itself.detectionRange) //Check if in range
 			{
 				//start alerted state
-				processing_state_babyFSM(&baby->current_state, STATE_ALERT);
+
+				processing_state_babyFSM(&baby->current_state, STATE_ALERT, baby);
 
 			}
 		}
@@ -226,7 +289,8 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		if (distFromPlayer < baby->itself.detectionRange / 2.f) //Check if player too close
 		{
 			//start alerted state
-			processing_state_babyFSM(&baby->current_state, STATE_ALERT);
+
+			processing_state_babyFSM(&baby->current_state, STATE_ALERT, baby);
 
 		}
 
@@ -244,10 +308,11 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	}
 	case STATE_ALERT:
 	{
+;
 		if (distFromPlayer <= baby->itself.detectionRange) //Check if in range
 		{
 			//start alerted state
-			processing_state_babyFSM(&baby->current_state, STATE_CHASE);
+			processing_state_babyFSM(&baby->current_state, STATE_CHASE, baby);
 
 		}
 		else
@@ -256,7 +321,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			{
 				if (CP_Random_RangeInt(0, 100) < 5) //5% chance it gets bored and goes back to idling
 				{
-					processing_state_babyFSM(&baby->current_state, STATE_IDLE);
+					processing_state_babyFSM(&baby->current_state, STATE_IDLE, baby);
 				}
 				baby->itself.randTimerCheck = baby->itself.randTimerCheckOriginal;
 			}
@@ -281,7 +346,8 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			}
 			else
 			{
-				processing_state_babyFSM(&baby->current_state, STATE_LOST); //player not found
+
+				processing_state_babyFSM(&baby->current_state, STATE_LOST, baby); //player not found
 			}
 
 		}
@@ -292,13 +358,13 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		//Check if left or right and same floor
 		if (distFromPlayer < baby->itself.attackRange)
 		{
-			processing_state_babyFSM(&baby->current_state, STATE_ATTACK);
+			processing_state_babyFSM(&baby->current_state, STATE_ATTACK, baby);
 		}
 		//If player disappears into a hiding place or gets too far
 		// add LOST STATE transition here
 		if (distFromPlayer > baby->itself.detectionRange * 1.5f)
 		{
-			processing_state_babyFSM(&baby->current_state, STATE_LOST);
+			processing_state_babyFSM(&baby->current_state, STATE_LOST, baby);
 		}
 		//Go left towards player
 		if (normDir.x > 0)
@@ -315,8 +381,16 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_ATTACK:
 	{
 		//Kill player & play animation ? are we doing collision check here or guaranteed kill when reach this
-		KillPlayer(playerRef);
-		processing_state_babyFSM(&baby->current_state, STATE_IDLE);
+		//KillPlayer(playerRef);
+		if (baby->itself.monsterAnimation.currFrameIndex == 3)
+		{
+			processing_state_babyFSM(&baby->current_state, STATE_DIGEST, baby);
+		}
+		break;
+	}
+	case STATE_DIGEST:
+	{
+		//Idle, play lost animation
 		break;
 	}
 	case STATE_LOST:
@@ -325,7 +399,12 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		if (baby->itself.lostTimer <= 0.f)
 		{
 			baby->itself.lostTimer = baby->itself.lostTimerOriginal;
-			processing_state_babyFSM(&baby->current_state, STATE_IDLE);
+			processing_state_babyFSM(&baby->current_state, STATE_IDLE, baby);
+		}
+		else if(distFromPlayer < baby->itself.detectionRange)
+		{
+			baby->itself.lostTimer = baby->itself.lostTimerOriginal;
+			processing_state_babyFSM(&baby->current_state, STATE_CHASE, baby);
 		}
 		else
 		{
@@ -352,14 +431,18 @@ void UpdateMonsterBaby()
 {
 	for (int i = 0; i < babyList->size; i++)
 	{
-		MonsterBabyObject* obj = (MonsterBabyObject*)listGet(babyList, i);
-		if (obj->itself.isActive == false)
+		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+		if (obj != NULL)
 		{
-			continue;
+			if (obj->itself.isActive == false)
+			{
+				continue;
+			}
+			processing_state_baby_logic(obj);
+
+			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
+			//DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
+			//CP_Font_DrawText(intToConstChar((int)obj->current_state), (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY));
 		}
-		processing_state_baby_logic(obj);
-		//Animate(&obj->itself.monsterAnimation, obj->itself.transform.x, 450);
-		DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
-		CP_Font_DrawText(intToConstChar((int)obj->current_state), obj->itself.transform.x, obj->itself.transform.y - 100.f);
 	}
 }

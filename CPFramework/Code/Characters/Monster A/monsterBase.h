@@ -22,8 +22,6 @@ typedef struct MonsterObject
 	int facingDir;
 	float randTimerCheck;
 	float randTimerCheckOriginal;
-	CP_Image monsterSheetImage;
-	Spritesheet monsterSheet;
 	Animation monsterAnimation;
 	int rowFrames[4];
 	int columnFrames[4];

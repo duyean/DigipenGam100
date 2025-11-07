@@ -22,8 +22,8 @@ CP_Image oilContainer;
 //Extra that Edmund suggest to add something like this
 //are we importing bool.h?
 int KillPlayer(Player* player) {
-	player->playerHealth = 0;
-	if (player->playerHealth == 0)
+	player->currentHealth = 0;
+	if (player->currentHealth == 0)
 	{
 		return 1;
 		//End the round
