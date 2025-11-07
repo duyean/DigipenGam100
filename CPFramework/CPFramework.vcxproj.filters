@@ -126,6 +126,9 @@
     <ClCompile Include="Code\Rooms\room.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -265,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="Code\CMP_Room_Pak.h">
       <Filter>Header Files\Inherit Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBaby.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
+      <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

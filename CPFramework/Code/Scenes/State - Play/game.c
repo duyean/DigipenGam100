@@ -7,6 +7,7 @@
 #include "game.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "../../Characters/Monster A/monsterBaby.h"
 
 #define INTERACTABLES_COUNT 2
 #define ROOM_COUNT 5
@@ -74,6 +75,8 @@ extern float effectiveSFX;
 void game_init(void) {
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
+	initializeBaby();
+	setPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
 	worldCenterPosition = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
@@ -147,6 +150,7 @@ void game_update(void) {
 
 
 	Player_Update(&player);
+	UpdateMonsterBaby();
 	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
 	Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 

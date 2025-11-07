@@ -24,6 +24,7 @@
     <ClCompile Include="Code\Camera\camera.c" />
     <ClCompile Include="Code\Camera\layer.c" />
     <ClCompile Include="Code\Characters\Monster A\monster.c" />
+    <ClCompile Include="Code\Characters\Monster A\monsterBaby.c" />
     <ClCompile Include="Code\Characters\Player\player.c" />
     <ClCompile Include="Code\Dbg\dbg.c" />
     <ClCompile Include="Code\DialogueSystem\dialogueHandler.c" />
@@ -54,6 +55,8 @@
     <ClInclude Include="Code\Camera\layerClass.h" />
     <ClInclude Include="Code\Camera\layerEnum.h" />
     <ClInclude Include="Code\Characters\Monster A\monster.h" />
+    <ClInclude Include="Code\Characters\Monster A\monsterBaby.h" />
+    <ClInclude Include="Code\Characters\Monster A\monsterBase.h" />
     <ClInclude Include="Code\Characters\Player\player.h" />
     <ClInclude Include="Code\Characters\Player\playerClass.h" />
     <ClInclude Include="Code\CMP_Audio_Pak.h" />
