@@ -41,17 +41,17 @@ CP_Vector worldCenterPosition;
 Room* roomList[ROOM_COUNT];
 Room r1, r2, r3, r4, r5;
 
-CP_Image Bg1_i;
-Spritesheet Bg1_ss;
-SpriteData Bg1_sd;
+CP_Image Bg1_i[3];
+Spritesheet Bg1_ss[3];
+SpriteData Bg1_sd[3];
 
-CP_Image Bg2_i;
-Spritesheet Bg2_ss;
-SpriteData Bg2_sd;
+CP_Image Bg2_i[3];
+Spritesheet Bg2_ss[3];
+SpriteData Bg2_sd[3];
 
-CP_Image Bg3_i;
-Spritesheet Bg3_ss;
-SpriteData Bg3_sd;
+CP_Image Bg3_i[3];
+Spritesheet Bg3_ss[3];
+SpriteData Bg3_sd[3];
 
 //Just to reduce the printf occurence
 float lastFrameTime = 0;
@@ -105,7 +105,7 @@ void game_update(void) {
 			//only load rooms in view (to save space!!!)
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_Load(roomList[i], player);
+				Room_Load(roomList[i], 3, player);
 				printf("Loading Room %d\n", i);
 			}
 		}
@@ -116,11 +116,12 @@ void game_update(void) {
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_LoadO(roomList[ROOM_COUNT-1], player, -(ROOM_COUNT / 2 + 1) * 1600);
+				Room_LoadO(roomList[ROOM_COUNT-1], 3, player, -(ROOM_COUNT / 2 + 1) * 1600);
 				printf("Loading Room: LOOP LEFT\n");
 				if (pX < -(ROOM_COUNT/2+1) * 1600)
 				{
 					player.currentPositionX += ROOM_COUNT * 1600;
+					//TeleportMonsterRoom((ROOM_COUNT * 1600));
 					printf("Looping Left to Right\n");
 				}
 			}
@@ -131,11 +132,12 @@ void game_update(void) {
 			int sightCheckR = roomList[ROOM_COUNT-1]->xPos + 1600;
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_LoadO(roomList[0], player, (ROOM_COUNT / 2 + 1) * 1600);
+				Room_LoadO(roomList[0], 3, player, (ROOM_COUNT / 2 + 1) * 1600);
 				printf("Loading Room: LOOP RIGHT\n");
 				if (pX > (ROOM_COUNT/2 + 1) * 1600)
 				{
 					player.currentPositionX -= ROOM_COUNT * 1600;
+					//TeleportMonsterRoom(-1 * (ROOM_COUNT * 1600));
 					printf("Looping Right to Left\n");
 				}
 			}
@@ -195,7 +197,7 @@ void InitialiseInteractables(void) {
 	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0);
 	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0);
 	lockerAnimation = Animation_Create(lockerSheet, lockerSprites, 25.f, 2, 0, 0);
-	locker = Interactable_Create(0, 0, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
+	locker = Interactable_Create(0, 20.f, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
 	Interactable_AttachAnimation(&locker, lockerAnimation);
 
 	interactablesArray[0] = &locker;
@@ -211,25 +213,39 @@ void LockerTest(void) {
 }
 
 void InitialiseRooms(void) {
-	Bg1_i = CP_Image_Load("Assets/BG1Back.png");
-	Bg2_i = CP_Image_Load("Assets/BG2Back.png");
-	Bg3_i = CP_Image_Load("Assets/BG3Back.png");
+	Bg1_i[0] = CP_Image_Load("Assets/BG1Back.png");
+	Bg2_i[0] = CP_Image_Load("Assets/BG2Back.png");
+	Bg3_i[0] = CP_Image_Load("Assets/BG3Back.png");
 
-	Bg1_sd = Bg2_sd = Bg3_sd = SpriteData_Create(1600, 900, 0, 0);
+	Bg1_i[1] = CP_Image_Load("Assets/Ground.png");
+	Bg2_i[1] = CP_Image_Load("Assets/Ground.png");
+	Bg3_i[1] = CP_Image_Load("Assets/Ground.png");
 
-	Bg1_ss = Spritesheet_Create(Bg1_i, CP_Image_GetWidth(Bg1_i), CP_Image_GetHeight(Bg1_i));
-	Bg2_ss = Spritesheet_Create(Bg2_i, CP_Image_GetWidth(Bg2_i), CP_Image_GetHeight(Bg2_i));
-	Bg3_ss = Spritesheet_Create(Bg3_i, CP_Image_GetWidth(Bg3_i), CP_Image_GetHeight(Bg3_i));
+	Bg1_i[2] = CP_Image_Load("Assets/Ceiling.png");
+	Bg2_i[2] = CP_Image_Load("Assets/Ceiling.png");
+	Bg3_i[2] = CP_Image_Load("Assets/Ceiling.png");
 
-	r1 = Room_Create(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
+	for (int i = 0; i < 3; i++)
+	{
+		Bg1_sd[i] = Bg2_sd[i] = Bg3_sd[i] = SpriteData_Create(1600, 900, 0, 0);
+
+		Bg1_ss[i] = Spritesheet_Create(Bg1_i[i], CP_Image_GetWidth(Bg1_i[i]), CP_Image_GetHeight(Bg1_i[i]));
+		Bg2_ss[i] = Spritesheet_Create(Bg2_i[i], CP_Image_GetWidth(Bg2_i[i]), CP_Image_GetHeight(Bg2_i[i]));
+		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
+	}
+
+
+
+
+	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, -3200, 0, interactablesArray, 0);
 	roomList[0] = &r1;
-	r2 = Room_Create(Bg1_ss, Bg1_sd, -1600, 0, interactablesArray, 0);
+	r2 = Room_Create(Bg1_ss, Bg1_sd,3, -1600, 0, interactablesArray, 0);
 	roomList[1] = &r2;
-	r3 = Room_Create(Bg2_ss, Bg2_sd, 0, 0, interactablesArray, 0);
+	r3 = Room_Create(Bg2_ss, Bg2_sd,3, 0, 0, interactablesArray, 0);
 	roomList[2] = &r3;
-	r4 = Room_Create(Bg3_ss, Bg3_sd, 1600, 0, interactablesArray, 0);
+	r4 = Room_Create(Bg3_ss, Bg3_sd,3, 1600, 0, interactablesArray, 0);
 	roomList[3] = &r4;
-	r5 = Room_Create(Bg1_ss, Bg1_sd, 3200, 0, interactablesArray, 0);
+	r5 = Room_Create(Bg1_ss, Bg1_sd,3, 3200, 0, interactablesArray, 0);
 	roomList[4] = &r5;
 	
 }

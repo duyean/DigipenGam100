@@ -5,8 +5,8 @@
 #include "../CMP_Interactable_Pak.h"
 
 typedef struct {
-	Spritesheet room;
-	SpriteData frame;
+	Spritesheet roomItem[6];
+	SpriteData frame[6];
 	int xPos;
 	int yPos;
 	Interactable interractibles[4];

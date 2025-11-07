@@ -41,6 +41,14 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 
 void InteractionLocker(Interactable *interactable, Player *player) {
 	printf("Interacted with: %s\n", interactable->name);
+	if (player->isHiding == 1)
+	{
+		player->isHiding = 0;
+	}
+	else
+	{
+		player->isHiding = 1;
+	}
 	player->toDraw = !player->toDraw;
 	Animation_Reset(&interactable->animation);
 	Animation_PlayState(&interactable->animation, 1);

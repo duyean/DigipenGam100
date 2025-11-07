@@ -55,6 +55,7 @@ void Player_Initialise(Player *player) {
 	player->faceDirection = 1;
 	player->isInteracting = player->isMoving = 0;
 	player->toDraw = 1;
+	player->isHiding = 0;
 
 	player->maxHealth = player->currentHealth = 2;
 	player->maxStamina = player->currentStamina = 100.f;

@@ -40,7 +40,7 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 	new->itself.attackRange = attack;//10.f;
 	new->itself.lostTimer = lost; //15.f;
 	new->itself.lostTimerOriginal = lost;
-	new->itself.randTimerCheck = 5.f;
+	new->itself.randTimerCheck = 2.f;
 	new->itself.randTimerCheckOriginal = 5.f;
 	new->itself.facingDir = -1;
 	new->current_state = STATE_IDLE;
@@ -100,7 +100,7 @@ void initializeBaby(void)
 {
 	
 	babyList = ListCreate(1);
-	ListAppend(babyList, createBabyMonster(600, 0, 40.f, 400.f, 10.f, 5.f));
+	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 10.f, 5.f));
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
@@ -231,7 +231,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 	if (baby->itself.randTimerCheck > 0.f)
 	{
-		baby->itself.randTimerCheck -= CP_System_GetDt();
+		baby->itself.randTimerCheck -= CP_System_GetDt(); 
 	}
 
 	//Do AI Logic
@@ -244,17 +244,24 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		
 		if (baby->itself.facingDir > 0 && normDir.x > 0 || baby->itself.facingDir < 0 && normDir.x < 0)
 		{
-			if (distFromPlayer < baby->itself.detectionRange) //Check if in range
+			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0) //Check if in range
 			{
 				//start alerted state
 				processing_state_babyFSM(&baby->current_state, STATE_ALERT, baby);
 
 			}
 		}
+		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0) //Check if player too close
+		{
+			//start alerted state
+
+			processing_state_babyFSM(&baby->current_state, STATE_ALERT, baby);
+
+		}
 
 		if (baby->itself.randTimerCheck <= 0.f)
 		{
-			if (CP_Random_RangeInt(0, 100) < 10) //10% chance to patrol each frame
+			if (CP_Random_RangeInt(0, 100) < 80) //10% chance to patrol each frame
 			{
 
 				if (CP_Random_RangeInt(0, 100) < 50) //50/50 for direction;
@@ -273,10 +280,10 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	}
 	case STATE_PATROL:
 	{
-		//Monster facing and player is same direction
+		//Monster facing and player is facing each other
 		if (baby->itself.facingDir > 0 && normDir.x > 0 || baby->itself.facingDir < 0 && normDir.x < 0)
 		{
-			if (distFromPlayer < baby->itself.detectionRange) //Check if in range
+			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0) //Check if in range
 			{
 				//start alerted state
 
@@ -284,9 +291,8 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 			}
 		}
-		//Monster facing and player is same direction
 
-		if (distFromPlayer < baby->itself.detectionRange / 2.f) //Check if player too close
+		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0) //Check if player too close
 		{
 			//start alerted state
 
@@ -295,13 +301,14 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		}
 
 
-
+		baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
 		if (baby->itself.randTimerCheck <= 0.f)
 		{
-			if (CP_Random_RangeInt(0, 100) < 50) //50% chance to go back to idle each frame;
+			if (CP_Random_RangeInt(0, 100) < 60) //50% chance to go back to idle each frame;
 			{
-				baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
+				processing_state_babyFSM(&baby->current_state, STATE_IDLE, baby);
 			}
+		
 			baby->itself.randTimerCheck = baby->itself.randTimerCheckOriginal;
 		}
 		break;
@@ -309,7 +316,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_ALERT:
 	{
 ;
-		if (distFromPlayer <= baby->itself.detectionRange) //Check if in range
+		if (distFromPlayer <= baby->itself.detectionRange && playerRef->isHiding == 0) //Check if in range
 		{
 			//start alerted state
 			processing_state_babyFSM(&baby->current_state, STATE_CHASE, baby);
@@ -356,13 +363,13 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_CHASE:
 	{
 		//Check if left or right and same floor
-		if (distFromPlayer < baby->itself.attackRange)
+		if (distFromPlayer < baby->itself.attackRange && playerRef->isHiding == 0)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_ATTACK, baby);
 		}
 		//If player disappears into a hiding place or gets too far
 		// add LOST STATE transition here
-		if (distFromPlayer > baby->itself.detectionRange * 1.5f)
+		if (distFromPlayer > baby->itself.detectionRange * 1.5f || playerRef->isHiding == 1)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_LOST, baby);
 		}
@@ -401,7 +408,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			baby->itself.lostTimer = baby->itself.lostTimerOriginal;
 			processing_state_babyFSM(&baby->current_state, STATE_IDLE, baby);
 		}
-		else if(distFromPlayer < baby->itself.detectionRange)
+		else if(distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0)
 		{
 			baby->itself.lostTimer = baby->itself.lostTimerOriginal;
 			processing_state_babyFSM(&baby->current_state, STATE_CHASE, baby);
@@ -441,8 +448,37 @@ void UpdateMonsterBaby()
 			processing_state_baby_logic(obj);
 
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
+			if (obj->itself.transform.x < -(5 / 2 + 1) * 1600)
+			{
+				obj->itself.transform.x += 5 * 1600;
+			}
+			if (obj->itself.transform.x > (5 / 2 + 1) * 1600)
+			{
+				obj->itself.transform.x -= 5 * 1600;
+			}
 			//DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
 			//CP_Font_DrawText(intToConstChar((int)obj->current_state), (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY));
+		}
+	}
+}
+
+void TeleportMonsterRoom(int amt)
+{
+	for (int i = 0; i < babyList->size; i++)
+	{
+		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+		if (obj != NULL)
+		{
+			if (obj->itself.isActive == false)
+			{
+				continue;
+			}
+			if (obj->current_state == STATE_CHASE)
+			{
+				obj->itself.transform.x += amt;
+				printf("Monster teleported: %f", obj->itself.transform.x);
+			}
+			
 		}
 	}
 }

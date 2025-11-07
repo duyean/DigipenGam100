@@ -7,5 +7,6 @@ typedef struct {
 	int isMoving, isInteracting;				//Checks for the Player
 	int faceDirection;
 	int toDraw;
+	int isHiding;
 	float movementSpeed;
 }Player;

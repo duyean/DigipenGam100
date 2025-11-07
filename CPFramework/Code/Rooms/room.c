@@ -5,11 +5,15 @@
 #include "../CMP_Sprite_Pak.h"
 #include "../CMP_Player_Pak.h"
 
-Room Room_Create(Spritesheet room, SpriteData frame, int xPos, int yPos, Interactable interactables[4], int arrNum)
+Room Room_Create(Spritesheet room[], SpriteData frame[], int size, int xPos, int yPos, Interactable interactables[4], int arrNum)
 {
 	static Room newRoom;
-	newRoom.room = room;
-	newRoom.frame = frame;
+	for (int i = 0; i < size; i++)
+	{
+		newRoom.roomItem[i] = room[i];
+		newRoom.frame[i] = frame[i];
+	}
+
 	newRoom.xPos = xPos;
 	newRoom.yPos = yPos;
 	for (int i = 0; i < arrNum; i++) { newRoom.interractibles[i] = interactables[i]; }
@@ -17,10 +21,24 @@ Room Room_Create(Spritesheet room, SpriteData frame, int xPos, int yPos, Interac
 	return newRoom;
 }
 
-void Room_Load(Room *room, Player player)
+void Room_Load(Room *room, int size, Player player)
 {
 	// Set up background
-	Sprite_Draw(room->room, room->frame, room->xPos - player.currentPositionX, room->yPos, 1, 1);
+	for (int i = 0; i < size; i++)
+	{
+		if (i == 1)
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], room->xPos - player.currentPositionX, room->yPos - 210, 1, 1);
+		}
+		else if (i == 2)
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], room->xPos - player.currentPositionX, room->yPos, 1, 1);
+		}
+		else
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], room->xPos - player.currentPositionX, room->yPos, 1, 1);
+		}
+	}
 	// Set up interactable objects HERE!!! (undone)
 	//for (int i = 0; i < room->interactibleCount; i++) 
 	//{ 
@@ -30,10 +48,25 @@ void Room_Load(Room *room, Player player)
 }
 
 // Overloaded function to allow for x position offset
-void Room_LoadO(Room* room, Player player, int xPosit)
+void Room_LoadO(Room* room, int size, Player player, int xPosit)
 {
 	// Set up background
-	Sprite_Draw(room->room, room->frame, xPosit - player.currentPositionX, room->yPos, 1, 1);
+	for (int i = 0; i < size; i++)
+	{
+	
+		if (i == 1)
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], xPosit - player.currentPositionX, room->yPos - 210, 1, 1);
+		}
+		else if (i == 2)
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], xPosit - player.currentPositionX, room->yPos, 1, 1);
+		}
+		else
+		{
+			Sprite_Draw(room->roomItem[i], room->frame[i], xPosit - player.currentPositionX, room->yPos, 1, 1);
+		}
+	}
 	// Set up interactable objects HERE!!! (undone)
 	//for (int i = 0; i < room->interactibleCount; i++)
 	//{

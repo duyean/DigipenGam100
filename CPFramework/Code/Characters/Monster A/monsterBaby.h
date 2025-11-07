@@ -32,4 +32,5 @@ void setPlayerRef(Player* player);
 void initializeBaby(void);
 void sendMonstersToTrap(float trapXPos, float trapYPos);
 void UpdateMonsterBaby();
+void TeleportMonsterRoom(int amt);
 #endif
