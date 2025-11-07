@@ -11,6 +11,10 @@
 #define INTERACTABLES_COUNT 2
 #define ROOM_COUNT 5
 
+#define CENTER_ROOM_INDEX 2
+
+#define RENDER_RANGE 1600
+
 CP_Color background;
 Player player;
 Camera* camera;
@@ -34,19 +38,16 @@ CP_Vector worldCenterPosition;
 
 //Test Background Sprites
 Room* roomList[ROOM_COUNT];
-Room roomTest, r4;
+Room r1, r2, r3, r4, r5;
 
-Room r1;
 CP_Image Bg1_i;
 Spritesheet Bg1_ss;
 SpriteData Bg1_sd;
 
-Room r2;
 CP_Image Bg2_i;
 Spritesheet Bg2_ss;
 SpriteData Bg2_sd;
 
-Room r3;
 CP_Image Bg3_i;
 Spritesheet Bg3_ss;
 SpriteData Bg3_sd;
@@ -89,18 +90,55 @@ void game_update(void) {
 
 	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
 
-	for (int i = 0; i < ROOM_COUNT; i++)
+	//clear console cause holy shit i get headache trying to read -day
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	for (int i = 0; i < ROOM_COUNT + 2; i++)
 	{
 		int pX = player.currentPositionX, pY = player.currentPositionY;
-		int sightCheckR = roomList[i]->xPos;
-		int sightCheckP1 = pX % (ROOM_COUNT * 1600) + 1600; 
-		int sightCheckP2 = pY % (ROOM_COUNT * 1600) - 1600;
-		if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+		int sightCheckP1 = pX + RENDER_RANGE, sightCheckP2 = pX - RENDER_RANGE;
+		if (i < ROOM_COUNT)
 		{
-			printf("Room %d loads at %d, %d on screen space! \n", i, roomList[i]->xPos - pX, roomList[i]->yPos - pY);
-			Room_Load(roomList[i]);
+			int sightCheckR = roomList[i]->xPos;
+			//only load rooms in view (to save space!!!)
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_Load(roomList[i], player);
+				printf("Loading Room %d\n", i);
+			}
+		}
+		//edge case left room loop to right.
+		else if (i == ROOM_COUNT)
+		{
+			int sightCheckR = (roomList[0]->xPos) - 1600;
+
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_LoadO(roomList[ROOM_COUNT-1], player, -(ROOM_COUNT / 2 + 1) * 1600);
+				printf("Loading Room: LOOP LEFT\n");
+				if (pX < -(ROOM_COUNT/2+1) * 1600)
+				{
+					player.currentPositionX += ROOM_COUNT * 1600;
+					printf("Looping Left to Right\n");
+				}
+			}
+		}
+		//edge case rignt room loop to left.
+		else if (i > ROOM_COUNT)
+		{
+			int sightCheckR = roomList[ROOM_COUNT-1]->xPos + 1600;
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_LoadO(roomList[0], player, (ROOM_COUNT / 2 + 1) * 1600);
+				printf("Loading Room: LOOP RIGHT\n");
+				if (pX > (ROOM_COUNT/2 + 1) * 1600)
+				{
+					player.currentPositionX -= ROOM_COUNT * 1600;
+					printf("Looping Right to Left\n");
+				}
+			}
 		}
 	}
+	printf("Player X Position: %.3f\n", player.currentPositionX);
 
 	for (int i = 0; i < INTERACTABLES_COUNT; i++) {
 		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
@@ -179,14 +217,15 @@ void InitialiseRooms(void) {
 	Bg2_ss = Spritesheet_Create(Bg2_i, CP_Image_GetWidth(Bg2_i), CP_Image_GetHeight(Bg2_i));
 	Bg3_ss = Spritesheet_Create(Bg3_i, CP_Image_GetWidth(Bg3_i), CP_Image_GetHeight(Bg3_i));
 
-	roomTest = Room_Create(Bg1_ss, Bg1_sd, 0, 0, interactablesArray, 0);
-	roomList[0] = &roomTest;
-	r1 = Room_Create(Bg2_ss, Bg2_sd, 1600, 0, interactablesArray, 0);
-	roomList[1] = &r1;
-	r2 = Room_Create(Bg2_ss, Bg2_sd, 3200, 0, interactablesArray, 0);
-	roomList[2] = &r2;
-	r3 = Room_Create(Bg3_ss, Bg3_sd, -1600, 0, interactablesArray, 0);
-	roomList[3] = &r3;
-	r4 = Room_Create(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
-	roomList[4] = &r4;
+	r1 = Room_Create(Bg3_ss, Bg3_sd, -3200, 0, interactablesArray, 0);
+	roomList[0] = &r1;
+	r2 = Room_Create(Bg1_ss, Bg1_sd, -1600, 0, interactablesArray, 0);
+	roomList[1] = &r2;
+	r3 = Room_Create(Bg2_ss, Bg2_sd, 0, 0, interactablesArray, 0);
+	roomList[2] = &r3;
+	r4 = Room_Create(Bg3_ss, Bg3_sd, 1600, 0, interactablesArray, 0);
+	roomList[3] = &r4;
+	r5 = Room_Create(Bg1_ss, Bg1_sd, 3200, 0, interactablesArray, 0);
+	roomList[4] = &r5;
+	
 }
