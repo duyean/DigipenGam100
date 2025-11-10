@@ -24,10 +24,11 @@ float lastPlayerX = 0, lastPlayerY = 0;
 
 Interactable *interactablesArray[INTERACTABLES_COUNT];
 
-Interactable interactableOil;
+Interactable oilBlob;
 Spritesheet oilSpritesheet;
-SpriteData oilSprite;
+SpriteData oilFrames[4];
 CP_Image oilImage;
+Animation oilAnimation;
 
 CP_Image lockerImage;
 Interactable locker;
@@ -193,22 +194,26 @@ void game_exit(void) {
 }
 
 void InitialiseInteractables(void) {
-	oilImage = CP_Image_Load("Assets/ChocoMochiPie.png");
 	lockerImage = CP_Image_Load("Assets/LockerSpritesheet.png");
+	oilImage = CP_Image_Load("Assets/BlobSprite.png");
 
 	lockerSheet = Spritesheet_Create(lockerImage, CP_Image_GetWidth(lockerImage) / 2, CP_Image_GetHeight(lockerImage));
-	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0);
-	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0);
+	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0, 255.f);
+	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0, 255.f);
 	lockerAnimation = Animation_Create(lockerSheet, lockerSprites, 25.f, 2, 0, 0);
 	locker = Interactable_Create(0, 20.f, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
 	Interactable_AttachAnimation(&locker, lockerAnimation);
-
 	interactablesArray[0] = &locker;
 
-	oilSprite = SpriteData_Create(200, 200, 0, 0);
-	oilSpritesheet = Spritesheet_Create(oilImage, 1000, 1000);
-	interactableOil = Interactable_Create(300.f, 0.f, 100.f, "Sludge 1", oilSpritesheet, oilSprite, &InteractionSludge);
-	interactablesArray[1] = &interactableOil;
+	oilSpritesheet = Spritesheet_Create(oilImage, 514, 514);
+	oilFrames[0] = SpriteData_Create(200, 200, 0, 0, 255.f);
+	oilFrames[1] = SpriteData_Create(200, 200, 1, 0, 255.f);
+	oilFrames[2] = SpriteData_Create(200, 200, 0, 1, 255.f);
+	oilFrames[3] = SpriteData_Create(200, 200, 1, 1, 255.f);
+	oilAnimation = Animation_Create(oilSpritesheet, oilFrames, 10.f, 4, 1, 1);
+	oilBlob = Interactable_Create(300.f, 0.f, 100.f, "Sludge 1", oilSpritesheet, oilFrames[0], &InteractionSludge);
+	Interactable_AttachAnimation(&oilBlob, oilAnimation);
+	interactablesArray[1] = &oilBlob;
 }
 
 void LockerTest(void) {
@@ -230,15 +235,12 @@ void InitialiseRooms(void) {
 
 	for (int i = 0; i < 3; i++)
 	{
-		Bg1_sd[i] = Bg2_sd[i] = Bg3_sd[i] = SpriteData_Create(1600, 900, 0, 0);
+		Bg1_sd[i] = Bg2_sd[i] = Bg3_sd[i] = SpriteData_Create(1600, 900, 0, 0, 255.f);
 
 		Bg1_ss[i] = Spritesheet_Create(Bg1_i[i], CP_Image_GetWidth(Bg1_i[i]), CP_Image_GetHeight(Bg1_i[i]));
 		Bg2_ss[i] = Spritesheet_Create(Bg2_i[i], CP_Image_GetWidth(Bg2_i[i]), CP_Image_GetHeight(Bg2_i[i]));
 		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
 	}
-
-
-
 
 	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, -3200, 0, interactablesArray, 0);
 	roomList[0] = &r1;

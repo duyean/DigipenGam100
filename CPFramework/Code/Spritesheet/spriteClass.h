@@ -15,4 +15,5 @@ typedef struct {
 	int column;				//The Column of the Sprite within the Spritesheet
 	int width;				//The Expected Width of the Sprite, the Width that the Sprite will be drawn at
 	int height;				//The Expected Height of the Sprite, the Height that the Sprite will be drawn at
+	float alpha;
 }SpriteData;

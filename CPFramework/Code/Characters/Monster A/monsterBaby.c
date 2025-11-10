@@ -61,7 +61,7 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 		int currentIndex = 0;
 		for (int i = 0; i < 4 / 2; i++) {
 			for (int j = 0; j < 4 / 2; j++) {
-				monsterSprites[p][currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i);
+				monsterSprites[p][currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i, 255.f);
 				currentIndex++;
 			}
 		}

@@ -17,7 +17,16 @@ SpriteData characterSprites[CHARACTER_SPRITES];
 float frameDuration = 15.f;
 
 //Oil Stuff
-CP_Image oilContainer;
+CP_Image oilContainerImage;
+Spritesheet oilContainerSheet;
+SpriteData oilContainerSprite;
+
+//Stamina Stuff
+CP_Image staminaBarImage;
+Spritesheet staminaBarSheet;
+SpriteData staminaBarSprite;
+float staminaAlpha = 255.f;
+
 
 //Extra that Edmund suggest to add something like this
 //are we importing bool.h?
@@ -34,14 +43,14 @@ int KillPlayer(Player* player) {
 
 void Player_Initialise(Player *player) {
 
+	//Initialise Character
 	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet_Reversed.png");
-	oilContainer = CP_Image_Load("./Assets/Container.png");
 
 	int characterSpriteDimension = CP_Image_GetWidth(characterSheetImage) / 2;
 	int currentIndex = 0;
 	for (int i = 0; i < CHARACTER_SPRITES / 2; i++) {
 		for (int j = 0; j < CHARACTER_SPRITES / 2; j++) {
-			characterSprites[currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i);
+			characterSprites[currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i, 255.f);
 			currentIndex++;
 		}
 	}
@@ -52,25 +61,36 @@ void Player_Initialise(Player *player) {
 	player->currentPositionX = 0;
 	player->currentPositionY = 0;
 	player->movementSpeed = 100.f;
+	player->movementMultiplier = 1.f;
 	player->faceDirection = 1;
 	player->isInteracting = player->isMoving = 0;
 	player->toDraw = 1;
 	player->isHiding = 0;
 
-	player->maxHealth = player->currentHealth = 2;
+	player->maxHealth = player->currentHealth = 1;
 	player->maxStamina = player->currentStamina = 100.f;
 	player->maxOil = 100.f;
 	player->currentOil = 25.f;
 
 	thisPlayer = player;
+
+
+	//Initialise Stamina Bar
+	staminaBarImage = CP_Image_Load("./Assets/Stamina.png");
+	staminaBarSheet = Spritesheet_Create(staminaBarImage, 1600, 50);
+	staminaBarSprite = SpriteData_Create(1600, 50, 0, 0, 255.f);
+
+
+	//Initialise Oil Bar
+	oilContainerImage = CP_Image_Load("./Assets/Container.png");
+	oilContainerSheet = Spritesheet_Create(oilContainerImage, 512, 512);
+	oilContainerSprite = SpriteData_Create(180, 180, 0, 0, 255.f);
 }
 
 void Player_Update(Player *player) {
-	CP_Settings_Fill(CP_Color_Create(100, 100, 100, 255));
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect(1453.f, 830.f - player->currentOil, 100.f, player->currentOil);
-	CP_Image_Draw(oilContainer, 1500.f, 780.f, 180.f, 180.f, 255);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
+	
+	Player_OilUpdate(player);
+	Player_StaminaUpdate(player);
 
 	if (!player->toDraw) return; //Check for whether player is hiding and therefore not drawn
 	if (CP_Input_KeyDown(KEY_D)) {
@@ -86,14 +106,19 @@ void Player_Update(Player *player) {
 	}
 
 	if (player->isMoving) {
-		player->currentPositionX += player->faceDirection * player->movementSpeed * DeltaTime();
+		player->currentPositionX += player->faceDirection * player->movementSpeed * player->movementMultiplier * DeltaTime();
 		Animation_Animate(&characterAnimation, 0, 0, player->faceDirection, 1);
+		if (CP_Input_KeyDown(KEY_LEFT_SHIFT) && player->currentStamina > 0) {
+			player->currentStamina -= 45.f * DeltaTime();
+			player->movementMultiplier = 2.5f;
+		}
 	}
 	else {
 		Sprite_Draw(characterSheet, characterSprites[0], 0, 0, player->faceDirection, 1);
-		if (CP_Input_KeyReleased(KEY_T)) {
-			Animation_Reset(&characterAnimation);
-		}
+	}
+
+	if (CP_Input_KeyReleased(KEY_LEFT_SHIFT) || player->currentStamina <= 0) {
+		player->movementMultiplier = 1.f;
 	}
 }
 
@@ -108,6 +133,28 @@ void Player_CheckInteractables(Interactable *interactables[], int count) {
 			}
 		}
 	}
+}
+
+void Player_StaminaUpdate(Player *player) {
+	player->currentStamina += 5.f * DeltaTime();
+	player->currentStamina = CP_Math_ClampFloat(player->currentStamina, 0.f, 100.f);
+	if (player->currentStamina >= player->maxStamina) {
+		staminaAlpha -= 255.f * DeltaTime();
+	}
+	else {
+		staminaAlpha += 1000.f * DeltaTime();
+	}
+	staminaAlpha = CP_Math_ClampFloat(staminaAlpha, 0.f, 150.f);
+	SpriteData_Update(&staminaBarSprite, 1200.f * (player->currentStamina / player->maxStamina), 30, staminaAlpha);
+	Sprite_Draw(staminaBarSheet, staminaBarSprite, 0, 400, 1, 1);
+}
+
+void Player_OilUpdate(Player* player) {
+	CP_Settings_Fill(CP_Color_Create(100, 100, 100, 255));
+	CP_Settings_RectMode(CP_POSITION_CORNER);
+	CP_Graphics_DrawRect(1453.f, 830.f - player->currentOil, 100.f, player->currentOil);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	Sprite_Draw(oilContainerSheet, oilContainerSprite, 700, 330, 1, 1);
 }
 
 Spritesheet GetPlayerSheet(void) {

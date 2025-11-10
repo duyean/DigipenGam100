@@ -9,4 +9,5 @@ typedef struct {
 	int toDraw;
 	int isHiding;
 	float movementSpeed;
+	float movementMultiplier;
 }Player;

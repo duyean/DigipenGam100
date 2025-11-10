@@ -13,3 +13,6 @@ void Player_Update(Player *player);
 Spritesheet GetPlayerSheet(void);
 Player* GetPlayer(void);
 void Player_CheckInteractables(Interactable* interactables[], int count);
+
+void Player_StaminaUpdate(Player* player);
+void Player_OilUpdate(Player* player);
