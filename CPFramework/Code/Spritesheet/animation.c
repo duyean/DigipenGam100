@@ -9,7 +9,7 @@
 * Uses : To Create references to animation
 * Sub - uses : NIL
 */
-Animation Animation_Create(Spritesheet sheet, SpriteData* frames, float animationSpeed, int numberOfSprites, int loop, int playing) {
+Animation Animation_Create(Spritesheet sheet, SpriteData frames[], float animationSpeed, int numberOfSprites, int loop, int playing) {
 	static Animation newAnimation;
 	newAnimation.frameDuration = animationSpeed;
 	newAnimation.frames = frames;
@@ -19,8 +19,16 @@ Animation Animation_Create(Spritesheet sheet, SpriteData* frames, float animatio
 	newAnimation.toLoop = loop;
 	newAnimation.played = 0;
 	newAnimation.isPlaying = playing;
-	//printf("Current Frame: %d\n", newAnimation.noOfSprites);
 	return newAnimation;
+}
+
+void Animation_SetFrames(int width, int height, float alpha, SpriteData* spriteArray, int horizontal, int vertical) {
+	int index = 0;
+	for (int i = 0; i < vertical; i++) {
+		for (int j = 0; j < horizontal; j++) {
+			spriteArray[index++] = SpriteData_Create(width, height, j, i, alpha);
+		}
+	}
 }
 
 /*
@@ -39,6 +47,7 @@ void Animation_Animate(Animation* animation, float xPos, float yPos, int flipX, 
 			animation->currFrameIndex = 0;
 			if (!animation->toLoop) {
 				animation->played = 1;
+				animation->isPlaying = 0;
 			}
 		}
 
@@ -54,6 +63,7 @@ void Animation_PlayState(Animation* animation, int state) {
 
 
 void Animation_Reset(Animation* animation) {
+	if (animation->isPlaying) return;					//To prevent animation from restarting animation if already playing
 	animation->played = 0;
 	if (animation->currFrameIndex == 0) return;
 	animation->currFrameIndex = 0;

@@ -30,11 +30,8 @@ SpriteData oilFrames[4];
 CP_Image oilImage;
 Animation oilAnimation;
 
-CP_Image lockerImage;
-Interactable locker;
-Spritesheet lockerSheet;
-SpriteData lockerSprites[2];
-Animation lockerAnimation;
+
+Interactable doorTest;
 
 CP_Vector worldCenterPosition;
 
@@ -78,8 +75,8 @@ void game_init(void) {
 	vignette = CP_Image_Load("./Assets/Vignette.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
-	initializeBaby();
-	setPlayerRef(&player);
+	InitializeBaby();
+	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
 	worldCenterPosition = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
@@ -100,11 +97,11 @@ void game_update(void) {
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	for (int i = 0; i < ROOM_COUNT + 2; i++)
 	{
-		int pX = player.currentPositionX, pY = player.currentPositionY;
-		int sightCheckP1 = pX + RENDER_RANGE, sightCheckP2 = pX - RENDER_RANGE;
+		float pX = player.currentPositionX, pY = player.currentPositionY;
+		int sightCheckP1 = (int)pX + RENDER_RANGE, sightCheckP2 = (int)pX - RENDER_RANGE;
 		if (i < ROOM_COUNT)
 		{
-			int sightCheckR = roomList[i]->xPos;
+			int sightCheckR = (int)roomList[i]->xPos;
 			//only load rooms in view (to save space!!!)
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
@@ -115,7 +112,7 @@ void game_update(void) {
 		//edge case left room loop to right.
 		else if (i == ROOM_COUNT)
 		{
-			int sightCheckR = (roomList[0]->xPos) - 1600;
+			int sightCheckR = (int)(roomList[0]->xPos) - 1600;
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
@@ -132,7 +129,7 @@ void game_update(void) {
 		//edge case rignt room loop to left.
 		else if (i > ROOM_COUNT)
 		{
-			int sightCheckR = roomList[ROOM_COUNT-1]->xPos + 1600;
+			int sightCheckR = (int)roomList[ROOM_COUNT-1]->xPos + 1600;
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				Room_LoadO(roomList[0], 3, player, (ROOM_COUNT / 2 + 1) * 1600);
@@ -149,9 +146,9 @@ void game_update(void) {
 	printf("Player X Position: %.3f\n", player.currentPositionX);
 
 	for (int i = 0; i < INTERACTABLES_COUNT; i++) {
+		if (interactablesArray[i] == NULL) continue;
 		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
 	}
-
 
 
 	Player_Update(&player);
@@ -194,30 +191,18 @@ void game_exit(void) {
 }
 
 void InitialiseInteractables(void) {
-	lockerImage = CP_Image_Load("Assets/LockerSpritesheet.png");
-	oilImage = CP_Image_Load("Assets/BlobSprite.png");
+	Interactable_InitialiseData();
 
-	lockerSheet = Spritesheet_Create(lockerImage, CP_Image_GetWidth(lockerImage) / 2, CP_Image_GetHeight(lockerImage));
-	lockerSprites[0] = SpriteData_Create(100, 200, 0, 0, 255.f);
-	lockerSprites[1] = SpriteData_Create(100, 200, 1, 0, 255.f);
-	lockerAnimation = Animation_Create(lockerSheet, lockerSprites, 25.f, 2, 0, 0);
-	locker = Interactable_Create(0, 20.f, 100.f, "Locker", lockerSheet, lockerSprites[0], &LockerTest);
-	Interactable_AttachAnimation(&locker, lockerAnimation);
-	interactablesArray[0] = &locker;
+	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
+	interactablesArray[0] = &doorTest;
 
-	oilSpritesheet = Spritesheet_Create(oilImage, 514, 514);
-	oilFrames[0] = SpriteData_Create(200, 200, 0, 0, 255.f);
-	oilFrames[1] = SpriteData_Create(200, 200, 1, 0, 255.f);
-	oilFrames[2] = SpriteData_Create(200, 200, 0, 1, 255.f);
-	oilFrames[3] = SpriteData_Create(200, 200, 1, 1, 255.f);
-	oilAnimation = Animation_Create(oilSpritesheet, oilFrames, 10.f, 4, 1, 1);
-	oilBlob = Interactable_Create(300.f, 0.f, 100.f, "Sludge 1", oilSpritesheet, oilFrames[0], &InteractionSludge);
-	Interactable_AttachAnimation(&oilBlob, oilAnimation);
+
+	oilBlob = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
 	interactablesArray[1] = &oilBlob;
 }
 
 void LockerTest(void) {
-	InteractionLocker(&locker, &player);
+	Interactable_DoorInteraction(&doorTest, &player);
 }
 
 void InitialiseRooms(void) {

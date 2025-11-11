@@ -4,9 +4,7 @@
 #include "../CMP_Sprite_Pak.h"
 #include "../CMP_Player_Pak.h"
 
-CP_Image lockerImage;
-Spritesheet lockerSpritesheet;
-SpriteData lockerStateSprites[2];
+float interactableProximity = 100.f;
 
 Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
@@ -39,22 +37,51 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 	}
 }
 
-void InteractionLocker(Interactable *interactable, Player *player) {
-	printf("Interacted with: %s\n", interactable->name);
-	if (player->isHiding == 1)
-	{
-		player->isHiding = 0;
-	}
-	else
-	{
-		player->isHiding = 1;
-	}
+CP_Image doorImage, blobImage;
+Spritesheet doorSpritesheet, blobSpritesheet;
+SpriteData doorSprites[2], blobSprites[4];
+Animation doorAnimation, blobAnimation;
+
+void Interactable_InitialiseData(void) {
+	/*Initialise Door Data Here*/
+	doorImage = CP_Image_Load("./Assets/LockerSpritesheet.png");
+	doorSpritesheet = Spritesheet_Create(doorImage, CP_Image_GetWidth(doorImage) / 2, CP_Image_GetHeight(doorImage));
+	Animation_SetFrames(100, 200, 255.f, doorSprites, 2, 1);
+	doorAnimation = Animation_Create(doorSpritesheet, doorSprites, 15.f, 2, 0, 0);
+
+	/*Initialise Oil Blob Data Here*/
+	blobImage = CP_Image_Load("./Assets/BlobSprite.png");
+	blobSpritesheet = Spritesheet_Create(blobImage, 514, 514);
+	Animation_SetFrames(200, 200, 255.f, blobSprites, 2, 2);
+	blobAnimation = Animation_Create(blobSpritesheet, blobSprites, 30.f, 2, 1, 1);
+}
+
+void Interactabe_FreeData(void) {
+	CP_Image_Free(doorImage);
+	CP_Image_Free(blobImage);
+}
+
+Interactable Interactable_CreateDoor(float xPostion, float yPosition, void(*DoorInteractedEvent)(void)) {
+	Interactable door = Interactable_Create(xPostion, yPosition, interactableProximity, "Locker", doorSpritesheet, doorSprites[0], DoorInteractedEvent);
+	Interactable_AttachAnimation(&door, doorAnimation);
+	return door;
+}
+
+Interactable Interactable_CreateOilBlob(float xPostion, float yPosition, void(*BlobInteractedEvent)(void)) {
+	Interactable blob = Interactable_Create(xPostion, yPosition, interactableProximity, "Oil", blobSpritesheet, blobSprites[0], BlobInteractedEvent);
+	Interactable_AttachAnimation(&blob, blobAnimation);
+	return blob;
+}
+
+void Interactable_DoorInteraction(Interactable *interactable, Player *player) {
+	player->isHiding = !player->isHiding;
 	player->toDraw = !player->toDraw;
 	Animation_Reset(&interactable->animation);
 	Animation_PlayState(&interactable->animation, 1);
 }
 
-void InteractionSludge(void) {
+void Interactable_OilInteraction(void) {
+	//CHANGE THIS TO BE ON THE PLAYER AND NOT ON THE INTERACTABLE SCRIPT
 	GetPlayer()->currentOil += 10.f;
 	GetPlayer()->currentOil = CP_Math_ClampFloat(GetPlayer()->currentOil, 0.f, GetPlayer()->maxOil);
 }

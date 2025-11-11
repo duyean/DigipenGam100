@@ -18,7 +18,7 @@ Animation AnimationList[5];
 
 CP_Sound monsterSfx[3];
 
-void setPlayerRef(Player* player)
+void SetPlayerRef(Player* player)
 {
 	playerRef = player;
 }
@@ -36,8 +36,8 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 	int columnFrames[4] = { 0,0,1,1 };
 	float frameDuration = 15.f;
 
-	new->itself.transform.x = x;
-	new->itself.transform.y = y;
+	new->itself.transform.x = (float)x;
+	new->itself.transform.y = (float)y;
 	new->itself.movementSpeed = movementSpeed;//15.f;
 	new->itself.detectionRange = detection;//200.f;
 	new->itself.attackRange = attack;//10.f;
@@ -99,7 +99,7 @@ void clearBabyMonsterListMemory(void)
 
 	ListDestroy(babyList);
 }
-void initializeBaby(void)
+void InitializeBaby(void)
 {
 	monsterSfx[0] = CP_Sound_Load("./Assets/Audio/Cry1.wav");
 	monsterSfx[1] = CP_Sound_Load("./Assets/Audio/Cry2.wav");

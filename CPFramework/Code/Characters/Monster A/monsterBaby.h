@@ -28,8 +28,8 @@ typedef struct MonsterBabyObject
 
 MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float detection, float attack, float lost);
 void destroyBabyMonster(MonsterBabyObject* obj);
-void setPlayerRef(Player* player);
-void initializeBaby(void);
+void SetPlayerRef(Player* player);
+void InitializeBaby(void);
 void sendMonstersToTrap(float trapXPos, float trapYPos);
 void UpdateMonsterBaby();
 void TeleportMonsterRoom(int amt);

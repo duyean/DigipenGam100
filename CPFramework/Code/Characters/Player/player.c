@@ -32,7 +32,7 @@ float staminaAlpha = 255.f;
 //are we importing bool.h?
 int KillPlayer(Player* player) {
 	player->currentHealth = 0;
-	if (player->currentHealth == 0)
+	if (player->currentHealth <= 0)
 	{
 		return 1;
 		//End the round
@@ -47,13 +47,7 @@ void Player_Initialise(Player *player) {
 	characterSheetImage = CP_Image_Load("./Assets/WalkCycleSpriteSheet_Reversed.png");
 
 	int characterSpriteDimension = CP_Image_GetWidth(characterSheetImage) / 2;
-	int currentIndex = 0;
-	for (int i = 0; i < CHARACTER_SPRITES / 2; i++) {
-		for (int j = 0; j < CHARACTER_SPRITES / 2; j++) {
-			characterSprites[currentIndex] = SpriteData_Create(characterSpriteDimension, characterSpriteDimension, j, i, 255.f);
-			currentIndex++;
-		}
-	}
+	Animation_SetFrames(characterSpriteDimension, characterSpriteDimension, 255.f, characterSprites, 2, 2);
 
 	characterSheet = Spritesheet_Create(characterSheetImage, 258, 258);
 	characterAnimation = Animation_Create(characterSheet, characterSprites, frameDuration, 4, 1, 1);
