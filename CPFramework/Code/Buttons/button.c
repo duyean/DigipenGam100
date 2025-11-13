@@ -35,6 +35,7 @@ CP_Image DrawButtonUsingImage(CP_Image loadedImage, Button *button, TextTemplate
 
 	if (IsHovering && CP_Input_MouseDown(MOUSE_BUTTON_LEFT)) {
 		ButtonTint = CP_Color_Create(100, 100, 100, 255);
+		//CP_Sound_PlayAdvanced(buttonHover, effectiveSFX, 1.0f, FALSE, CP_SOUND_GROUP_1);
 	}
 	else if (IsHovering) {
 		ButtonTint = CP_Color_Create(180, 180, 180, 255);

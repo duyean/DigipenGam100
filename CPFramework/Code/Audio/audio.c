@@ -22,14 +22,68 @@ void FreeSound(SoundAsset* asset) {
 	CP_Sound_Free(asset->sound);
 }
 
-// jelly's fuckall code is here
-// currently present in settings game and main menu, make sure to change
-// after recoding this part
-
-CP_Sound mainMenuMusic = NULL;
-CP_Sound gameplayMusic = NULL;
-CP_Sound soundEffects = NULL;
+CP_Sound soundEffects = NULL; // 0
+CP_Sound mainMenuMusic = NULL; // 1
+CP_Sound gameplayMusic = NULL; // 2
 
 float masterVolume = 1.0f;
 float effectiveSFX = 1.0f;
 float effectiveBGM = 1.0f;
+
+void AudioInitialize(void)
+{
+	mainMenuMusic = CP_Sound_Load("./Assets/Main.wav");
+	gameplayMusic = CP_Sound_Load("./Assets/Audio/Eerie.wav");
+
+	CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM, 1.0f, TRUE, CP_SOUND_GROUP_1);
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, effectiveBGM);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_2, effectiveBGM);
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, effectiveSFX);
+}
+
+void AudioSetMasterVolume(float volume)
+{
+	masterVolume = volume;
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, effectiveBGM * masterVolume);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_2, effectiveBGM * masterVolume);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, effectiveSFX * masterVolume);
+}
+
+void AudioSetBGMVolume(float volume)
+{
+	effectiveBGM = volume;
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, effectiveBGM * masterVolume);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_2, effectiveBGM * masterVolume);
+}
+
+void AudioSetSFXVolume(float volume)
+{
+	effectiveSFX = volume;
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, effectiveSFX * masterVolume);
+}
+
+float AudioGetMasterVolume(void) { return masterVolume; }
+float AudioGetBGMVolume(void) { return effectiveBGM; }
+float AudioGetSFXVolume(void) { return effectiveSFX; }
+
+void AudioPlayMainMenuMusic(void)
+{
+	CP_Sound_StopGroup(CP_SOUND_GROUP_2);
+	CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM * masterVolume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+}
+
+void AudioPlayGameplayMusic(void)
+{
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(gameplayMusic, effectiveBGM * masterVolume, 1.0f, TRUE, CP_SOUND_GROUP_2);
+}
+
+void AudioPlaySFX(CP_Sound sound)
+{
+	CP_Sound_PlayAdvanced(sound, effectiveSFX * masterVolume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+}

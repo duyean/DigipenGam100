@@ -3,6 +3,7 @@
 #include "../../CMP_Scene_Pak.h"
 #include "../../CMP_Core_Pak.h"
 #include "../../CMP_Debug_Pak.h"
+#include "../../CMP_Audio_Pak.h"
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,14 +17,6 @@ Button quitButton;
 float buttonHorizontalAlignment;
 TextTemplate mainMenuTextTemplate;
 SceneEnum nextScene;
-
-extern CP_Sound mainMenuMusic;
-extern CP_Sound gameplayMusic;
-extern CP_Sound soundEffects;
-
-extern float masterVolume;
-extern float effectiveBGM;
-extern float effectiveSFX;
 
 void main_menu_init(void) {
 	CP_System_SetWindowSize(1600, 900);
@@ -46,11 +39,8 @@ void main_menu_init(void) {
 	quitButton = CreateButton(buttonHorizontalAlignment, 550, 480, 60, 255, &QuitButtonPressed);
 	quitButton = AddTextToButton(&quitButton, "Quit", -100, 0);
 
-	mainMenuMusic = CP_Sound_Load("./Assets/Main.wav");
-	CP_Sound_PlayAdvanced(mainMenuMusic, 1.0f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
-
-	// plays when transitioning in PlayButtonPressed
-	gameplayMusic = CP_Sound_Load("./Assets/Audio/Eerie.wav"); // the file locations need to be edited later after push
+	AudioInitialize();
+	AudioPlayMainMenuMusic();
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 }
@@ -83,10 +73,7 @@ void main_menu_exit(void) {
 void PlayButtonPressed() {
 	printf("PLayerButtonPressed in mainmenu.c\n");
 
-	// jelly notes: DONT FREE THIS MUSIIIC
-	// write up the logic for transitioning music later lalalalalaa
-	CP_Sound_Free(mainMenuMusic);
-	CP_Sound_PlayAdvanced(gameplayMusic, 0.1f, effectiveBGM, TRUE, CP_SOUND_GROUP_MUSIC);
+	AudioPlayGameplayMusic();
 
 	StartTransition();
 	nextScene = GAME;
