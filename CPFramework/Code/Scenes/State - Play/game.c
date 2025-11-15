@@ -71,8 +71,12 @@ extern float effectiveBGM;
 extern float effectiveSFX;
 
 CP_Image vignette;
+CP_Image youDied;
+
+SceneEnum nextScene;
 void game_init(void) {
 	vignette = CP_Image_Load("./Assets/Vignette.png");
+	youDied = CP_Image_Load("./Assets/youdiedtest.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
 	InitializeBaby();
@@ -150,9 +154,10 @@ void game_update(void) {
 		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
 	}
 
-
-	Player_Update(&player);
 	UpdateMonsterBaby();
+	Player_Update(&player);
+
+	
 	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
 	Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 
@@ -184,6 +189,21 @@ void game_update(void) {
 		lastFrameTime = CP_System_GetSeconds() + CP_System_GetDt();
 		printf("Current Player X Position: %.3f\n", playerX);
 	}*/
+	//End game if player kenna eaten (throw to a function if you wanna)
+	if (player.currentHealth <= 0 && !player.toDraw)
+	{
+		//Draw you died
+		CP_Image_Draw(youDied, 800, 450, 1600, 900, 170);
+		if (CP_Input_KeyReleased(KEY_ANY))
+		{
+			//Go back to main menu
+
+			StartTransition();
+			nextScene = MAIN;
+		}
+		TransitionFadeIn(1.f, 0, 0, 0, 255);
+		TransitionFadeOut(.5f, nextScene);
+	}
 }
 
 void game_exit(void) {

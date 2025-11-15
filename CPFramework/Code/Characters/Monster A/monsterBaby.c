@@ -106,8 +106,8 @@ void InitializeBaby(void)
 	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
 
 	babyList = ListCreate(1);
-	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 10.f, 5.f));
-	ListAppend(babyList, createBabyMonster(-600, 0, 110.f, 500.f, 10.f, 5.f));
+	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 50.f, 5.f));
+	ListAppend(babyList, createBabyMonster(-600, 0, 110.f, 500.f, 50.f, 5.f));
 
 	//ListAppend(babyList, createBabyMonster(800, 0, 110.f, 500.f, 10.f, 5.f));
 	//ListAppend(babyList, createBabyMonster(-800, 0, 110.f, 500.f, 10.f, 5.f));
@@ -151,7 +151,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_PATROL:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -167,7 +167,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	case STATE_ALERT:
 	{
 		//JELLY HERE
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -186,7 +186,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_CHASE:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -309,7 +309,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		//Monster facing and player is facing each other
 		if (baby->itself.facingDir > 0 && normDir.x > 0 || baby->itself.facingDir < 0 && normDir.x < 0)
 		{
-			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0) //Check if in range
+			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0 && playerRef->toDraw == 1) //Check if in range
 			{
 				//start alerted state
 
@@ -318,7 +318,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			}
 		}
 
-		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0) //Check if player too close
+		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0 && playerRef->toDraw == 1) //Check if player too close
 		{
 			//start alerted state
 
@@ -420,7 +420,11 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_ATTACK:
 	{
 		//Kill player & play animation ? are we doing collision check here or guaranteed kill when reach this
-		//KillPlayer(playerRef);
+		if (baby->itself.monsterAnimation.currFrameIndex == 2)
+		{
+			playerRef->toDraw = 0;
+			playerRef->currentHealth = 0;
+		}
 		if (baby->itself.monsterAnimation.currFrameIndex == 3)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_DIGEST, baby);
@@ -430,6 +434,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_DIGEST:
 	{
 		//Idle, play lost animation
+		//End game
 		break;
 	}
 	case STATE_LOST:
@@ -480,6 +485,7 @@ void UpdateMonsterBaby()
 			processing_state_baby_logic(obj);
 
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
+
 			if (obj->itself.transform.x < -(5 / 2 + 1) * 1600)
 			{
 				obj->itself.transform.x += 5 * 1600;
