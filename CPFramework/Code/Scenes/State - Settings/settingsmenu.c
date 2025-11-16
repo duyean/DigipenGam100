@@ -7,14 +7,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-/*/ NOTENOTE NOTEEEE PSPSPSPS (13/11/25)
-
-    AUDIO.C AND AUDIO.H IS FIXED YAYAYYAYAYY
-
-    and to clarify a bit effectiveSFX and effectiveBGM is just their effective volume for their
-    respective category, cuz i didn't know how else to name them
-
-/*/
+// to do: button below the sliders "Controls" that pops up a short instruction box with just static words and images (optional)
 
 TextTemplate settingsTextTemplate;
 CP_Image settingsBG, backButtonBG;
@@ -92,6 +85,15 @@ void ReturnMenu(void) {
     StartTransition();
 }
 
+void UpdateVolumeSlider(Slider* slider, float (*getVol)(), void (*setVol)(float), int group)
+{
+    // get refactored bozo
+    float vol = getVol();
+    DrawSlider(slider, vol);
+    HandleSliderInput(slider, &vol, group);
+    setVol(vol);
+}
+
 void settings_menu_init(void) {
 
     // draw settings and the music zzz
@@ -129,21 +131,9 @@ void settings_menu_update(void) {
     CP_Font_DrawText("Volume", 600.0f, 325.0f);
     CP_Font_DrawText("Sound Effects", 700.0f, 485.0f);
 
-    // gets the audio vol from the audio.c
-    float bgmVolume = AudioGetBGMVolume();
-    DrawSlider(&BGMSlider, bgmVolume);
-    HandleSliderInput(&BGMSlider, &bgmVolume, 0);
-    AudioSetBGMVolume(bgmVolume);
-
-    float sfxVolume = AudioGetSFXVolume();
-    DrawSlider(&SFXSlider, sfxVolume);
-    HandleSliderInput(&SFXSlider, &sfxVolume, 1);
-    AudioSetSFXVolume(sfxVolume);
-
-    float masterVol = AudioGetMasterVolume();
-    DrawSlider(&masterSlider, masterVol);
-    HandleSliderInput(&masterSlider, &masterVol, -1);
-    AudioSetMasterVolume(masterVol);
+    UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0);
+    UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1);
+    UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1);
 
     TransitionFadeIn(2.f, 0, 0, 0, 255);
     TransitionFadeOut(2.f, MAIN);
