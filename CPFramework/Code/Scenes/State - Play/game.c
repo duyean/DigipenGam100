@@ -13,7 +13,7 @@
 #define INTERACTABLES_COUNT 2
 #define ROOM_COUNT 5
 
-#define CENTER_ROOM_INDEX 2
+#define CENTER_ROOM_INDEX ROOM_COUNT/2
 
 #define RENDER_RANGE 1600
 
@@ -88,30 +88,31 @@ void game_update(void) {
 
 	//clear console cause holy shit i get headache trying to read -day
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	//room render checking
 	for (int i = 0; i < ROOM_COUNT + 2; i++)
 	{
 		float pX = player.currentPositionX, pY = player.currentPositionY;
 		int sightCheckP1 = (int)pX + RENDER_RANGE, sightCheckP2 = (int)pX - RENDER_RANGE;
 		if (i < ROOM_COUNT)
 		{
-			int sightCheckR = (int)roomList[i]->xPos;
+			int sightCheckR = (i - CENTER_ROOM_INDEX)*1600;
 			//only load rooms in view (to save space!!!)
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_Load(roomList[i], 3, player);
+				Room_Load(roomList[i], player, i - CENTER_ROOM_INDEX);
 				printf("Loading Room %d\n", i);
 			}
 		}
 		//edge case left room loop to right.
 		else if (i == ROOM_COUNT)
 		{
-			int sightCheckR = (int)(roomList[0]->xPos) - 1600;
+			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT - 1)*1600;
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_LoadO(roomList[ROOM_COUNT-1], 3, player, -(ROOM_COUNT / 2 + 1) * 1600);
+				Room_Load(roomList[ROOM_COUNT-1], player, CENTER_ROOM_INDEX - ROOM_COUNT);
 				printf("Loading Room: LOOP LEFT\n");
-				if (pX < -(ROOM_COUNT/2+1) * 1600)
+				if (pX < sightCheckR)
 				{
 					player.currentPositionX += ROOM_COUNT * 1600;
 					//TeleportMonsterRoom((ROOM_COUNT * 1600));
@@ -122,12 +123,12 @@ void game_update(void) {
 		//edge case rignt room loop to left.
 		else if (i > ROOM_COUNT)
 		{
-			int sightCheckR = (int)roomList[ROOM_COUNT-1]->xPos + 1600;
+			int sightCheckR = (ROOM_COUNT - CENTER_ROOM_INDEX)*1600;
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_LoadO(roomList[0], 3, player, (ROOM_COUNT / 2 + 1) * 1600);
+				Room_Load(roomList[0], player, ROOM_COUNT - CENTER_ROOM_INDEX);
 				printf("Loading Room: LOOP RIGHT\n");
-				if (pX > (ROOM_COUNT/2 + 1) * 1600)
+				if (pX > sightCheckR)
 				{
 					player.currentPositionX -= ROOM_COUNT * 1600;
 					//TeleportMonsterRoom(-1 * (ROOM_COUNT * 1600));
@@ -136,13 +137,8 @@ void game_update(void) {
 			}
 		}
 	}
+	//room rendering end.
 	printf("Player X Position: %.3f\n", player.currentPositionX);
-
-	for (int i = 0; i < INTERACTABLES_COUNT; i++) {
-		if (interactablesArray[i] == NULL) continue;
-		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
-	}
-
 
 	Player_Update(&player);
 	UpdateMonsterBaby();
@@ -150,14 +146,12 @@ void game_update(void) {
 	Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 
 	// Calculate player movement delta (velocity) since last frame
-	playerX = player.currentPositionX;
-	playerY = player.currentPositionY;
+	playerX = player.currentPositionX; playerY = player.currentPositionY;
 	float dx = playerX - lastPlayerX;  // playerDX: horizontal movement from last frame
 	float dy = playerY - lastPlayerY;  // playerDY: vertical movement from last frame
-	lastPlayerX = playerX;
-	lastPlayerY = playerY;
+	lastPlayerX = playerX; lastPlayerY = playerY;
 
-	UpdateCamera(&camera, player.currentPositionX, player.currentPositionY, dx, dy, 0.1f); //test case, please edit later. Read camera.c for more info. -day
+	UpdateCamera(&camera, player.currentPositionX, player.currentPositionY, dx, dy, 0.7f); //test case, please edit later. Read camera.c for more info. -day
 
 	/*
 	using parallex code here for background layers later
@@ -220,15 +214,15 @@ void InitialiseRooms(void) {
 		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
 	}
 
-	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, -3200, 0, interactablesArray, 0);
+	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray, 2);
 	roomList[0] = &r1;
-	r2 = Room_Create(Bg1_ss, Bg1_sd,3, -1600, 0, interactablesArray, 0);
+	r2 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
 	roomList[1] = &r2;
-	r3 = Room_Create(Bg2_ss, Bg2_sd,3, 0, 0, interactablesArray, 0);
+	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray, 2);
 	roomList[2] = &r3;
-	r4 = Room_Create(Bg3_ss, Bg3_sd,3, 1600, 0, interactablesArray, 0);
+	r4 = Room_Create(Bg3_ss, Bg3_sd,3, interactablesArray, 2);
 	roomList[3] = &r4;
-	r5 = Room_Create(Bg1_ss, Bg1_sd,3, 3200, 0, interactablesArray, 0);
+	r5 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
 	roomList[4] = &r5;
 	
 }
