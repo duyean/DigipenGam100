@@ -5,8 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int isFadeIn = 0;
-int isFadeOut = 0;
+int isFadeIn = 0, isFadeOut = 0;
 float transitionAlpha = 0;
 void (*transitionToSceneFunc) (SceneEnum);
 SceneEnum currentScene;
@@ -33,6 +32,12 @@ void SetScene(SceneEnum scene) {
 	case GAME:
 		CP_Engine_SetNextGameState(game_init, game_update, game_exit);
 		break;
+	case CREDITS:
+		CP_Engine_SetNextGameState(credits_init, credits_update, credits_exit);
+		break;
+	//case CUTSCENE:
+	//	CP_Engine_SetNextGameState(cutscene_init, cutscene_update, cutscene_exit);
+	//	break;
 	default:
 		printf("DEFAULT SET SCENE USED!!! CHECK FOR SWITCH FALL! OR NON-EXISTING ENUM!");
 		CP_Engine_SetNextGameState(main_menu_init, main_menu_update, main_menu_exit);

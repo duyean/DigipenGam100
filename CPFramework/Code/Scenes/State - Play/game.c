@@ -4,6 +4,7 @@
 #include "../../CMP_Player_Pak.h"
 #include "../../CMP_Interactable_Pak.h"
 #include "../../CMP_Room_Pak.h"
+#include "../../CMP_Audio_Pak.h"
 #include "game.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,14 +62,6 @@ float lastFrameTime = 0;
 void InitialiseInteractables(void);
 void LockerTest(void);
 void InitialiseRooms(void);
-
-extern CP_Sound mainMenuMusic;
-extern CP_Sound gameplayMusic;
-extern CP_Sound soundEffects;
-
-extern float masterVolume;
-extern float effectiveBGM;
-extern float effectiveSFX;
 
 CP_Image vignette;
 void game_init(void) {

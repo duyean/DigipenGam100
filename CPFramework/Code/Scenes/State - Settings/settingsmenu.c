@@ -17,8 +17,7 @@
 /*/
 
 TextTemplate settingsTextTemplate;
-CP_Image settingsBG;
-CP_Image backButtonBG;
+CP_Image settingsBG, backButtonBG;
 Button backButton;
 
 typedef struct
@@ -30,9 +29,7 @@ typedef struct
 
 } Slider;
 
-Slider BGMSlider;
-Slider SFXSlider;
-Slider masterSlider;
+Slider BGMSlider, SFXSlider, masterSlider;
 
 void DrawSlider(Slider* s, float volume)
 {

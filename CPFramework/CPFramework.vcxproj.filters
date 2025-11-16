@@ -129,6 +129,9 @@
     <ClCompile Include="Code\Characters\Monster A\monster.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Scenes\State - Credits\credits.c">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
       <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scenes\State - Credits\credits.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

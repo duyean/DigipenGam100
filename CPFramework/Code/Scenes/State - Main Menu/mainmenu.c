@@ -8,12 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-CP_Image buttonUIImage;
-CP_Image menuBackground;
+CP_Image buttonUIImage, menuBackground;
 
-Button playButton;
-Button settingsButton;
-Button quitButton;
+Button playButton, settingsButton, quitButton, creditsButton;
 float buttonHorizontalAlignment;
 TextTemplate mainMenuTextTemplate;
 SceneEnum nextScene;
@@ -30,14 +27,17 @@ void main_menu_init(void) {
 
 	buttonHorizontalAlignment = 350.0f;
 
-	playButton = CreateButton(buttonHorizontalAlignment, 350, 480, 60, 255, &PlayButtonPressed);
+	playButton = CreateButton(buttonHorizontalAlignment, 300, 480, 60, 255, &PlayButtonPressed);
 	playButton = AddTextToButton(&playButton, "Play", -100, 0);
 
-	settingsButton = CreateButton(buttonHorizontalAlignment, 450, 480, 60, 255, &SettingsButtonPressed);
+	settingsButton = CreateButton(buttonHorizontalAlignment, 400, 480, 60, 255, &SettingsButtonPressed);
 	settingsButton = AddTextToButton(&settingsButton, "Settings", -100, 0);
 
-	quitButton = CreateButton(buttonHorizontalAlignment, 550, 480, 60, 255, &QuitButtonPressed);
+	quitButton = CreateButton(buttonHorizontalAlignment, 500, 480, 60, 255, &QuitButtonPressed);
 	quitButton = AddTextToButton(&quitButton, "Quit", -100, 0);
+
+	creditsButton = CreateButton(buttonHorizontalAlignment, 600, 480, 60, 255, &CreditsButtonPressed);
+	creditsButton = AddTextToButton(&creditsButton, "Credits", -100, 0);
 
 	AudioInitialize();
 	AudioPlayMainMenuMusic();
@@ -51,6 +51,7 @@ void main_menu_update(void) {
 	DrawButtonUsingImage(buttonUIImage, &playButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &quitButton, mainMenuTextTemplate);
+	DrawButtonUsingImage(buttonUIImage, &creditsButton, mainMenuTextTemplate);
 	
 	CP_Image_Draw(menuBackground, 1000.f, 400.f, 500.f, 500.f, 255.f);
 
@@ -71,7 +72,7 @@ void main_menu_exit(void) {
 }
 
 void PlayButtonPressed() {
-	printf("PLayerButtonPressed in mainmenu.c\n");
+	printf("PlayerButtonPressed in mainmenu.c\n");
 
 	AudioPlayGameplayMusic();
 
@@ -87,6 +88,11 @@ void SettingsButtonPressed() {
 
 void QuitButtonPressed() {
 	printf("QuitButtonPressed in mainmenu.c\n");
-	//nextScene = QUIT;
 	CP_Engine_Terminate();
+}
+
+void CreditsButtonPressed() {
+	printf("CreditsButtonPressed in mainmenu.c\n");
+	StartTransition();
+	nextScene = CREDITS;
 }
