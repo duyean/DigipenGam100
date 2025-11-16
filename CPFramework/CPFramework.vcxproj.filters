@@ -132,6 +132,12 @@
     <ClCompile Include="Code\Scenes\State - Credits\credits.c">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Sliders\slider.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PopUp\popup.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -280,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="Code\Scenes\State - Credits\credits.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Sliders\slider.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\PopUp\popup.h">
+      <Filter>Header Files\Standard Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
