@@ -101,16 +101,11 @@ void Interactable_OilInteraction(void) {
 
 void Interactable_LiftInteraction(Interactable* interactable, Player* player) {
 	player->isHiding = !player->isHiding;
-	player->toDraw = !player->toDraw;
+
 	Animation_Reset(&interactable->animation);
-	if (interactable->animation.currFrameIndex == 1)
-	{
-		Animation_SetFrame(&interactable->animation, 0);
-	}
-	else if (interactable->animation.currFrameIndex == 0)
-	{
-		Animation_SetFrame(&interactable->animation, 1);
-	}
+	Animation_PlayState(&interactable->animation, 1);
+	player->toDraw = !player->toDraw;
+	
 	
 	//End the floor
 	if (player->currentOil >= player->maxOil)

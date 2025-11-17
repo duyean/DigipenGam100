@@ -8,7 +8,7 @@
 // WORK IN PROGRESS DO NOT REFACTOR
 
 List* babyList;
-CP_Vector* trapTriggeredPos;
+CP_Vector trapTriggeredPos;
 TextTemplate babyTextTemplate;
 
 SpriteData monsterSprites[5][4];
@@ -106,7 +106,8 @@ void InitializeBaby(void)
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
-}
+	trapTriggeredPos = CP_Vector_Set(0, 0);
+;}
 
 void externalCreateM_B(int x, int y)
 {
@@ -117,7 +118,7 @@ void externalCreateM_B(int x, int y)
 
 void sendMonstersToTrap(float trapXPos, float trapYPos)
 {
-	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
+	trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
 }
 
 void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
@@ -354,7 +355,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			}
 
 			//walk towards trap triggered location -todo
-			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos->x - baby->itself.transform.x, trapTriggeredPos->y - baby->itself.transform.y);
+			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos.x - baby->itself.transform.x, trapTriggeredPos.y - baby->itself.transform.y);
 			CP_Vector trapNorm = CP_Vector_Normalize(trapDir);
 			int distFromTrap = CP_Vector_Length(trapDir);
 			if (distFromTrap > 5.f)

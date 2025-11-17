@@ -85,7 +85,7 @@ void game_init(void) {
 	InitializeRedBaby();
 	InitializeBaby();
 
-	SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
+    SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);

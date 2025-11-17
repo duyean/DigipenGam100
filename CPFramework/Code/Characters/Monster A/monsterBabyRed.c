@@ -9,7 +9,7 @@
 // WORK IN PROGRESS DO NOT REFACTOR
 
 List* RedbabyList;
-CP_Vector* trapTriggeredPos;
+CP_Vector trapTriggeredPos;
 TextTemplate babyTextTemplate;
 
 SpriteData monsterSprites[5][4];
@@ -90,7 +90,7 @@ void clearRedBabyMonsterListMemory(void)
 	{
 		for (int i = 0; i < RedbabyList->size; i++)
 		{
-			MonsterRedBabyObject* obj = (MonsterRedBabyObject*)ListGet(RedbabyList, i);
+			MonsterRedBabyObject* obj = (MonsterRedBabyObject*)(intptr_t)ListGet(RedbabyList, i);
 			destroyRedBabyMonster(obj);
 		}
 
@@ -106,6 +106,7 @@ void InitializeRedBaby(void)
 	RedbabyList = ListCreate(1);
 
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
+	trapTriggeredPos = CP_Vector_Set(0, 0);
 
 	CP_Font_Set(babyTextTemplate.font);
 }
@@ -119,7 +120,7 @@ void externalCreateM_RB(int x, int y)
 
 void sendRBMonstersToTrap(float trapXPos, float trapYPos)
 {
-	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
+	trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
 }
 
 void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_STATE nextState, MonsterRedBabyObject* baby)
@@ -356,7 +357,7 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 			}
 
 			//walk towards trap triggered location -todo
-			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos->x - baby->itself.transform.x, trapTriggeredPos->y - baby->itself.transform.y);
+			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos.x - baby->itself.transform.x, trapTriggeredPos.y - baby->itself.transform.y);
 			CP_Vector trapNorm = CP_Vector_Normalize(trapDir);
 			int distFromTrap = CP_Vector_Length(trapDir);
 			if (distFromTrap > 5.f)

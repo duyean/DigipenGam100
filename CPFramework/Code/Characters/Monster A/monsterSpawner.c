@@ -8,15 +8,15 @@ void SpawnMonster(MONSTER_TYPE type, int amount, float minRange, float maxRange)
 	for (int i = 0; i < amount; i++)
 	{
 		float xPos = CP_Random_RangeFloat(minRange, maxRange);
-		if (xPos > -CP_System_GetWindowWidth() && xPos < CP_System_GetWindowWidth())
+		if (xPos > -1600 && xPos < 1600)
 		{
 			if (xPos < 0)
 			{
-				xPos -= CP_System_GetWindowWidth();
+				xPos -= 1600;
 			}
 			else if (xPos > 0)
 			{
-				xPos += CP_System_GetWindowWidth();
+				xPos += 1600;
 			}
 			
 		}
