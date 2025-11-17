@@ -2,7 +2,6 @@
 #include "settingsmenu.h"
 #include "../../CMP_Scene_Pak.h"
 #include "../../CMP_Core_Pak.h"
-#include "../../CMP_Text_Pak.h"
 #include "../../CMP_Audio_Pak.h"
 #include "../../CMP_Settings_Pak.h"
 #include <windows.h>
@@ -42,7 +41,7 @@ void ControlsPopUp(void) {
         CP_Settings_TextSize(40.0f);
         CP_Font_DrawText("Move: WASD", width, height - 20.0f);
         CP_Font_DrawText("Hide: E", width, height + 20.0f);
-        CP_Font_DrawText("Settings: ESC", width, height + 60.0f);
+        CP_Font_DrawText("Pause: ESC", width, height + 60.0f);
 
         DrawButtonUsingImage(backButtonBG, &closePopUpButton, settingsTextTemplate);
     }
@@ -118,9 +117,11 @@ void settings_menu_update(void) {
     CP_Font_DrawText("Volume", 600.0f, 325.0f);
     CP_Font_DrawText("Sound Effects", 700.0f, 485.0f);
 
-    UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0);
-    UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1);
-    UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1);
+    CP_Color knobColor = CP_Color_Create(102, 102, 102, 255);
+
+    UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0, knobColor);
+    UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1, knobColor);
+    UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1, knobColor);
 
     ControlsPopUp();
 

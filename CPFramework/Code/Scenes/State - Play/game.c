@@ -5,9 +5,11 @@
 #include "../../CMP_Interactable_Pak.h"
 #include "../../CMP_Room_Pak.h"
 #include "../../CMP_Audio_Pak.h"
+#include "../../CMP_Settings_Pak.h"
 #include "game.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "../../Characters/Monster A/monsterBaby.h"
 
 #define INTERACTABLES_COUNT 2
@@ -64,8 +66,74 @@ void LockerTest(void);
 void InitialiseRooms(void);
 void Room_Update(void);
 
+bool isGamePaused = false;
+Button resumeButton, quitButton;
+TextTemplate pauseTextTemplate;
+CP_Image buttonBG;
+SceneEnum sceneChange;
+Slider BGMSlider, SFXSlider, masterSlider;
+CP_Color knobColor;
+
 CP_Image vignette;
+
+void DrawPauseMenu(void)
+{
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 80));
+	CP_Settings_TextSize(80);
+	CP_Font_DrawText("PAUSED", 800, 250);
+
+	DrawButtonUsingImage(buttonBG, &resumeButton, pauseTextTemplate);
+	DrawButtonUsingImage(buttonBG, &quitButton, pauseTextTemplate);
+
+	CP_Settings_TextSize(40);
+	knobColor = CP_Color_Create(102, 102, 102, 255);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("Master Volume", 1020, 350);
+	UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1, knobColor);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("BGM Volume", 1000, 450);
+	UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0, knobColor);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("SFX Volume", 1000, 550);
+	UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1, knobColor);
+
+	TransitionFadeIn(1.f, 0, 0, 0, 0);
+	TransitionFadeOut(.5f, sceneChange);
+}
+
+void ResumeGame(void) {
+	isGamePaused = false;
+}
+
+void QuitGame(void) {
+	StartTransition();
+	isGamePaused = false;
+
+	// they move after a while but lalallaa
+	sceneChange = MAIN;
+}
+
 void game_init(void) {
+
+	buttonBG = CP_Image_Load("./Assets/MainMenuButton.png");
+
+	pauseTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(255, 255, 255, 255));
+	CP_Font_Set(pauseTextTemplate.font);
+
+	// which is basically the back button
+	resumeButton = CreateButton(500, 400, 480, 60, 255, &ResumeGame);
+	resumeButton = AddTextToButton(&resumeButton, "Resume", -100, 0);
+
+	quitButton = CreateButton(500, 500, 480, 60, 255, &QuitGame);
+	quitButton = AddTextToButton(&quitButton, "Main Menu", -100, 0);
+
+	SliderValues(&masterSlider, 900, 400);
+	SliderValues(&BGMSlider, 900, 500);
+	SliderValues(&SFXSlider, 900, 600);
+
 	vignette = CP_Image_Load("./Assets/Vignette.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
@@ -82,6 +150,19 @@ void game_init(void) {
 }
 
 void game_update(void) {
+
+	if (CP_Input_KeyTriggered(KEY_ESCAPE))
+	{
+		isGamePaused = true;
+	}
+
+	if (isGamePaused)
+	{
+		DrawPauseMenu();
+		CP_Image_Draw(vignette, 800, 450, 1600, 900, 10); // IT FADES 
+		return; // pauses lol the whole deltatime thing was just a SCAMMMM
+	}
+
 	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 

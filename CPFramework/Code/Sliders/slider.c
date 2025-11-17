@@ -2,7 +2,7 @@
 #include "slider.h"
 #include "../CMP_Settings_Pak.h"
 
-void DrawSlider(Slider* s, float volume)
+void DrawSlider(Slider* s, float volume, CP_Color knobColor)
 {
     s->barColor = CP_Color_Create(255, 255, 255, 125);
 
@@ -51,19 +51,19 @@ void HandleSliderInput(Slider* s, float* volume, CP_SOUND_GROUP group)
         // ts now controlled by the update
         *volume = (mouseX - s->x) / s->width;
         *volume = CP_Math_ClampFloat(*volume, 0.0f, 1.0f);
-        s->knobColor = CP_Color_Create(60, 40, 20, 255);
+        s->knobColor = CP_Color_Create(56, 56, 56, 255);
     }
     else {
         // literally just press & hold color change
-        s->knobColor = CP_Color_Create(140, 95, 55, 255);
+        s->knobColor = CP_Color_Create(102, 102, 102, 255);
     }
 }
 
-void UpdateVolumeSlider(Slider* s, float (*getVol)(), void (*setVol)(float), int group)
+void UpdateVolumeSlider(Slider* s, float (*getVol)(), void (*setVol)(float), int group, CP_Color knobColor)
 {
     // get refactored bozo
     float vol = getVol();
-    DrawSlider(s, vol);
+    DrawSlider(s, vol,knobColor);
 
     // haha cant slide with popup lol
     if (!isPopUpActive)
