@@ -138,11 +138,11 @@
     <ClCompile Include="Code\Scenes\State - Credits\credits.c">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Sliders\slider.c">
-      <Filter>Source Files\Standard Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Code\PopUp\popup.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Sliders\slider.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="Code\PopUp\popup.h">
       <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBabyRed.h">
+      <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

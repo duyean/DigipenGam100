@@ -287,7 +287,7 @@ void InitialiseRooms(void) {
 	roomList[0] = &r1;
 	r2 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
 	roomList[1] = &r2;
-	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray, 2);
+	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray, 3);
 	roomList[2] = &r3;
 	r4 = Room_Create(Bg3_ss, Bg3_sd,3, interactablesArray, 2);
 	roomList[3] = &r4;
