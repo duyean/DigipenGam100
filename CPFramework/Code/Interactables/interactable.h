@@ -18,8 +18,12 @@ Interactable Interactable_CreateDoor(float xPostion, float worldYPosition, void(
 /*Create the Oil Blob Interactable, requires the image file path and Blob Attributes and the respective interaction event*/
 Interactable Interactable_CreateOilBlob(float xPostion, float worldYPosition, void(*DoorInteractedEvent)(void));
 
+/*Create the Lift Interactable, requires the image file path and Lift Attributes and the respective interaction event*/
+Interactable Interactable_CreateLift(float xPostion, float yPosition, void(*LiftInteractedEvent)(void));
+
 /*The Specific Interaction for lockers; Hides the player and Plays an animation*/
 void Interactable_DoorInteraction(Interactable* interactable, Player* player);
+void Interactable_LiftInteraction(Interactable* interactable, Player* player);
 void Interactable_OilInteraction(void);
 
 /*Initialise the Interactable Data to cache the data that will be used*/

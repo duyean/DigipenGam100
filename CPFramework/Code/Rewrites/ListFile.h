@@ -16,5 +16,5 @@ void ListAppend(List* list, void* item);
 void* ListGet(List* list, size_t index);
 static void ResizeIfNeeded(List* list);
 void ListRemoveAt(List* list, size_t index);
-
+const char* intToConstChar(int num);
 #endif

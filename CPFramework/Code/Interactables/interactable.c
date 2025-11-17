@@ -39,10 +39,10 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 	}
 }
 
-CP_Image doorImage, blobImage;
-Spritesheet doorSpritesheet, blobSpritesheet;
-SpriteData doorSprites[2], blobSprites[4];
-Animation doorAnimation, blobAnimation;
+CP_Image doorImage, blobImage, liftImage;
+Spritesheet doorSpritesheet, blobSpritesheet, liftSpritesheet;
+SpriteData doorSprites[2], blobSprites[4], liftSprites[2];
+Animation doorAnimation, blobAnimation, liftAnimation;
 
 void Interactable_InitialiseData(void) {
 	/*Initialise Door Data Here*/
@@ -56,11 +56,18 @@ void Interactable_InitialiseData(void) {
 	blobSpritesheet = Spritesheet_Create(blobImage, 514, 514);
 	Animation_SetFrames(200, 200, 255.f, blobSprites, 2, 2);
 	blobAnimation = Animation_Create(blobSpritesheet, blobSprites, 30.f, 2, 1, 1);
+
+	/*Initialise lift Data Here*/
+	liftImage = CP_Image_Load("./Assets/LiftSpriteSheet.png");
+	liftSpritesheet = Spritesheet_Create(liftImage, CP_Image_GetWidth(liftImage) / 2, CP_Image_GetHeight(liftImage));
+	Animation_SetFrames(375, 900, 255.f, liftSprites, 2, 1);
+	liftAnimation = Animation_Create(liftSpritesheet, liftSprites, 15.f, 2, 0, 0);
 }
 
 void Interactabe_FreeData(void) {
 	CP_Image_Free(doorImage);
 	CP_Image_Free(blobImage);
+	CP_Image_Free(liftImage);
 }
 
 Interactable Interactable_CreateDoor(float xPostion, float worldYPosition, void(*DoorInteractedEvent)(void)) {
@@ -75,6 +82,12 @@ Interactable Interactable_CreateOilBlob(float xPostion, float worldYPosition, vo
 	return blob;
 }
 
+Interactable Interactable_CreateLift(float xPostion, float yPosition, void(*LiftInteractedEvent)(void)) {
+	Interactable lift = Interactable_Create(xPostion, yPosition, interactableProximity, "Lift", liftSpritesheet, liftSprites[0], LiftInteractedEvent);
+	Interactable_AttachAnimation(&lift, liftAnimation);
+	return lift;
+}
+
 void Interactable_DoorInteraction(Interactable *interactable, Player *player) {
 	player->isHiding = !player->isHiding;
 	player->toDraw = !player->toDraw;
@@ -86,4 +99,20 @@ void Interactable_OilInteraction(void) {
 	//CHANGE THIS TO BE ON THE PLAYER AND NOT ON THE INTERACTABLE SCRIPT
 	GetPlayer()->currentOil += 10.f;
 	GetPlayer()->currentOil = CP_Math_ClampFloat(GetPlayer()->currentOil, 0.f, GetPlayer()->maxOil);
+}
+
+void Interactable_LiftInteraction(Interactable* interactable, Player* player) {
+	player->isHiding = !player->isHiding;
+
+	Animation_Reset(&interactable->animation);
+	Animation_PlayState(&interactable->animation, 1);
+	player->toDraw = !player->toDraw;
+	
+	
+	//End the floor
+	if (player->currentOil >= player->maxOil)
+	{
+		//make new floor
+	}
+	
 }

@@ -18,7 +18,7 @@ SceneEnum nextScene;
 void main_menu_init(void) {
 	CP_System_SetWindowSize(1600, 900);
 
-	menuBackground = CP_Image_Load("./Assets/deepismLogo.png");
+	menuBackground = CP_Image_Load("./Assets/Mainmenu.png");
 	buttonUIImage = CP_Image_Load("./Assets/MainMenuButton.png");
 
 	mainMenuTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
@@ -48,12 +48,14 @@ void main_menu_init(void) {
 void main_menu_update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
+	CP_Image_Draw(menuBackground, 800.f, 450.f, 1600.f, 900.f, 255.f);
+
 	DrawButtonUsingImage(buttonUIImage, &playButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &quitButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &creditsButton, mainMenuTextTemplate);
 	
-	CP_Image_Draw(menuBackground, 1000.f, 400.f, 500.f, 500.f, 255.f);
+
 
 	TransitionFadeIn(1.f, 0,0,0, 255);
 	TransitionFadeOut(.5f, nextScene);
