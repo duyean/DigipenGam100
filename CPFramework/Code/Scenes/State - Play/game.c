@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../../Characters/Monster A/monsterBaby.h"
-
-#define INTERACTABLES_COUNT 2
+#include "../../Characters/Monster A/monsterSpawner.h"
+#define INTERACTABLES_COUNT 3
 #define ROOM_COUNT 5
 
 #define CENTER_ROOM_INDEX ROOM_COUNT/2
@@ -35,6 +35,8 @@ Animation oilAnimation;
 
 
 Interactable doorTest;
+
+Interactable liftTest;
 
 CP_Vector worldCenterPosition;
 
@@ -63,6 +65,7 @@ float lastFrameTime = 0;
 /*Functions here are for testing and can be removed for FINAL*/
 void InitialiseInteractables(void);
 void LockerTest(void);
+void LiftTest(void);
 void InitialiseRooms(void);
 void Room_Update(void);
 
@@ -116,6 +119,9 @@ void QuitGame(void) {
 	sceneChange = MAIN;
 }
 
+CP_Image youDied;
+
+SceneEnum nextScene;
 void game_init(void) {
 
 	buttonBG = CP_Image_Load("./Assets/MainMenuButton.png");
@@ -135,9 +141,14 @@ void game_init(void) {
 	SliderValues(&SFXSlider, 900, 600);
 
 	vignette = CP_Image_Load("./Assets/Vignette.png");
+	youDied = CP_Image_Load("./Assets/youdiedtest.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
+	InitializeRedBaby();
 	InitializeBaby();
+
+    SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
+	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
@@ -170,9 +181,12 @@ void game_update(void) {
 	
 	//room rendering end.
 	//printf("Player X Position: %.3f\n", player.currentPositionX);
-
-	Player_Update(&player);
+	UpdateMonsterRedBaby();
 	UpdateMonsterBaby();
+	
+	Player_Update(&player);
+
+	
 	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
 	//Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 
@@ -203,25 +217,47 @@ void game_update(void) {
 		printf("Current Player X Position: %.3f\n", playerX);
 	}*/
 	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
+	//End game if player kenna eaten (throw to a function if you wanna)
+	if (player.currentHealth <= 0 && !player.toDraw)
+	{
+		//Draw you died
+		CP_Image_Draw(youDied, 800, 450, 1600, 900, 170);
+		if (CP_Input_KeyReleased(KEY_ANY))
+		{
+			//Go back to main menu
+
+			StartTransition();
+			nextScene = MAIN;
+		}
+		TransitionFadeIn(1.f, 0, 0, 0, 255);
+		TransitionFadeOut(.5f, nextScene);
+	}
 }
 
 void game_exit(void) {
-
+	clearBabyMonsterListMemory();
 }
 
 void InitialiseInteractables(void) {
 	Interactable_InitialiseData();
 
-	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
+	doorTest = Interactable_CreateDoor(-300.f, 20.f, &LockerTest);
 	interactablesArray[0] = &doorTest;
 
 
 	oilBlob = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
 	interactablesArray[1] = &oilBlob;
+
+	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
+	interactablesArray[2] = &liftTest;
 }
 
 void LockerTest(void) {
 	Interactable_DoorInteraction(&doorTest, &player);
+}
+
+void LiftTest(void) {
+	Interactable_LiftInteraction(&liftTest, &player);
 }
 
 void InitialiseRooms(void) {

@@ -8,8 +8,7 @@
 // WORK IN PROGRESS DO NOT REFACTOR
 
 List* babyList;
-Player* playerRef;
-CP_Vector* trapTriggeredPos;
+CP_Vector trapTriggeredPos;
 TextTemplate babyTextTemplate;
 
 SpriteData monsterSprites[5][4];
@@ -17,12 +16,6 @@ Animation AnimationList[5];
 
 
 CP_Sound monsterSfx[3];
-
-void SetPlayerRef(Player* player)
-{
-	playerRef = player;
-}
-
 MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float detection, float attack, float lost)
 {
 	MonsterBabyObject* new = (MonsterBabyObject*)malloc(sizeof(MonsterBabyObject));
@@ -91,13 +84,16 @@ void destroyBabyMonster(MonsterBabyObject* obj)
 
 void clearBabyMonsterListMemory(void)
 {
-	for (int i = 0; i < babyList->size; i++)
+	if (babyList != NULL)
 	{
-		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
-		destroyBabyMonster(obj);
-	}
+		for (int i = 0; i < babyList->size; i++)
+		{
+			MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+			destroyBabyMonster(obj);
+		}
 
-	ListDestroy(babyList);
+		ListDestroy(babyList);
+	}
 }
 void InitializeBaby(void)
 {
@@ -106,24 +102,23 @@ void InitializeBaby(void)
 	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
 
 	babyList = ListCreate(1);
-	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 10.f, 5.f));
-	ListAppend(babyList, createBabyMonster(-600, 0, 110.f, 500.f, 10.f, 5.f));
 
-	//ListAppend(babyList, createBabyMonster(800, 0, 110.f, 500.f, 10.f, 5.f));
-	//ListAppend(babyList, createBabyMonster(-800, 0, 110.f, 500.f, 10.f, 5.f));
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
+	trapTriggeredPos = CP_Vector_Set(0, 0);
+;}
+
+void externalCreateM_B(int x, int y)
+{
+	//default y=0;
+	ListAppend(babyList, createBabyMonster(x, y, 110.f, 500.f, 50.f, 5.f));
 }
+
 
 void sendMonstersToTrap(float trapXPos, float trapYPos)
 {
-	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
-}
-
-float changeRange(float OldValue, float OldMin, float NewMax, float NewMin, float OldMax)
-{
-	return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
+	trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
 }
 
 void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
@@ -151,7 +146,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_PATROL:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -167,7 +162,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	case STATE_ALERT:
 	{
 		//JELLY HERE
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -186,7 +181,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_CHASE:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, distFromPlayer), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -309,7 +304,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		//Monster facing and player is facing each other
 		if (baby->itself.facingDir > 0 && normDir.x > 0 || baby->itself.facingDir < 0 && normDir.x < 0)
 		{
-			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0) //Check if in range
+			if (distFromPlayer < baby->itself.detectionRange && playerRef->isHiding == 0 && playerRef->toDraw == 1) //Check if in range
 			{
 				//start alerted state
 
@@ -318,7 +313,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			}
 		}
 
-		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0) //Check if player too close
+		if (distFromPlayer < baby->itself.detectionRange / 1.5f && playerRef->isHiding == 0 && playerRef->toDraw == 1) //Check if player too close
 		{
 			//start alerted state
 
@@ -360,7 +355,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			}
 
 			//walk towards trap triggered location -todo
-			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos->x - baby->itself.transform.x, trapTriggeredPos->y - baby->itself.transform.y);
+			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos.x - baby->itself.transform.x, trapTriggeredPos.y - baby->itself.transform.y);
 			CP_Vector trapNorm = CP_Vector_Normalize(trapDir);
 			int distFromTrap = CP_Vector_Length(trapDir);
 			if (distFromTrap > 5.f)
@@ -420,7 +415,11 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_ATTACK:
 	{
 		//Kill player & play animation ? are we doing collision check here or guaranteed kill when reach this
-		//KillPlayer(playerRef);
+		if (baby->itself.monsterAnimation.currFrameIndex == 2)
+		{
+			playerRef->toDraw = 0;
+			playerRef->currentHealth = 0;
+		}
 		if (baby->itself.monsterAnimation.currFrameIndex == 3)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_DIGEST, baby);
@@ -430,6 +429,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	case STATE_DIGEST:
 	{
 		//Idle, play lost animation
+		//End game
 		break;
 	}
 	case STATE_LOST:
@@ -454,18 +454,6 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 	}
 }
 
-const char* intToConstChar(int num) {
-	int len = snprintf(NULL, 0, "%d", num);
-	char* str = (char*)malloc(len + 1);
-	if (str == NULL) {
-		perror("Failed to allocate memory for string");
-		return NULL;
-	}
-	snprintf(str, len + 1, "%d", num);
-
-	return str;
-}
-
 void UpdateMonsterBaby()
 {
 	for (int i = 0; i < babyList->size; i++)
@@ -480,6 +468,7 @@ void UpdateMonsterBaby()
 			processing_state_baby_logic(obj);
 
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
+
 			if (obj->itself.transform.x < -(5 / 2 + 1) * 1600)
 			{
 				obj->itself.transform.x += 5 * 1600;

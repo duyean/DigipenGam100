@@ -37,9 +37,6 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{732cb83d-815d-4f3e-ae34-e1c1d04f7a33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Standard Systems">
-      <UniqueIdentifier>{f606e88d-950a-4ebb-9f59-71d7913af93c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Animation and Spritesheet">
       <UniqueIdentifier>{8267a279-40f0-4b53-a750-8d99300d0828}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Header Files\Dialogue Systems">
       <UniqueIdentifier>{2781ccc5-16e1-4b44-b947-6ae6ff97a5cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\Standard Systems">
+      <UniqueIdentifier>{f606e88d-950a-4ebb-9f59-71d7913af93c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,22 +70,22 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Code\Audio\audio.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Buttons\button.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="main.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rewrites\qol.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Text\text.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="utils.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Spritesheet\animation.c">
       <Filter>Source Files\Animation and Spritesheet</Filter>
@@ -100,19 +100,19 @@
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
     <ClCompile Include="Code\Interactables\interactable.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rewrites\listfile.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Transitions\transition.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Camera\camera.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Camera\layer.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\DialogueSystem\fileReader.c">
       <Filter>Source Files\Dialogue Systems</Filter>
@@ -121,12 +121,18 @@
       <Filter>Source Files\Dialogue Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rooms\room.c">
-      <Filter>Source Files\Standard Systems</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Characters\Monster A\monster.c">
+    <ClCompile Include="Code\Characters\Monster A\monsterSpawner.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBabyRed.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBase.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
     <ClCompile Include="Code\Scenes\State - Credits\credits.c">
@@ -209,7 +215,7 @@
     <ClInclude Include="Code\Characters\Player\player.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Characters\Monster A\monster.h">
+    <ClInclude Include="Code\Characters\Monster A\monsterSpawner.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
     <ClInclude Include="Code\Dbg\dbg.h">
@@ -292,6 +298,8 @@
     </ClInclude>
     <ClInclude Include="Code\PopUp\popup.h">
       <Filter>Header Files\Standard Systems</Filter>
+    <ClInclude Include="Code\Characters\Monster A\monsterBabyRed.h">
+      <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
