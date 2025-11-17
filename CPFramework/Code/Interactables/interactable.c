@@ -9,8 +9,8 @@ float interactableProximity = 100.f;
 Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
 	static Interactable newInteractable;
-	newInteractable.xPosition = newInteractable.drawXPos = initialXPos;
-	newInteractable.yPosition = newInteractable.drawYPos = initialYPos;
+	newInteractable.worldXPosition = newInteractable.drawXPos = initialXPos;
+	newInteractable.worldYPosition = newInteractable.drawYPos = initialYPos;
 	newInteractable.proximity = proximity;
 	newInteractable.name = name == NULL ? "Unnamed Interactable" : name;
 	newInteractable.spritesheet = sheet;
@@ -29,6 +29,8 @@ void Interactable_AttachAnimation(Interactable* interactable, Animation animatio
 void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 	interactable->drawXPos = xPos;
 	interactable->drawYPos = yPos;
+	/*interactable->worldXPosition = xPos;
+	interactable->worldYPosition = yPos;*/
 	if (interactable->isAnimated) {
 		Animation_Animate(&interactable->animation, xPos, yPos, 1, 1);
 	}
@@ -61,14 +63,14 @@ void Interactabe_FreeData(void) {
 	CP_Image_Free(blobImage);
 }
 
-Interactable Interactable_CreateDoor(float xPostion, float yPosition, void(*DoorInteractedEvent)(void)) {
-	Interactable door = Interactable_Create(xPostion, yPosition, interactableProximity, "Locker", doorSpritesheet, doorSprites[0], DoorInteractedEvent);
+Interactable Interactable_CreateDoor(float xPostion, float worldYPosition, void(*DoorInteractedEvent)(void)) {
+	Interactable door = Interactable_Create(xPostion, worldYPosition, interactableProximity, "Locker", doorSpritesheet, doorSprites[0], DoorInteractedEvent);
 	Interactable_AttachAnimation(&door, doorAnimation);
 	return door;
 }
 
-Interactable Interactable_CreateOilBlob(float xPostion, float yPosition, void(*BlobInteractedEvent)(void)) {
-	Interactable blob = Interactable_Create(xPostion, yPosition, interactableProximity, "Oil", blobSpritesheet, blobSprites[0], BlobInteractedEvent);
+Interactable Interactable_CreateOilBlob(float xPostion, float worldYPosition, void(*BlobInteractedEvent)(void)) {
+	Interactable blob = Interactable_Create(xPostion, worldYPosition, interactableProximity, "Oil", blobSpritesheet, blobSprites[0], BlobInteractedEvent);
 	Interactable_AttachAnimation(&blob, blobAnimation);
 	return blob;
 }

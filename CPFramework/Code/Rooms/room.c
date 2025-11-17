@@ -40,8 +40,8 @@ void Room_Load(Room* room, Player player, int position)
 	}
 	for (int i = 0; i < room->interactibleCount; i++)
 	{
-		Interactable_Update(room->interractibles[i], relativePos + room->interractibles[i]->xPosition, room->interractibles[i]->yPosition);
+		Interactable_Update(room->interractibles[i], relativePos + room->interractibles[i]->worldXPosition, room->interractibles[i]->worldYPosition);
 	}
 
-	Player_CheckInteractables(room->interractibles, room->interactibleCount);
+	Player_CheckInteractables(room->interractibles, room->interactibleCount, relativePos);
 }

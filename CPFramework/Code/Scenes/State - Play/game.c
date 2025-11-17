@@ -62,6 +62,7 @@ float lastFrameTime = 0;
 void InitialiseInteractables(void);
 void LockerTest(void);
 void InitialiseRooms(void);
+void Room_Update(void);
 
 CP_Image vignette;
 void game_init(void) {
@@ -84,66 +85,15 @@ void game_update(void) {
 	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
-	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
-
-	//clear console cause holy shit i get headache trying to read -day
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	//room render checking
-	for (int i = 0; i < ROOM_COUNT + 2; i++)
-	{
-		float pX = player.currentPositionX, pY = player.currentPositionY;
-		int sightCheckP1 = (int)pX + RENDER_RANGE, sightCheckP2 = (int)pX - RENDER_RANGE;
-		if (i < ROOM_COUNT)
-		{
-			int sightCheckR = (i - CENTER_ROOM_INDEX)*1600;
-			//only load rooms in view (to save space!!!)
-			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
-			{
-				Room_Load(roomList[i], player, i - CENTER_ROOM_INDEX);
-				printf("Loading Room %d\n", i);
-			}
-		}
-		//edge case left room loop to right.
-		else if (i == ROOM_COUNT)
-		{
-			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT - 1)*1600;
-
-			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
-			{
-				Room_Load(roomList[ROOM_COUNT-1], player, CENTER_ROOM_INDEX - ROOM_COUNT);
-				printf("Loading Room: LOOP LEFT\n");
-				if (pX < sightCheckR)
-				{
-					player.currentPositionX += ROOM_COUNT * 1600;
-					//TeleportMonsterRoom((ROOM_COUNT * 1600));
-					printf("Looping Left to Right\n");
-				}
-			}
-		}
-		//edge case rignt room loop to left.
-		else if (i > ROOM_COUNT)
-		{
-			int sightCheckR = (ROOM_COUNT - CENTER_ROOM_INDEX)*1600;
-			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
-			{
-				Room_Load(roomList[0], player, ROOM_COUNT - CENTER_ROOM_INDEX);
-				printf("Loading Room: LOOP RIGHT\n");
-				if (pX > sightCheckR)
-				{
-					player.currentPositionX -= ROOM_COUNT * 1600;
-					//TeleportMonsterRoom(-1 * (ROOM_COUNT * 1600));
-					printf("Looping Right to Left\n");
-				}
-			}
-		}
-	}
+	Room_Update();
+	
 	//room rendering end.
-	printf("Player X Position: %.3f\n", player.currentPositionX);
+	//printf("Player X Position: %.3f\n", player.currentPositionX);
 
 	Player_Update(&player);
 	UpdateMonsterBaby();
 	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
-	Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
+	//Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 
 	// Calculate player movement delta (velocity) since last frame
 	playerX = player.currentPositionX; playerY = player.currentPositionY;
@@ -171,6 +121,7 @@ void game_update(void) {
 		lastFrameTime = CP_System_GetSeconds() + CP_System_GetDt();
 		printf("Current Player X Position: %.3f\n", playerX);
 	}*/
+	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
 }
 
 void game_exit(void) {
@@ -225,4 +176,59 @@ void InitialiseRooms(void) {
 	r5 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
 	roomList[4] = &r5;
 	
+}
+
+void Room_Update(void) {
+	//clear console cause holy shit i get headache trying to read -day
+	//printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	//room render checking
+	for (int i = 0; i < ROOM_COUNT + 2; i++)
+	{
+		float pX = player.currentPositionX, pY = player.currentPositionY;
+
+		int sightCheckP1 = (int)pX + RENDER_RANGE, sightCheckP2 = (int)pX - RENDER_RANGE;
+		if (i < ROOM_COUNT)
+		{
+			int sightCheckR = (i - CENTER_ROOM_INDEX) * 1600;
+			//only load rooms in view (to save space!!!)
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_Load(roomList[i], player, i - CENTER_ROOM_INDEX);
+				//printf("Loading Room %d\n", i);
+			}
+		}
+		//edge case left room loop to right.
+		else if (i == ROOM_COUNT)
+		{
+			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT - 1) * 1600;
+
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_Load(roomList[ROOM_COUNT - 1], player, CENTER_ROOM_INDEX - ROOM_COUNT);
+				//printf("Loading Room: LOOP LEFT\n");
+				if (pX < sightCheckR)
+				{
+					player.currentPositionX += ROOM_COUNT * 1600;
+					//TeleportMonsterRoom((ROOM_COUNT * 1600));
+					//printf("Looping Left to Right\n");
+				}
+			}
+		}
+		//edge case rignt room loop to left.
+		else if (i > ROOM_COUNT)
+		{
+			int sightCheckR = (ROOM_COUNT - CENTER_ROOM_INDEX) * 1600;
+			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
+			{
+				Room_Load(roomList[0], player, ROOM_COUNT - CENTER_ROOM_INDEX);
+				//printf("Loading Room: LOOP RIGHT\n");
+				if (pX > sightCheckR)
+				{
+					player.currentPositionX -= ROOM_COUNT * 1600;
+					//TeleportMonsterRoom(-1 * (ROOM_COUNT * 1600));
+					//printf("Looping Right to Left\n");
+				}
+			}
+		}
+	}
 }

@@ -116,14 +116,16 @@ void Player_Update(Player *player) {
 	}
 }
 
-void Player_CheckInteractables(Interactable *interactables[], int count) {
+void Player_CheckInteractables(Interactable *interactables[], int count, float relativePosition) {
 	if (CP_Input_KeyReleased(KEY_E)) {
 		printf("\nAttempting Interaction!!!\n");
 		for (int i = 0; i < count; i++) {
 			Interactable* currInteractable = interactables[i];
-			if (currInteractable->proximity > fabs(currInteractable->xPosition - thisPlayer->currentPositionX)) {
-				//printf("PRINT FROM PLAYER.C -> Interact with %s\n", currInteractable->name);
+			float newPosition = relativePosition + currInteractable->worldXPosition;
+			if (currInteractable->proximity > fabs(newPosition - thisPlayer->currentPositionX)) {
+				//printf("PRINT FROM PLAYER.C -> Interact with %s from Position: %f\n", currInteractable->name, currInteractable->worldXPosition);
 				currInteractable->OnInteract();
+				printf("Interact with %s from Position: %f\n", currInteractable->name, newPosition);
 			}
 		}
 	}
@@ -141,6 +143,10 @@ void Player_StaminaUpdate(Player *player) {
 	staminaAlpha = CP_Math_ClampFloat(staminaAlpha, 0.f, 150.f);
 	SpriteData_Update(&staminaBarSprite, 1200.f * (player->currentStamina / player->maxStamina), 30, staminaAlpha);
 	Sprite_Draw(staminaBarSheet, staminaBarSprite, 0, 400, 1, 1);
+
+	if (CP_Input_KeyDown(KEY_SPACE)) {
+		player->currentStamina = 100.f;
+	}
 }
 
 void Player_OilUpdate(Player* player) {
