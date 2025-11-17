@@ -78,6 +78,7 @@ Slider BGMSlider, SFXSlider, masterSlider;
 CP_Color knobColor;
 
 CP_Image vignette;
+float FadeIn;
 
 void DrawPauseMenu(void)
 {
@@ -160,6 +161,7 @@ void game_init(void) {
 	InitialiseRooms();
 }
 
+
 void game_update(void) {
 
 	if (CP_Input_KeyTriggered(KEY_ESCAPE))
@@ -222,10 +224,20 @@ void game_update(void) {
 	if (player.currentHealth <= 0 && !player.toDraw)
 	{
 		//Draw you died
-		CP_Image_Draw(youDied, 800, 450, 1600, 900, 170);
+
+		if (FadeIn < 170)
+		{
+			FadeIn += (20.f * DeltaTime());
+	
+		}
+		CP_Image_Draw(youDied, 800, 450, 1600, 900, FadeIn);
+	
+
+
 		if (CP_Input_KeyReleased(KEY_ANY))
 		{
 			//Go back to main menu
+
 
 			StartTransition();
 			nextScene = MAIN;
