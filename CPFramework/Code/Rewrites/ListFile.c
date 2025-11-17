@@ -81,3 +81,15 @@ void ListRemoveAt(List* list, size_t index)
 	}
 	list->size--;
 }
+
+const char* intToConstChar(int num) {
+	int len = snprintf(NULL, 0, "%d", num);
+	char* str = (char*)malloc(len + 1);
+	if (str == NULL) {
+		perror("Failed to allocate memory for string");
+		return NULL;
+	}
+	snprintf(str, len + 1, "%d", num);
+
+	return str;
+}

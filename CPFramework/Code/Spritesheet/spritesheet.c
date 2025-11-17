@@ -50,7 +50,6 @@ void Sprite_Draw(Spritesheet sheet, SpriteData sprite, int xPos, int yPos, int f
 	int topMostPixel = sprite.column * sheet.spriteHeight;
 	int rightMostPixel = leftmostPixel + sheet.spriteWidth;
 	int bottomMostPixel = topMostPixel + sheet.spriteHeight;
-
 	CP_Image_DrawSubImage(sheet.source, (float)xPos + 800, (float)yPos + 450, (float)sprite.width * faceX, (float)sprite.height * faceY,
 		(float)leftmostPixel, (float)topMostPixel, (float)rightMostPixel, (float)bottomMostPixel, sprite.alpha);
 }
