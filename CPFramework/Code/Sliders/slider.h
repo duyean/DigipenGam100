@@ -16,7 +16,7 @@ void SliderValues(Slider* s, float x, float y);
 void HandleSliderInput(Slider* s, float* volume, CP_SOUND_GROUP group);
 
 void ReturnMenu(void);
-void UpdateVolumeSlider(Slider* s, float (*getVol)(), void (*setVol)(float), int group);
+void UpdateVolumeSlider(Slider* s, float (*getVol)(), void (*setVol)(float), int group, CP_Color knobColor);
 
 void ControlsPopUp(void);
 void OpenControlsPopUp(void);
