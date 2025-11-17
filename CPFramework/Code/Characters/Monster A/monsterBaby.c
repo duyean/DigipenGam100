@@ -8,7 +8,6 @@
 // WORK IN PROGRESS DO NOT REFACTOR
 
 List* babyList;
-Player* playerRef;
 CP_Vector* trapTriggeredPos;
 TextTemplate babyTextTemplate;
 
@@ -17,12 +16,6 @@ Animation AnimationList[5];
 
 
 CP_Sound monsterSfx[3];
-
-void SetPlayerRef(Player* player)
-{
-	playerRef = player;
-}
-
 MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float detection, float attack, float lost)
 {
 	MonsterBabyObject* new = (MonsterBabyObject*)malloc(sizeof(MonsterBabyObject));
@@ -91,13 +84,16 @@ void destroyBabyMonster(MonsterBabyObject* obj)
 
 void clearBabyMonsterListMemory(void)
 {
-	for (int i = 0; i < babyList->size; i++)
+	if (babyList != NULL)
 	{
-		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
-		destroyBabyMonster(obj);
-	}
+		for (int i = 0; i < babyList->size; i++)
+		{
+			MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+			destroyBabyMonster(obj);
+		}
 
-	ListDestroy(babyList);
+		ListDestroy(babyList);
+	}
 }
 void InitializeBaby(void)
 {
@@ -106,24 +102,22 @@ void InitializeBaby(void)
 	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
 
 	babyList = ListCreate(1);
-	ListAppend(babyList, createBabyMonster(600, 0, 110.f, 500.f, 50.f, 5.f));
-	ListAppend(babyList, createBabyMonster(-600, 0, 110.f, 500.f, 50.f, 5.f));
 
-	//ListAppend(babyList, createBabyMonster(800, 0, 110.f, 500.f, 10.f, 5.f));
-	//ListAppend(babyList, createBabyMonster(-800, 0, 110.f, 500.f, 10.f, 5.f));
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
 	CP_Font_Set(babyTextTemplate.font);
 }
 
+void externalCreateM_B(int x, int y)
+{
+	//default y=0;
+	ListAppend(babyList, createBabyMonster(x, y, 110.f, 500.f, 50.f, 5.f));
+}
+
+
 void sendMonstersToTrap(float trapXPos, float trapYPos)
 {
 	*trapTriggeredPos = CP_Vector_Set(trapXPos, trapYPos);
-}
-
-float changeRange(float OldValue, float OldMin, float NewMax, float NewMin, float OldMax)
-{
-	return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
 }
 
 void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
@@ -457,18 +451,6 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		break;
 	}
 	}
-}
-
-const char* intToConstChar(int num) {
-	int len = snprintf(NULL, 0, "%d", num);
-	char* str = (char*)malloc(len + 1);
-	if (str == NULL) {
-		perror("Failed to allocate memory for string");
-		return NULL;
-	}
-	snprintf(str, len + 1, "%d", num);
-
-	return str;
 }
 
 void UpdateMonsterBaby()

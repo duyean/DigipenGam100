@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../Characters/Monster A/monsterBaby.h"
-
-#define INTERACTABLES_COUNT 2
+#include "../../Characters/Monster A/monsterSpawner.h"
+#define INTERACTABLES_COUNT 3
 #define ROOM_COUNT 5
 
 #define CENTER_ROOM_INDEX 2
@@ -32,6 +32,8 @@ Animation oilAnimation;
 
 
 Interactable doorTest;
+
+Interactable liftTest;
 
 CP_Vector worldCenterPosition;
 
@@ -60,6 +62,7 @@ float lastFrameTime = 0;
 /*Functions here are for testing and can be removed for FINAL*/
 void InitialiseInteractables(void);
 void LockerTest(void);
+void LiftTest(void);
 void InitialiseRooms(void);
 
 extern CP_Sound mainMenuMusic;
@@ -79,7 +82,11 @@ void game_init(void) {
 	youDied = CP_Image_Load("./Assets/youdiedtest.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
+	InitializeRedBaby();
 	InitializeBaby();
+
+	SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
+	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
@@ -154,7 +161,10 @@ void game_update(void) {
 		Interactable_Update(interactablesArray[i], interactablesArray[i]->xPosition - playerX, interactablesArray[i]->yPosition - playerY);
 	}
 
+	//UpdateMonsters
+	UpdateMonsterRedBaby();
 	UpdateMonsterBaby();
+
 	Player_Update(&player);
 
 	
@@ -207,22 +217,29 @@ void game_update(void) {
 }
 
 void game_exit(void) {
-
+	clearBabyMonsterListMemory();
 }
 
 void InitialiseInteractables(void) {
 	Interactable_InitialiseData();
 
-	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
+	doorTest = Interactable_CreateDoor(-300.f, 20.f, &LockerTest);
 	interactablesArray[0] = &doorTest;
 
 
 	oilBlob = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
 	interactablesArray[1] = &oilBlob;
+
+	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
+	interactablesArray[2] = &liftTest;
 }
 
 void LockerTest(void) {
 	Interactable_DoorInteraction(&doorTest, &player);
+}
+
+void LiftTest(void) {
+	Interactable_LiftInteraction(&liftTest, &player);
 }
 
 void InitialiseRooms(void) {

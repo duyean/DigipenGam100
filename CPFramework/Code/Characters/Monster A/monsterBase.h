@@ -30,4 +30,9 @@ typedef struct MonsterObject
 
 } MonsterObject;
 
+Player* playerRef;
+
+void SetPlayerRef(Player* player);
+
 #endif
+

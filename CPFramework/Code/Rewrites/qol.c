@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cprocessing.h"
+#include <stdio.h>
 
 CP_Vector GetMousePosition(void) 
 {
@@ -29,4 +30,9 @@ int GetScreenHorizontalSize(void)
 int GetScreenVerticalSize(void) 
 {
 	return 900;
+}
+
+float changeRange(float OldValue, float OldMin, float NewMax, float NewMin, float OldMax)
+{
+	return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
 }

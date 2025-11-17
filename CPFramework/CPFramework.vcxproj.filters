@@ -126,7 +126,13 @@
     <ClCompile Include="Code\Characters\Monster A\monsterBaby.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Characters\Monster A\monster.c">
+    <ClCompile Include="Code\Characters\Monster A\monsterSpawner.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBabyRed.c">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Characters\Monster A\monsterBase.c">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,7 +206,7 @@
     <ClInclude Include="Code\Characters\Player\player.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Characters\Monster A\monster.h">
+    <ClInclude Include="Code\Characters\Monster A\monsterSpawner.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
     <ClInclude Include="Code\Dbg\dbg.h">
@@ -273,6 +279,9 @@
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
     <ClInclude Include="Code\Characters\Monster A\monsterBase.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Characters\Monster A\monsterBabyRed.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
