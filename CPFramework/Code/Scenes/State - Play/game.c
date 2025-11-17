@@ -25,9 +25,11 @@ Camera* camera;
 float playerX = 0, playerY = 0;
 float lastPlayerX = 0, lastPlayerY = 0;
 
-Interactable *interactablesArray[INTERACTABLES_COUNT];
+Interactable *interactablesArray_a[INTERACTABLES_COUNT];
+Interactable* interactablesArray_b[INTERACTABLES_COUNT];
+Interactable* interactablesArray_c[INTERACTABLES_COUNT];
 
-Interactable oilBlob;
+Interactable oilBlobTest;
 Spritesheet oilSpritesheet;
 SpriteData oilFrames[4];
 CP_Image oilImage;
@@ -148,8 +150,8 @@ void game_init(void) {
 	InitializeRedBaby();
 	InitializeBaby();
 
-    SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
-	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
+    //SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
+	//SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
@@ -254,15 +256,30 @@ void game_exit(void) {
 void InitialiseInteractables(void) {
 	Interactable_InitialiseData();
 
+	//array set a
 	doorTest = Interactable_CreateDoor(-300.f, 20.f, &LockerTest);
-	interactablesArray[0] = &doorTest;
+	interactablesArray_a[0] = &doorTest;
 
 
-	oilBlob = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
-	interactablesArray[1] = &oilBlob;
+	oilBlobTest = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
+	interactablesArray_a[1] = &oilBlobTest;
 
 	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
-	interactablesArray[2] = &liftTest;
+	interactablesArray_a[2] = &liftTest;
+
+	//array set b
+	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
+	interactablesArray_b[0] = &doorTest;
+
+	oilBlobTest = Interactable_CreateOilBlob(500.f, 0.f, &Interactable_OilInteraction);
+	interactablesArray_b[1] = &oilBlobTest;
+
+	//array set c
+	doorTest = Interactable_CreateDoor(300.f, 20.f, &LockerTest);
+	interactablesArray_c[0] = &doorTest;
+
+	oilBlobTest = Interactable_CreateOilBlob(0.f, 0.f, &Interactable_OilInteraction);
+	interactablesArray_c[1] = &oilBlobTest;
 }
 
 void LockerTest(void) {
@@ -295,22 +312,22 @@ void InitialiseRooms(void) {
 		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
 	}
 
-	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray, 2);
+	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
 	roomList[0] = &r1;
-	r2 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
+	r2 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray_c, 2);
 	roomList[1] = &r2;
-	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray, 3);
+	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray_a, 3);
 	roomList[2] = &r3;
-	r4 = Room_Create(Bg3_ss, Bg3_sd,3, interactablesArray, 2);
+	r4 = Room_Create(Bg3_ss, Bg3_sd,3, interactablesArray_b, 2);
 	roomList[3] = &r4;
-	r5 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray, 2);
+	r5 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray_c, 2);
 	roomList[4] = &r5;
 	
 }
 
 void Room_Update(void) {
 	//clear console cause holy shit i get headache trying to read -day
-	//printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	//printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Player Position: %0.3f\n", player.currentPositionX);
 	//room render checking
 	for (int i = 0; i < ROOM_COUNT + 2; i++)
 	{
@@ -330,7 +347,7 @@ void Room_Update(void) {
 		//edge case left room loop to right.
 		else if (i == ROOM_COUNT)
 		{
-			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT - 1) * 1600;
+			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT) * 1600;
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{

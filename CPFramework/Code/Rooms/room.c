@@ -23,7 +23,8 @@ Room Room_Create(Spritesheet roomComponents[], SpriteData frame[], int component
 
 void Room_Load(Room* room, Player player, int position)
 {
-	int relativePos = position * 1600 - player.currentPositionX;
+	int roomPos = position * 1600;
+	int relativePos = roomPos - player.currentPositionX;
 
 	// Set up background
 	for (int i = 0; i < room->componentCount; i++)
@@ -36,12 +37,11 @@ void Room_Load(Room* room, Player player, int position)
 			default:
 				Sprite_Draw(room->roomComponents[i], room->frame[i], relativePos, 0, 1, 1);
 				break;
-		}
-	}
+	}	}
 	for (int i = 0; i < room->interactibleCount; i++)
 	{
 		Interactable_Update(room->interractibles[i], relativePos + room->interractibles[i]->worldXPosition, room->interractibles[i]->worldYPosition);
 	}
 
-	Player_CheckInteractables(room->interractibles, room->interactibleCount, relativePos);
+	Player_CheckInteractables(room->interractibles, room->interactibleCount, roomPos);
 }

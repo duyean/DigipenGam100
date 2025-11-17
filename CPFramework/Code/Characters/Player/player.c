@@ -98,8 +98,7 @@ void Player_Update(Player *player) {
 		if (CP_Input_KeyDown(KEY_LEFT_SHIFT) && player->currentStamina > 0) {
 			player->currentStamina -= 45.f * DeltaTime();
 			player->movementMultiplier = 2.5f;
-		}
-	}
+	}	}
 	else {
 		Sprite_Draw(characterSheet, characterSprites[0], 0, 0, player->faceDirection, 1);
 	}
@@ -114,13 +113,15 @@ void Player_CheckInteractables(Interactable *interactables[], int count, float r
 		printf("\nAttempting Interaction!!!\n");
 		for (int i = 0; i < count; i++) {
 			Interactable* currInteractable = interactables[i];
-			float newPosition = relativePosition + currInteractable->worldXPosition;
-			if (currInteractable->proximity > fabs(newPosition - thisPlayer->currentPositionX)) {
+			float globalPosition = relativePosition + currInteractable->worldXPosition;
+			if (currInteractable->proximity > fabs(globalPosition - thisPlayer->currentPositionX)) {
 				//printf("PRINT FROM PLAYER.C -> Interact with %s from Position: %f\n", currInteractable->name, currInteractable->worldXPosition);
 				currInteractable->OnInteract();
-				printf("Interact with %s from Position: %f\n", currInteractable->name, newPosition);
+				printf("ALLOWS = Interact with %s from Position: %.3f with offset of %.3f\n", currInteractable->name, globalPosition, currInteractable->proximity);
 			}
+			printf("Active Interractible at Position: %.3f\n", globalPosition);
 		}
+		printf("Player Position: %.3f\n", thisPlayer->currentPositionX);
 	}
 }
 
