@@ -1,0 +1,11 @@
+Operator
+What are those things you're running from?
+../assets/Radio.png
+
+Operator
+Heh. Wouldn't you like to know.
+../assets/Radio.png
+
+Operator
+We're already at the next floor. Get out.
+../assets/Radio.png

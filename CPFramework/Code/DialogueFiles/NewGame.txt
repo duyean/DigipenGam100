@@ -1,0 +1,11 @@
+Interviewer
+Are you sure you want to take this job? It's less than... desirable.  #bg:../assets/bg_office.png #music:../assets/audio/mainmenu/officeSounds.mp3
+../assets/Inverviewer.png
+
+Interviewer
+If you say so, here's the contract. #pause:2.0
+../assets/Inverviewer.png
+
+Interviewer
+Just sign here and you'll get the job, I guess. #bg:assets/table.png
+../assets/Conract.png

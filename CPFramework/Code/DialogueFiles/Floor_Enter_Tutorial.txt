@@ -1,0 +1,15 @@
+Operator
+Don't know how you got here, but I hope you know what you're getting yourself into. 
+../assets/Radio.png
+
+Operator
+That thing on your bottom right is your container.
+../assets/Radio.png
+
+Operator
+We need you to fill it up before we proceed to the next floor.
+../assets/Radio.png
+
+Operator
+Oh, and be careful out there. Assume everything is out to get you.
+../assets/Radio.png

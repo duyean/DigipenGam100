@@ -1,0 +1,7 @@
+Operator
+Do you have family waiting for you at home?
+../assets/Radio.png
+
+Operator
+Heh. Either way, it's too late now to reget.
+../assets/Radio.png
