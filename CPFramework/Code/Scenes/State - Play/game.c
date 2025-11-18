@@ -11,6 +11,7 @@
 #include "../../CMP_Audio_Pak.h"
 #include "../../CMP_Settings_Pak.h"
 #include "../../CMP_Monster_Pak.h"
+#include "../../CMP_Dialogue_Pak.h"
 #include "../../Dbg/dbg.h"
 
 
@@ -54,13 +55,20 @@ SpriteData Bg3_sd[3];
 //Just to reduce the printf occurence
 float lastFrameTime = 0;
 
+// settings menu
 bool isGamePaused = false;
-Button resumeButton, quitButton;
+Button resumeButton, quitButton, settingsButton;
 TextTemplate pauseTextTemplate;
-CP_Image buttonBG;
+CP_Image buttonBG, settingsButtonBG;
 SceneEnum sceneChange;
 Slider BGMSlider, SFXSlider, masterSlider;
 CP_Color knobColor;
+
+// dialogue stuff
+static DialogueSystem ds;   // global dialogue system
+static DialogueLine* lines; // loaded dialogue lines
+static int lineCount = 0;
+static int dialogueJustStarted = 0;
 
 CP_Image vignette;
 float FadeIn;
@@ -76,11 +84,13 @@ void LiftTest(void);
 void InitialiseRooms(void);
 void Room_Update(void);
 
-
-
 void game_init(void) {
 
 	buttonBG = CP_Image_Load("./Assets/MainMenuButton.png");
+	settingsButtonBG = CP_Image_Load("./Assets/SettingsButton.png");
+
+	//dialogueBox = CP_Image_Load("./Assets/DialogueBox.png");
+	//dialogueLady = CP_Image_Load("./Assets/DialogueLady.png");
 
 	pauseTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(255, 255, 255, 255));
 	CP_Font_Set(pauseTextTemplate.font);
@@ -91,6 +101,9 @@ void game_init(void) {
 
 	quitButton = CreateButton(500, 500, 480, 60, 255, &QuitGame);
 	quitButton = AddTextToButton(&quitButton, "Main Menu", -100, 0);
+
+	settingsButton = CreateButton(1500, 100, 60, 60, 255, &PauseGame);
+	settingsButton = AddTextToButton(&settingsButton, "", -100, 0);
 
 	SliderValues(&masterSlider, 900, 400);
 	SliderValues(&BGMSlider, 900, 500);
@@ -103,8 +116,8 @@ void game_init(void) {
 	InitializeRedBaby();
 	InitializeBaby();
 
-    //SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
-	//SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
+    SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
+	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
@@ -114,12 +127,24 @@ void game_init(void) {
 
 	//Test Background Sprites
 	InitialiseRooms();
-}
 
+	lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
+	if (!lines) {
+		printf("failed to load dialogue i hope you kill yourself\n");
+		ds.isActive = 0; // prevent dereferencing
+		return;
+	}
+
+	DialogueSystem_Init(&ds, lines, lineCount);
+	dialogueJustStarted = 1;
+}
 
 void game_update(void) {
 
-	if (CP_Input_KeyTriggered(KEY_ESCAPE))
+	// DO NOT USE TRIGGER
+	// idk why but. yeah -jelly
+	// PS. also do not shift this beyond the clearbackground else the cool fade disappears
+	if (CP_Input_KeyDown(KEY_ESCAPE))
 	{
 		isGamePaused = true;
 	}
@@ -134,15 +159,45 @@ void game_update(void) {
 	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
+	// draw the room first so it blocks everything else from updating
+	// player is gone but will appear when dialogue is over. unintentional-ish
+	// but it kinda makes it look like the player is leaving the lift ykykykyk -jelly
 	Room_Update();
-	
-	//room rendering end.
-	//printf("Player X Position: %.3f\n", player.currentPositionX);
-	//UpdateMonsters
-	UpdateMonsterRedBaby();
-	UpdateMonsterBaby();
 
-	Player_Update(&player);
+	// fucken hell this took me so long
+	if (!ds.isActive) // || dialogueJustStarted
+	{
+		UpdateMonsterRedBaby();
+		UpdateMonsterBaby();
+		Player_Update(&player);
+	}
+
+	if (ds.isActive) {
+		DialogueSystem_Update(&ds);
+		DialogueSystem_Draw(&ds);
+
+		if (dialogueJustStarted) {
+			// allow one update tick before pausing
+			dialogueJustStarted = 0; // next frame will be paused
+		} 
+		return; // skip further updates while dialogue is active lalallaa
+	}
+
+	if (DialogueSystem_IsFinished(&ds)) {
+		CP_Font_DrawText("Dialogue finished!", 400, 360);
+	}
+
+	//Room_Update();
+
+	////room rendering end.
+	////printf("Player X Position: %.3f\n", player.currentPositionX);
+	////UpdateMonsters
+	//UpdateMonsterRedBaby();
+	//UpdateMonsterBaby();
+
+	//Player_Update(&player);
+
+	DrawButtonUsingImage(settingsButtonBG, &settingsButton, pauseTextTemplate);
 
 	// Calculate player movement delta (velocity) since last frame
 	playerX = player.currentPositionX; playerY = player.currentPositionY;
@@ -226,6 +281,8 @@ void game_exit(void) {
 
 void PauseGame(void)
 {
+	isGamePaused = true; 
+
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 80));
 	CP_Settings_TextSize(80);
 	CP_Font_DrawText("PAUSED", 800, 250);

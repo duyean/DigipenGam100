@@ -139,10 +139,10 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Code\PopUp\popup.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
     <ClCompile Include="Code\Sliders\slider.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\Standard Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

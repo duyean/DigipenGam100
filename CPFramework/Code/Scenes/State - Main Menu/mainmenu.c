@@ -73,7 +73,8 @@ void main_menu_exit(void) {
 	CP_Image_Free(menuBackground);
 	CP_Image_Free(buttonUIImage);
 	CP_Font_Free(mainMenuTextTemplate.font);
-	Audio_Unload();
+
+	// don't unload BGM pleaes -jelly
 }
 
 void PlayButtonPressed() {

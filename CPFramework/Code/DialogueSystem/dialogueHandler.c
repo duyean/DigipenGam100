@@ -11,7 +11,7 @@ void DialogueSystem_Init(DialogueSystem* ds, DialogueLine* lines, int count) {
     ds->lines = lines;
     ds->totalLines = count;
     ds->currentLineIndex = 0;
-    ds->textbox = CP_Image_Load("../assets/textbox.png");
+    ds->textbox = CP_Image_Load("./Assets/Textbox.png");
     ds->currentSprite = CP_Image_Load(lines[0].spritePath);
 	ds->currentBackground = lines[0].backgroundPath ? CP_Image_Load(lines[0].backgroundPath) : NULL;
     ds->isActive = 1;
@@ -27,7 +27,7 @@ void DialogueSystem_Update(DialogueSystem* ds) {
         return;
     }
 
-    if (CP_Input_KeyTriggered(KEY_ENTER) || (CP_Input_KeyTriggered(MOUSE_BUTTON_LEFT))) {
+    if (CP_Input_KeyTriggered(KEY_ENTER) || CP_Input_KeyTriggered(KEY_SPACE)) {
         ds->currentLineIndex++;
         if (ds->currentLineIndex >= ds->totalLines) {
             ds->isActive = 0;
@@ -80,11 +80,13 @@ void DialogueSystem_Draw(DialogueSystem* ds) {
     CP_Image_Draw(ds->textbox, 640, 500, 1280, 200, 255);
 
     // Draw speaker and text
-    CP_Settings_TextSize(24);
     //CP_Settings_TextAlignment(); //idk how to align left im running out of time pls read documentation hehe -day
     CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-    CP_Font_DrawText(line->speaker, 100, 450);
-    CP_Font_DrawText(line->text, 100, 490);
+
+    CP_Settings_TextSize(50);
+    CP_Font_DrawText(line->speaker, 800, 650);
+    CP_Settings_TextSize(40);
+    CP_Font_DrawText(line->text, 800, 700);
 }
 
 int DialogueSystem_IsFinished(DialogueSystem* ds) {
