@@ -18,6 +18,7 @@ float frameDuration = 15.f;
 
 //Oil Stuff
 CP_Image oilContainerImage;
+float oilImageX, oilImageY;
 Spritesheet oilContainerSheet;
 SpriteData oilContainerSprite;
 
@@ -25,7 +26,7 @@ SpriteData oilContainerSprite;
 CP_Image staminaBarImage;
 Spritesheet staminaBarSheet;
 SpriteData staminaBarSprite;
-float staminaAlpha = 255.f;
+float staminaDrawAlpha = 255.f;
 
 
 //Extra that Edmund suggest to add something like this
@@ -57,7 +58,7 @@ void Player_Initialise(Player *player) {
 	player->maxHealth = player->currentHealth = 1;
 	player->maxStamina = player->currentStamina = 100.f;
 	player->maxOil = 100.f;
-	player->currentOil = 25.f;
+	player->currentOil = 0.f;
 
 	thisPlayer = player;
 
@@ -72,6 +73,8 @@ void Player_Initialise(Player *player) {
 	oilContainerImage = CP_Image_Load("./Assets/Container.png");
 	oilContainerSheet = Spritesheet_Create(oilContainerImage, 512, 512);
 	oilContainerSprite = SpriteData_Create(180, 180, 0, 0, 255.f);
+	oilImageX = 700.f;
+	oilImageY = 330.f;
 }
 
 void Player_Update(Player *player) {
@@ -96,7 +99,9 @@ void Player_Update(Player *player) {
 		player->currentPositionX += player->faceDirection * player->movementSpeed * player->movementMultiplier * DeltaTime();
 		Animation_Animate(&characterAnimation, 0, 0, player->faceDirection, 1);
 		if (CP_Input_KeyDown(KEY_LEFT_SHIFT) && player->currentStamina > 0) {
-			player->currentStamina -= 45.f * DeltaTime();
+			float encumberance = player->currentOil / player->maxOil * 10.f;
+			printf("Current encumberance: %.2f\n", encumberance);
+			player->currentStamina -= (45.f + encumberance) * DeltaTime();
 			player->movementMultiplier = 2.5f;
 	}	}
 	else {
@@ -129,15 +134,16 @@ void Player_StaminaUpdate(Player *player) {
 	player->currentStamina += 5.f * DeltaTime();
 	player->currentStamina = CP_Math_ClampFloat(player->currentStamina, 0.f, 100.f);
 	if (player->currentStamina >= player->maxStamina) {
-		staminaAlpha -= 255.f * DeltaTime();
+		staminaDrawAlpha -= 255.f * DeltaTime();
 	}
 	else {
-		staminaAlpha += 1000.f * DeltaTime();
+		staminaDrawAlpha += 1000.f * DeltaTime();
 	}
-	staminaAlpha = CP_Math_ClampFloat(staminaAlpha, 0.f, 150.f);
-	SpriteData_Update(&staminaBarSprite, 1200.f * (player->currentStamina / player->maxStamina), 30, staminaAlpha);
+	staminaDrawAlpha = CP_Math_ClampFloat(staminaDrawAlpha, 0.f, 150.f);
+	SpriteData_Update(&staminaBarSprite, 1200.f * (player->currentStamina / player->maxStamina), 30, staminaDrawAlpha);
 	Sprite_Draw(staminaBarSheet, staminaBarSprite, 0, 400, 1, 1);
 
+	/*This is for testing and should be removed*/
 	if (CP_Input_KeyDown(KEY_SPACE)) {
 		player->currentStamina = 100.f;
 	}
@@ -146,9 +152,15 @@ void Player_StaminaUpdate(Player *player) {
 void Player_OilUpdate(Player* player) {
 	CP_Settings_Fill(CP_Color_Create(100, 100, 100, 255));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect(1453.f, 830.f - player->currentOil, 100.f, player->currentOil);
+	CP_Graphics_DrawRect(750.f + oilImageX, 500.f + oilImageY, 100.f, -player->currentOil);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-	Sprite_Draw(oilContainerSheet, oilContainerSprite, 700, 330, 1, 1);
+	Sprite_Draw(oilContainerSheet, oilContainerSprite, oilImageX, oilImageY, 1, 1);
+}
+
+void Player_Unload(void) {
+	CP_Image_Free(characterSheetImage);
+	CP_Image_Free(oilContainerImage);
+	CP_Image_Free(staminaBarImage);
 }
 
 Spritesheet GetPlayerSheet(void) {

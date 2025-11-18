@@ -70,7 +70,10 @@ void main_menu_update(void) {
 }
 
 void main_menu_exit(void) {
-	//free(myImage);
+	CP_Image_Free(menuBackground);
+	CP_Image_Free(buttonUIImage);
+	CP_Font_Free(mainMenuTextTemplate.font);
+	Audio_Unload();
 }
 
 void PlayButtonPressed() {

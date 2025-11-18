@@ -28,4 +28,4 @@ void Interactable_OilInteraction(void);
 
 /*Initialise the Interactable Data to cache the data that will be used*/
 void Interactable_InitialiseData(void);
-void Interactabe_FreeData(void);
+void Interactable_Unload(void);

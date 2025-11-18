@@ -87,3 +87,9 @@ void AudioPlaySFX(CP_Sound sound)
 {
 	CP_Sound_PlayAdvanced(sound, effectiveSFX * masterVolume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 }
+
+void Audio_Unload(void) {
+	CP_Sound_Free(mainMenuMusic);
+	CP_Sound_Free(soundEffects);
+	CP_Sound_Free(gameplayMusic);
+}

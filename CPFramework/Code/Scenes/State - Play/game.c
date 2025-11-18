@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "cprocessing.h"
+#include "game.h"
 #include "../../CMP_Core_Pak.h"
 #include "../../CMP_Scene_Pak.h"
 #include "../../CMP_Player_Pak.h"
@@ -6,17 +10,13 @@
 #include "../../CMP_Room_Pak.h"
 #include "../../CMP_Audio_Pak.h"
 #include "../../CMP_Settings_Pak.h"
-#include "game.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "../../Characters/Monster A/monsterBaby.h"
-#include "../../Characters/Monster A/monsterSpawner.h"
-#define INTERACTABLES_COUNT 3
+#include "../../CMP_Monster_Pak.h"
+#include "../../Dbg/dbg.h"
+
+
+enum { INTERACTABLES_COUNT = 3};
 #define ROOM_COUNT 5
-
 #define CENTER_ROOM_INDEX ROOM_COUNT/2
-
 #define RENDER_RANGE 1600
 
 CP_Color background;
@@ -26,18 +26,11 @@ float playerX = 0, playerY = 0;
 float lastPlayerX = 0, lastPlayerY = 0;
 
 Interactable *interactablesArray_a[INTERACTABLES_COUNT];
-Interactable* interactablesArray_b[INTERACTABLES_COUNT];
-Interactable* interactablesArray_c[INTERACTABLES_COUNT];
+Interactable *interactablesArray_b[INTERACTABLES_COUNT];
+Interactable *interactablesArray_c[INTERACTABLES_COUNT];
 
 Interactable oilBlobTest;
-Spritesheet oilSpritesheet;
-SpriteData oilFrames[4];
-CP_Image oilImage;
-Animation oilAnimation;
-
-
 Interactable doorTest;
-
 Interactable liftTest;
 
 CP_Vector worldCenterPosition;
@@ -61,16 +54,6 @@ SpriteData Bg3_sd[3];
 //Just to reduce the printf occurence
 float lastFrameTime = 0;
 
-
-/*UPDATE THE ADDRESS HANDLING FOR INTERACTABLES*/
-
-/*Functions here are for testing and can be removed for FINAL*/
-void InitialiseInteractables(void);
-void LockerTest(void);
-void LiftTest(void);
-void InitialiseRooms(void);
-void Room_Update(void);
-
 bool isGamePaused = false;
 Button resumeButton, quitButton;
 TextTemplate pauseTextTemplate;
@@ -82,49 +65,19 @@ CP_Color knobColor;
 CP_Image vignette;
 float FadeIn;
 
-void DrawPauseMenu(void)
-{
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 80));
-	CP_Settings_TextSize(80);
-	CP_Font_DrawText("PAUSED", 800, 250);
-
-	DrawButtonUsingImage(buttonBG, &resumeButton, pauseTextTemplate);
-	DrawButtonUsingImage(buttonBG, &quitButton, pauseTextTemplate);
-
-	CP_Settings_TextSize(40);
-	knobColor = CP_Color_Create(102, 102, 102, 255);
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("Master Volume", 1020, 350);
-	UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1, knobColor);
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("BGM Volume", 1000, 450);
-	UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0, knobColor);
-
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("SFX Volume", 1000, 550);
-	UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1, knobColor);
-
-	TransitionFadeIn(1.f, 0, 0, 0, 0);
-	TransitionFadeOut(.5f, sceneChange);
-}
-
-void ResumeGame(void) {
-	isGamePaused = false;
-}
-
-void QuitGame(void) {
-	StartTransition();
-	isGamePaused = false;
-
-	// they move after a while but lalallaa
-	sceneChange = MAIN;
-}
-
-CP_Image youDied;
-
+CP_Image youDiedImage;
 SceneEnum nextScene;
+
+int DEBUG_ENABLED = 0;
+
+void InitialiseInteractables(void);
+void LockerTest(void);
+void LiftTest(void);
+void InitialiseRooms(void);
+void Room_Update(void);
+
+
+
 void game_init(void) {
 
 	buttonBG = CP_Image_Load("./Assets/MainMenuButton.png");
@@ -144,7 +97,7 @@ void game_init(void) {
 	SliderValues(&SFXSlider, 900, 600);
 
 	vignette = CP_Image_Load("./Assets/Vignette.png");
-	youDied = CP_Image_Load("./Assets/youdiedtest.png");
+	youDiedImage = CP_Image_Load("./Assets/youdiedtest.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
 	InitializeRedBaby();
@@ -173,7 +126,7 @@ void game_update(void) {
 
 	if (isGamePaused)
 	{
-		DrawPauseMenu();
+		PauseGame();
 		CP_Image_Draw(vignette, 800, 450, 1600, 900, 10); // IT FADES 
 		return; // pauses lol the whole deltatime thing was just a SCAMMMM
 	}
@@ -190,10 +143,6 @@ void game_update(void) {
 	UpdateMonsterBaby();
 
 	Player_Update(&player);
-
-	
-	/*TO BE UPDATED: SLOT FUNCTION FOR CURRENT ROOM - J*/
-	//Player_CheckInteractables(interactablesArray, INTERACTABLES_COUNT);
 
 	// Calculate player movement delta (velocity) since last frame
 	playerX = player.currentPositionX; playerY = player.currentPositionY;
@@ -232,25 +181,87 @@ void game_update(void) {
 			FadeIn += (20.f * DeltaTime());
 	
 		}
-		CP_Image_Draw(youDied, 800, 450, 1600, 900, FadeIn);
+		CP_Image_Draw(youDiedImage, 800, 450, 1600, 900, (int)FadeIn);
 	
 
 
 		if (CP_Input_KeyReleased(KEY_ANY))
 		{
-			//Go back to main menu
-
-
 			StartTransition();
 			nextScene = MAIN;
 		}
 		TransitionFadeIn(1.f, 0, 0, 0, 255);
 		TransitionFadeOut(.5f, nextScene);
 	}
+
+	
+	if (IsDebugging()) {
+		ShowDebugInfo();
+	}
+	if (CP_Input_KeyReleased(KEY_P)) {
+		ToggleDebug();
+	}
 }
 
 void game_exit(void) {
-	clearBabyMonsterListMemory();
+	Player_Unload();
+	Monsters_Unload();
+	Interactable_Unload();
+
+	//Level Unload
+	CP_Image_Free(buttonBG);
+	CP_Image_Free(vignette);
+	CP_Image_Free(youDiedImage);
+	for (int i = 0; i < 3; i++) {
+		CP_Image_Free(Bg1_i[i]);
+	}
+	for (int i = 0; i < 3; i++) {
+		CP_Image_Free(Bg2_i[i]);
+	}
+	for (int i = 0; i < 3; i++) {
+		CP_Image_Free(Bg3_i[i]);
+	}
+	CP_Font_Free(pauseTextTemplate.font);
+}
+
+void PauseGame(void)
+{
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 80));
+	CP_Settings_TextSize(80);
+	CP_Font_DrawText("PAUSED", 800, 250);
+
+	DrawButtonUsingImage(buttonBG, &resumeButton, pauseTextTemplate);
+	DrawButtonUsingImage(buttonBG, &quitButton, pauseTextTemplate);
+
+	CP_Settings_TextSize(40);
+	knobColor = CP_Color_Create(102, 102, 102, 255);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("Master Volume", 1020, 350);
+	UpdateVolumeSlider(&masterSlider, AudioGetMasterVolume, AudioSetMasterVolume, -1, knobColor);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("BGM Volume", 1000, 450);
+	UpdateVolumeSlider(&BGMSlider, AudioGetBGMVolume, AudioSetBGMVolume, 0, knobColor);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("SFX Volume", 1000, 550);
+	UpdateVolumeSlider(&SFXSlider, AudioGetSFXVolume, AudioSetSFXVolume, 1, knobColor);
+
+	TransitionFadeIn(1.f, 0, 0, 0, 0);
+	TransitionFadeOut(.5f, sceneChange);
+}
+
+void ResumeGame(void) {
+	isGamePaused = false;
+}
+
+void QuitGame(void) {
+	StartTransition();
+	isGamePaused = false;
+
+	// they move after a while but lalallaa
+	sceneChange = MAIN;
 }
 
 void InitialiseInteractables(void) {

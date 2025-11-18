@@ -78,11 +78,14 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 void destroyBabyMonster(MonsterBabyObject* obj)
 {
 	if (obj) {
+		for (int i = 0; i < 5; i++) {
+			CP_Image_Free(obj->monsterSheetImage[i]);
+		}
 		free(obj);
 	}
 }
 
-void clearBabyMonsterListMemory(void)
+void Monsters_Unload(void)
 {
 	if (babyList != NULL)
 	{
@@ -94,6 +97,10 @@ void clearBabyMonsterListMemory(void)
 
 		ListDestroy(babyList);
 	}
+	for (int i = 0; i < 3; i++) {
+		CP_Sound_Free(monsterSfx[i]);
+	}
+	CP_Font_Free(babyTextTemplate.font);
 }
 void InitializeBaby(void)
 {
@@ -124,7 +131,7 @@ void sendMonstersToTrap(float trapXPos, float trapYPos)
 void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextState, MonsterBabyObject* baby)
 {
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
-	int distFromPlayer = CP_Vector_Length(dir);
+	int distFromPlayer = (int)CP_Vector_Length(dir);
 
 	Animation_Reset(&baby->itself.monsterAnimation);
 	switch (*current_state)
@@ -146,7 +153,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_PATROL:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -162,7 +169,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	case STATE_ALERT:
 	{
 		//JELLY HERE
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -181,7 +188,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_CHASE:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -245,7 +252,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
 	CP_Vector normDir = CP_Vector_Normalize(dir);
-	int distFromPlayer = CP_Vector_Length(dir);
+	int distFromPlayer = (int)CP_Vector_Length(dir);
 
 
 	
@@ -357,7 +364,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 			//walk towards trap triggered location -todo
 			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos.x - baby->itself.transform.x, trapTriggeredPos.y - baby->itself.transform.y);
 			CP_Vector trapNorm = CP_Vector_Normalize(trapDir);
-			int distFromTrap = CP_Vector_Length(trapDir);
+			int distFromTrap = (int)CP_Vector_Length(trapDir);
 			if (distFromTrap > 5.f)
 			{
 

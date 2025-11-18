@@ -1,6 +1,6 @@
 #pragma once
-#include "../CMP_Scene_Pak.h" //used to get currentScene and sceneNames
 #include "cprocessing.h"
+#include "../CMP_Scene_Pak.h" //used to get currentScene and sceneNames
 
 int IsDebug = 0; //toggle here to change default debug state
 
@@ -8,6 +8,7 @@ void (*transitionToSceneFunc) (SceneEnum);
 SceneEnum currentScene;
 
 static void ShowCurrentScene(void) {
+
 	CP_Font_DrawText("Current Scene: ", 1480, 820);
 	CP_Font_DrawText(sceneNames[currentScene], 1540, 820);
 }

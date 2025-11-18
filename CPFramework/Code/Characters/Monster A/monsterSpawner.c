@@ -47,7 +47,7 @@ void SpawnMonster(MONSTER_TYPE type, int amount, float minRange, float maxRange)
 
 void ClearAllMonster(void)
 {
-	clearBabyMonsterListMemory();
+	Monsters_Unload();
 	clearRedBabyMonsterListMemory();
 	//clear everything
 }

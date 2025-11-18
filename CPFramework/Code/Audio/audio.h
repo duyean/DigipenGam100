@@ -18,3 +18,5 @@ float AudioGetSFXVolume(void);
 void AudioPlayMainMenuMusic(void);
 void AudioPlayGameplayMusic(void);
 void AudioPlaySFX(CP_Sound sound);
+
+void Audio_Unload(void);

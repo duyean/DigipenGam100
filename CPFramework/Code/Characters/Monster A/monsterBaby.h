@@ -29,7 +29,7 @@ typedef struct MonsterBabyObject
 MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float detection, float attack, float lost);
 void destroyBabyMonster(MonsterBabyObject* obj);
 void InitializeBaby(void);
-void clearBabyMonsterListMemory(void);
+void Monsters_Unload(void);
 void externalCreateM_B(int x, int y);
 void sendMonstersToTrap(float trapXPos, float trapYPos);
 void UpdateMonsterBaby();

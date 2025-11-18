@@ -70,6 +70,7 @@
     <ClInclude Include="Code\CMP_Core_Pak.h" />
     <ClInclude Include="Code\CMP_Debug_Pak.h" />
     <ClInclude Include="Code\CMP_Interactable_Pak.h" />
+    <ClInclude Include="Code\CMP_Monster_Pak.h" />
     <ClInclude Include="Code\CMP_Player_Package.h" />
     <ClInclude Include="Code\CMP_Room_Pak.h" />
     <ClInclude Include="Code\CMP_Scene_Pak.h" />

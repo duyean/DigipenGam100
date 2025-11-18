@@ -13,3 +13,5 @@ void Player_CheckInteractables(Interactable* interactables[], int count, float r
 
 void Player_StaminaUpdate(Player* player);
 void Player_OilUpdate(Player* player);
+
+void Player_Unload(void);

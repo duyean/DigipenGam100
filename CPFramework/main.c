@@ -5,8 +5,7 @@
 //THIS IS THE STARTING FILE. GENESIS, THE BEGINNING AND THE END
 int main(void)
 {
-	//CP_Engine_SetNextGameState(splash_screen_init, game_update, game_exit);
-	InitUtils();
+	InitialiseUtilities();
 	SetScene(MAIN);
 	
 	CP_Engine_Run(1);

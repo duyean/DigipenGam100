@@ -8,7 +8,7 @@ float interactableProximity = 100.f;
 
 Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
-	static Interactable newInteractable;
+	Interactable newInteractable;
 	newInteractable.worldXPosition = newInteractable.drawXPos = initialXPos;
 	newInteractable.worldYPosition = newInteractable.drawYPos = initialYPos;
 	newInteractable.proximity = proximity;
@@ -64,7 +64,7 @@ void Interactable_InitialiseData(void) {
 	liftAnimation = Animation_Create(liftSpritesheet, liftSprites, 15.f, 2, 0, 0);
 }
 
-void Interactabe_FreeData(void) {
+void Interactable_Unload(void) {
 	CP_Image_Free(doorImage);
 	CP_Image_Free(blobImage);
 	CP_Image_Free(liftImage);
