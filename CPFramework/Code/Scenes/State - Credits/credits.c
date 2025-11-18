@@ -36,8 +36,8 @@ void credits_update(void) {
 
     CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
-    int width = CP_System_GetWindowWidth() / 2.0f;
-    int height = CP_System_GetWindowHeight() / 2.0f;
+    float width = (float)CP_System_GetWindowWidth() / 2.0f;
+    float height = (float)CP_System_GetWindowHeight() / 2.0f;
 
     CP_Image_Draw(digipenLogo, width, height - 200.0f, width, 225.0f, 255);
     DrawButtonUsingImage(backButtonBG, &backButton, creditsTextTemplate);

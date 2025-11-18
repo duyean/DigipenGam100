@@ -22,8 +22,8 @@ void ReturnMenu(void) {
 
 void ControlsPopUp(void) {
 
-    int width = CP_System_GetWindowWidth() / 2.0f;
-    int height = CP_System_GetWindowHeight() / 2.0f;
+    float width = (float)CP_System_GetWindowWidth() / 2.0f;
+    float height = (float)CP_System_GetWindowHeight() / 2.0f;
 
     if (isPopUpActive) {
 

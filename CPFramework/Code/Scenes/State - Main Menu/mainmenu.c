@@ -48,7 +48,7 @@ void main_menu_init(void) {
 void main_menu_update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
-	CP_Image_Draw(menuBackground, 800.f, 450.f, 1600.f, 900.f, 255.f);
+	CP_Image_Draw(menuBackground, 800.f, 450.f, 1600.f, 900.f, 255);
 
 	DrawButtonUsingImage(buttonUIImage, &playButton, mainMenuTextTemplate);
 	DrawButtonUsingImage(buttonUIImage, &settingsButton, mainMenuTextTemplate);

@@ -30,3 +30,4 @@ What is day listening to right now,
 #include "Scenes/State - Title Card/intro.h"
 #include "Scenes/State - Credits/credits.h"
 #include "Scenes/State - Cutscene/cutscene.h"
+#include "Transitions/sceneEnum.h"
