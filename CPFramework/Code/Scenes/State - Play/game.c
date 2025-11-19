@@ -16,9 +16,8 @@
 
 
 enum { INTERACTABLES_COUNT = 3};
-#define ROOM_COUNT 5
-#define CENTER_ROOM_INDEX ROOM_COUNT/2
 #define RENDER_RANGE 1600
+#define MAX_ROOMS 20
 
 CP_Color background;
 Player player;
@@ -36,9 +35,11 @@ Interactable liftTest;
 
 CP_Vector worldCenterPosition;
 
+//room shit
+unsigned short int roomCount = 5, centerRoomIndex = 2;
+
 //Test Background Sprites
-Room* roomList[ROOM_COUNT];
-Room r1, r2, r3, r4, r5;
+Room* roomList[MAX_ROOMS], r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20;
 
 CP_Image Bg1_i[3];
 Spritesheet Bg1_ss[3];
@@ -85,6 +86,10 @@ void InitialiseRooms(void);
 void Room_Update(void);
 
 void game_init(void) {
+	//I HATE YOU IM JUST GONNA HARDCODE FUCK YOU -day
+	roomList[0] = &r1; 	roomList[1] = &r2; roomList[2] = &r3; roomList[3] = &r4; roomList[4] = &r5; roomList[5] = &r6; 	roomList[6] = &r7; roomList[7] = &r8; roomList[8] = &r9; roomList[9] = &r10;roomList[10] = &r11; roomList[11] = &r12; roomList[12] = &r13; roomList[13] = &r14; roomList[14] = &r15; roomList[15] = &r16; roomList[16] = &r17; roomList[17] = &r18; roomList[18] = &r19; roomList[19] = &r20;
+	//oh my god it is endless. Just like my loathing for you and it's entirety. 
+	//this is for a debugging we might not even have a time to use.
 
 	buttonBG = CP_Image_Load("./Assets/MainMenuButton.png");
 	settingsButtonBG = CP_Image_Load("./Assets/SettingsButton.png");
@@ -363,13 +368,9 @@ void InitialiseRooms(void) {
 	Bg2_i[0] = CP_Image_Load("Assets/BG2Back.png");
 	Bg3_i[0] = CP_Image_Load("Assets/BG3Back.png");
 
-	Bg1_i[1] = CP_Image_Load("Assets/Ground.png");
-	Bg2_i[1] = CP_Image_Load("Assets/Ground.png");
-	Bg3_i[1] = CP_Image_Load("Assets/Ground.png");
+	Bg1_i[1] = Bg2_i[1] = Bg3_i[1] = CP_Image_Load("Assets/Ground.png");
 
-	Bg1_i[2] = CP_Image_Load("Assets/Ceiling.png");
-	Bg2_i[2] = CP_Image_Load("Assets/Ceiling.png");
-	Bg3_i[2] = CP_Image_Load("Assets/Ceiling.png");
+	Bg1_i[2] = Bg2_i[2] = Bg3_i[2] = CP_Image_Load("Assets/Ceiling.png");
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -380,67 +381,66 @@ void InitialiseRooms(void) {
 		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
 	}
 
-	r1 = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
-	roomList[0] = &r1;
-	r2 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray_c, 2);
-	roomList[1] = &r2;
-	r3 = Room_Create(Bg2_ss, Bg2_sd,3, interactablesArray_a, 3);
-	roomList[2] = &r3;
-	r4 = Room_Create(Bg3_ss, Bg3_sd,3, interactablesArray_b, 2);
-	roomList[3] = &r4;
-	r5 = Room_Create(Bg1_ss, Bg1_sd,3, interactablesArray_c, 2);
-	roomList[4] = &r5;
-	
+	Room presetMain = Room_Create(Bg2_ss, Bg2_sd, 3, interactablesArray_a, 3);
+	Room presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
+	Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 3, interactablesArray_c, 2);
+
+	Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB };
+
+	for (int i = 0; i < roomCount; i++)
+	{
+		*roomList[i] = GenerateRoom(roomPresets, 2, i == centerRoomIndex);
+	}
 }
 
 void Room_Update(void) {
 	//clear console cause holy shit i get headache trying to read -day
 	//printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Player Position: %0.3f\n", player.currentPositionX);
 	//room render checking
-	for (int i = 0; i < ROOM_COUNT + 2; i++)
+	for (int i = 0; i < roomCount + 2; i++)
 	{
 		float pX = player.currentPositionX, pY = player.currentPositionY;
 
 		int sightCheckP1 = (int)pX + RENDER_RANGE, sightCheckP2 = (int)pX - RENDER_RANGE;
-		if (i < ROOM_COUNT)
+		if (i < roomCount)
 		{
-			int sightCheckR = (i - CENTER_ROOM_INDEX) * 1600;
+			int sightCheckR = (i - centerRoomIndex) * 1600;
 			//only load rooms in view (to save space!!!)
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_Load(roomList[i], player, i - CENTER_ROOM_INDEX);
+				Room_Load(roomList[i], player, i - centerRoomIndex);
 				//printf("Loading Room %d\n", i);
 			}
 		}
 		//edge case left room loop to right.
-		else if (i == ROOM_COUNT)
+		else if (i == roomCount)
 		{
-			int sightCheckR = (CENTER_ROOM_INDEX - ROOM_COUNT) * 1600;
+			int sightCheckR = (centerRoomIndex - roomCount) * 1600;
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_Load(roomList[ROOM_COUNT - 1], player, CENTER_ROOM_INDEX - ROOM_COUNT);
+				Room_Load(roomList[roomCount - 1], player, centerRoomIndex - roomCount);
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{
-					player.currentPositionX += ROOM_COUNT * 1600;
-					//TeleportMonsterRoom((ROOM_COUNT * 1600));
+					player.currentPositionX += roomCount * 1600;
+					//TeleportMonsterRoom((roomCount * 1600));
 					//printf("Looping Left to Right\n");
 				}
 			}
 		}
 		//edge case rignt room loop to left.
-		else if (i > ROOM_COUNT)
+		else if (i > roomCount)
 		{
-			int sightCheckR = (ROOM_COUNT - CENTER_ROOM_INDEX) * 1600;
+			int sightCheckR = (roomCount - centerRoomIndex) * 1600;
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
-				Room_Load(roomList[0], player, ROOM_COUNT - CENTER_ROOM_INDEX);
+				Room_Load(roomList[0], player, roomCount - centerRoomIndex);
 				//printf("Loading Room: LOOP RIGHT\n");
 				if (pX > sightCheckR)
 				{
-					player.currentPositionX -= ROOM_COUNT * 1600;
-					//TeleportMonsterRoom(-1 * (ROOM_COUNT * 1600));
+					player.currentPositionX -= roomCount * 1600;
+					//TeleportMonsterRoom(-1 * (roomCount * 1600));
 					//printf("Looping Right to Left\n");
 				}
 			}

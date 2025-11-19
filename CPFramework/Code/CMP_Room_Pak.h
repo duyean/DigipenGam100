@@ -21,3 +21,4 @@ What is day listening to right now,
 #include "CMP_Interactable_Pak.h"
 
 #include "Rooms/room.h"
+#include "Rooms/roomBuilder.h"
