@@ -24,7 +24,7 @@ Interactable Interactable_CreateLift(float xPostion, float yPosition, void(*Lift
 /*The Specific Interaction for lockers; Hides the player and Plays an animation*/
 void Interactable_DoorInteraction(Interactable* interactable, Player* player);
 void Interactable_LiftInteraction(Interactable* interactable, Player* player);
-void Interactable_OilInteraction(void);
+void Interactable_OilInteraction(Interactable* interactable);
 
 /*Initialise the Interactable Data to cache the data that will be used*/
 void Interactable_InitialiseData(void);

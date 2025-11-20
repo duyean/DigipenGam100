@@ -91,11 +91,16 @@ void clearRedBabyMonsterListMemory(void)
 		for (int i = 0; i < RedbabyList->size; i++)
 		{
 			MonsterRedBabyObject* obj = (MonsterRedBabyObject*)(intptr_t)ListGet(RedbabyList, i);
+			ListRemoveAt(RedbabyList, i);
 			destroyRedBabyMonster(obj);
 		}
 
 		ListDestroy(RedbabyList);
 	}
+	for (int i = 0; i < 3; i++) {
+		CP_Sound_Free(monsterSfx[i]);
+	}
+	CP_Font_Free(babyTextTemplate.font);
 }
 void InitializeRedBaby(void)
 {
@@ -103,7 +108,7 @@ void InitializeRedBaby(void)
 	monsterSfx[1] = CP_Sound_Load("./Assets/Audio/Cry2.wav");
 	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
 
-	RedbabyList = ListCreate(1);
+	RedbabyList = ListCreate(10);
 
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 	trapTriggeredPos = CP_Vector_Set(0, 0);

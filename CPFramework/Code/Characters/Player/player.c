@@ -131,7 +131,7 @@ void Player_CheckInteractables(Interactable *interactables[], int count, float r
 }
 
 void Player_StaminaUpdate(Player *player) {
-	player->currentStamina += 5.f * DeltaTime();
+	player->currentStamina += 10.f * DeltaTime();
 	player->currentStamina = CP_Math_ClampFloat(player->currentStamina, 0.f, 100.f);
 	if (player->currentStamina >= player->maxStamina) {
 		staminaDrawAlpha -= 255.f * DeltaTime();

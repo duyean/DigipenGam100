@@ -6,6 +6,8 @@
 
 float interactableProximity = 100.f;
 
+
+
 Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
 	Interactable newInteractable;
@@ -16,7 +18,8 @@ Interactable Interactable_Create(float initialXPos, float initialYPos, float pro
 	newInteractable.spritesheet = sheet;
 	newInteractable.defaultSprite = defaultSprite;
 	newInteractable.OnInteract = OnInteract;
-
+	newInteractable.toDraw = 1;
+	newInteractable.oilAmount = 30.0f; //Oil amount change as you need tbh
 	newInteractable.isAnimated = 0;
 	return newInteractable;
 }
@@ -31,11 +34,14 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 	interactable->drawYPos = yPos;
 	/*interactable->worldXPosition = xPos;
 	interactable->worldYPosition = yPos;*/
-	if (interactable->isAnimated) {
-		Animation_Animate(&interactable->animation, xPos, yPos, 1, 1);
-	}
-	else {
-		Sprite_Draw(interactable->spritesheet, interactable->defaultSprite, interactable->drawXPos, interactable->drawYPos, 1, 1);
+	if (interactable->toDraw == 1)
+	{
+		if (interactable->isAnimated) {
+			Animation_Animate(&interactable->animation, xPos, yPos, 1, 1);
+		}
+		else {
+			Sprite_Draw(interactable->spritesheet, interactable->defaultSprite, interactable->drawXPos, interactable->drawYPos, 1, 1);
+		}
 	}
 }
 
@@ -95,10 +101,23 @@ void Interactable_DoorInteraction(Interactable *interactable, Player *player) {
 	Animation_PlayState(&interactable->animation, 1);
 }
 
-void Interactable_OilInteraction(void) {
+void Interactable_OilInteraction(Interactable* interactable) {
 	//CHANGE THIS TO BE ON THE PLAYER AND NOT ON THE INTERACTABLE SCRIPT
-	GetPlayer()->currentOil += 10.f;
-	GetPlayer()->currentOil = CP_Math_ClampFloat(GetPlayer()->currentOil, 0.f, GetPlayer()->maxOil);
+	if (interactable->toDraw == 1)
+	{
+		GetPlayer()->currentOil += 10.f;
+		interactable->oilAmount -= 10.f;
+		GetPlayer()->currentOil = CP_Math_ClampFloat(GetPlayer()->currentOil, 0.f, GetPlayer()->maxOil);
+		
+		if (interactable->oilAmount <= 0.f)
+		{
+			interactable->toDraw = 0;
+		}
+	}
+
+	
+
+
 }
 
 void Interactable_LiftInteraction(Interactable* interactable, Player* player) {
@@ -109,10 +128,6 @@ void Interactable_LiftInteraction(Interactable* interactable, Player* player) {
 	player->toDraw = !player->toDraw;
 	
 	
-	//End the floor
-	if (player->currentOil >= player->maxOil)
-	{
-		//make new floor
-	}
+
 	
 }

@@ -34,6 +34,7 @@
     <ClCompile Include="Code\Interactables\interactable.c" />
     <ClCompile Include="Code\PopUp\popup.c" />
     <ClCompile Include="Code\Rewrites\listfile.c" />
+    <ClCompile Include="Code\Rewrites\point.c" />
     <ClCompile Include="Code\Rewrites\qol.c" />
     <ClCompile Include="Code\Rooms\room.c" />
     <ClCompile Include="Code\Rooms\roomBuilder.c" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Code\Interactables\interactableClass.h" />
     <ClInclude Include="Code\PopUp\popup.h" />
     <ClInclude Include="Code\Rewrites\listfile.h" />
+    <ClInclude Include="Code\Rewrites\point.h" />
     <ClInclude Include="Code\Rewrites\qol.h" />
     <ClInclude Include="Code\Rooms\room.h" />
     <ClInclude Include="Code\Rooms\roomBuilder.h" />

@@ -8,6 +8,9 @@
 #include "../../CMP_Player_Pak.h"
 #include "../../CMP_Text_Pak.h"
 #include <stdbool.h>
+#include "monsterBaby.h"
+#include "monsterBabyRed.h"
+#include "monsterBase.h"
 
 typedef enum MONSTER_TYPE
 {

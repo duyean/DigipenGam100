@@ -33,6 +33,8 @@ Interactable oilBlobTest;
 Interactable doorTest;
 Interactable liftTest;
 
+int level = 0;
+
 CP_Vector worldCenterPosition;
 
 //room shit
@@ -77,10 +79,21 @@ float FadeIn;
 CP_Image youDiedImage;
 SceneEnum nextScene;
 
+float OilTimerMax = 8.f;
+float OilTimer = 8.f;
+
+float LevelTimer = 0.f;
+
+int roompos = 0;
+int prevroompos = 0;
+
+int score = 0;
+
 int DEBUG_ENABLED = 0;
 
 void InitialiseInteractables(void);
 void LockerTest(void);
+void OilTest(void);
 void LiftTest(void);
 void InitialiseRooms(void);
 void Room_Update(void);
@@ -121,8 +134,6 @@ void game_init(void) {
 	InitializeRedBaby();
 	InitializeBaby();
 
-    SpawnMonster(RED_BABY, 2, -3200.f, 3200.f); //Set room min and max
-	SpawnMonster(BABY, 2, -3200.f, 3200.f); //Set room min and max
 	SetPlayerRef(&player);
 	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
@@ -142,6 +153,10 @@ void game_init(void) {
 
 	DialogueSystem_Init(&ds, lines, lineCount);
 	dialogueJustStarted = 1;
+
+	//SpawnMonster(BABY, 1, -3200.f, 3200.f); //Set room min and max
+
+	level++;
 }
 
 void game_update(void) {
@@ -247,12 +262,37 @@ void game_update(void) {
 
 		if (CP_Input_KeyReleased(KEY_ANY))
 		{
+			saveScore(score);
 			StartTransition();
 			nextScene = MAIN;
 		}
 		TransitionFadeIn(1.f, 0, 0, 0, 255);
 		TransitionFadeOut(.5f, nextScene);
 	}
+
+
+
+	//From edmund: I dont know why or how the farking blobs are all interlinked like some tree ass ah ah thing so i changed the code a bit and this is farked shit just to make it look like a game ahahahahaha
+	
+	if (OilTimer <= 0.f && (abs(roompos) - abs(prevroompos) < 1))
+	{
+		
+		if (oilBlobTest.toDraw == 0)
+		{
+			oilBlobTest.toDraw = 1;
+			oilBlobTest.oilAmount = 30.f;
+		}
+		OilTimer = OilTimerMax;
+	}
+	else
+	{
+		OilTimer -= DeltaTime();
+	}
+
+	LevelTimer += DeltaTime();
+	char scorebuffer[20];
+	snprintf(scorebuffer, sizeof(scorebuffer), "%d", score);
+	CP_Font_DrawText(scorebuffer, CP_System_GetWindowWidth() / 2, 100);
 
 	
 	if (IsDebugging()) {
@@ -265,7 +305,7 @@ void game_update(void) {
 
 void game_exit(void) {
 	Player_Unload();
-	Monsters_Unload();
+	ClearAllMonster();
 	Interactable_Unload();
 
 	//Level Unload
@@ -334,7 +374,7 @@ void InitialiseInteractables(void) {
 	interactablesArray_a[0] = &doorTest;
 
 
-	oilBlobTest = Interactable_CreateOilBlob(300.f, 0.f, &Interactable_OilInteraction);
+	oilBlobTest = Interactable_CreateOilBlob(-300.f, 0.f, &OilTest);
 	interactablesArray_a[1] = &oilBlobTest;
 
 	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
@@ -344,14 +384,14 @@ void InitialiseInteractables(void) {
 	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
 	interactablesArray_b[0] = &doorTest;
 
-	oilBlobTest = Interactable_CreateOilBlob(500.f, 0.f, &Interactable_OilInteraction);
+	oilBlobTest = Interactable_CreateOilBlob(500.f, 0.f, &OilTest);
 	interactablesArray_b[1] = &oilBlobTest;
 
 	//array set c
 	doorTest = Interactable_CreateDoor(300.f, 20.f, &LockerTest);
 	interactablesArray_c[0] = &doorTest;
 
-	oilBlobTest = Interactable_CreateOilBlob(0.f, 0.f, &Interactable_OilInteraction);
+	oilBlobTest = Interactable_CreateOilBlob(0.f, 0.f, &OilTest);
 	interactablesArray_c[1] = &oilBlobTest;
 }
 
@@ -359,8 +399,81 @@ void LockerTest(void) {
 	Interactable_DoorInteraction(&doorTest, &player);
 }
 
+//Wacky interactables and room code tbh im so im doing something wacky also
+
+void OilTest(void) {
+	Interactable_OilInteraction(&oilBlobTest);
+	if (oilBlobTest.toDraw == 0)
+	{
+		prevroompos = roompos;
+	}
+
+}
+
 void LiftTest(void) {
 	Interactable_LiftInteraction(&liftTest, &player);
+	//End the floor
+	if (player.currentOil >= player.maxOil)
+	{
+		
+		//make new floor
+		Room presetMain = Room_Create(Bg2_ss, Bg2_sd, 3, interactablesArray_a, 3);
+		Room presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
+		Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 3, interactablesArray_c, 2);
+
+		Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB };
+
+		for (int i = 0; i < roomCount; i++)
+		{
+			*roomList[i] = GenerateRoom(roomPresets, 2, i == centerRoomIndex);
+		}
+		
+
+		player.currentOil = 0.f;
+		ClearAllMonster();
+
+
+		InitializeRedBaby();
+		InitializeBaby();
+
+
+			oilBlobTest.toDraw = 1;
+			oilBlobTest.oilAmount = 30.f;
+		
+			score += setScore(score, level, LevelTimer);
+
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
+			if (!lines) {
+				printf("failed to load dialogue i hope you kill yourself\n");
+				ds.isActive = 0; // prevent dereferencing
+				return;
+			}
+
+			DialogueSystem_Init(&ds, lines, lineCount);
+			dialogueJustStarted = 1;
+
+		int amtSpawn = 1 + (level / 3);
+		if (level >= 5) // start spawn chains
+		{
+			
+			int split = CP_Random_RangeInt(0, amtSpawn);
+			int splitAgain = CP_Random_RangeInt(0, amtSpawn - split);
+			//SpawnMonster(CHAINS, (amtSpawn - split) - splitAgain, -3200.f, 3200.f); //Set room min and max
+			SpawnMonster(RED_BABY, splitAgain, -3200.f, 3200.f); //Set room min and max
+			SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
+		}
+		else if (level >= 3)
+		{
+			int split = CP_Random_RangeInt(0, amtSpawn);
+			SpawnMonster(RED_BABY, amtSpawn - split, -3200.f, 3200.f); //Set room min and max
+			SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
+		}
+		else
+		{
+			SpawnMonster(BABY, amtSpawn, -3200.f, 3200.f); //Set room min and max
+		}
+	
+	}
 }
 
 void InitialiseRooms(void) {
@@ -408,6 +521,7 @@ void Room_Update(void) {
 			//only load rooms in view (to save space!!!)
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
+				roompos = i - centerRoomIndex;
 				Room_Load(roomList[i], player, i - centerRoomIndex);
 				//printf("Loading Room %d\n", i);
 			}
@@ -419,6 +533,7 @@ void Room_Update(void) {
 
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
+				roompos = centerRoomIndex - roomCount;
 				Room_Load(roomList[roomCount - 1], player, centerRoomIndex - roomCount);
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
@@ -435,6 +550,7 @@ void Room_Update(void) {
 			int sightCheckR = (roomCount - centerRoomIndex) * 1600;
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
+				roompos = roomCount - centerRoomIndex;
 				Room_Load(roomList[0], player, roomCount - centerRoomIndex);
 				//printf("Loading Room: LOOP RIGHT\n");
 				if (pX > sightCheckR)

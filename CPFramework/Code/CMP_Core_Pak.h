@@ -36,3 +36,4 @@ What is day listening to right now,
 
 #include "Rewrites/qol.h"
 #include "Rewrites/ListFile.h"
+#include "Rewrites/point.h"

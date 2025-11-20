@@ -1,7 +1,5 @@
 #include "monsterSpawner.h"
-#include "monsterBaby.h"
-#include "monsterBabyRed.h"
-#include "monsterBase.h"
+
 
 void SpawnMonster(MONSTER_TYPE type, int amount, float minRange, float maxRange)
 {

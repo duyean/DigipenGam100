@@ -9,6 +9,8 @@ typedef struct {
 	float drawXPos, drawYPos;		//Used for the 'draw' position
 	float proximity;				//Used to check distance from player
 	void (*OnInteract)(void);		//Used when Player interacts with Object
+	int toDraw;
+	float oilAmount;
 	Spritesheet spritesheet;
 	SpriteData defaultSprite;
 	int isAnimated;

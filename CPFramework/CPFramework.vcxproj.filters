@@ -147,6 +147,9 @@
     <ClCompile Include="Code\Rooms\roomBuilder.c">
       <Filter>Source Files\Standard Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Rewrites\point.c">
+      <Filter>Source Files\Standard Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Spritesheet\animateClass.h">
@@ -309,6 +312,9 @@
       <Filter>Header Files\Inherit Packages</Filter>
     </ClInclude>
     <ClInclude Include="Code\Rooms\roomBuilder.h">
+      <Filter>Header Files\Standard Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rewrites\point.h">
       <Filter>Header Files\Standard Systems</Filter>
     </ClInclude>
   </ItemGroup>

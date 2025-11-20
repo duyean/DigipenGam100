@@ -82,6 +82,7 @@ void destroyBabyMonster(MonsterBabyObject* obj)
 			CP_Image_Free(obj->monsterSheetImage[i]);
 		}
 		free(obj);
+		
 	}
 }
 
@@ -92,6 +93,7 @@ void Monsters_Unload(void)
 		for (int i = 0; i < babyList->size; i++)
 		{
 			MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+			ListRemoveAt(babyList, i);
 			destroyBabyMonster(obj);
 		}
 
@@ -102,13 +104,15 @@ void Monsters_Unload(void)
 	}
 	CP_Font_Free(babyTextTemplate.font);
 }
+
+
 void InitializeBaby(void)
 {
 	monsterSfx[0] = CP_Sound_Load("./Assets/Audio/Cry1.wav");
 	monsterSfx[1] = CP_Sound_Load("./Assets/Audio/Cry2.wav");
 	monsterSfx[2] = CP_Sound_Load("./Assets/Audio/Cry3.wav");
 
-	babyList = ListCreate(1);
+	babyList = ListCreate(10);
 
 	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 
