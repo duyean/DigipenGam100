@@ -64,7 +64,7 @@ void Interactable_InitialiseData(void) {
 	blobAnimation = Animation_Create(blobSpritesheet, blobSprites, 30.f, 2, 1, 1);
 
 	/*Initialise lift Data Here*/
-	liftImage = CP_Image_Load("./Assets/LiftSpriteSheet.png");
+	liftImage = CP_Image_Load("./Assets/LiftSpriteSheet2.png");
 	liftSpritesheet = Spritesheet_Create(liftImage, CP_Image_GetWidth(liftImage) / 2, CP_Image_GetHeight(liftImage));
 	Animation_SetFrames(375, 900, 255.f, liftSprites, 2, 1);
 	liftAnimation = Animation_Create(liftSpritesheet, liftSprites, 15.f, 2, 0, 0);

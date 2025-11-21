@@ -74,6 +74,7 @@ static int lineCount = 0;
 static int dialogueJustStarted = 0;
 
 CP_Image vignette;
+CP_Image blackbtm;
 float FadeIn;
 
 CP_Image youDiedImage;
@@ -135,6 +136,7 @@ void game_init(void) {
 
 	vignette = CP_Image_Load("./Assets/Vignette.png");
 	youDiedImage = CP_Image_Load("./Assets/youdiedtest.png");
+	blackbtm = CP_Image_Load("./Assets/BlackBottom.png");
 	background = CP_Color_Create(150, 150, 150, 255);
 	Player_Initialise(&player);
 	InitializeRedBaby();
@@ -192,6 +194,10 @@ void game_update(void) {
 	// but it kinda makes it look like the player is leaving the lift ykykykyk -jelly
 	Room_Update();
 
+
+	CP_Image_Draw(blackbtm, CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2 + 50, 1600, 900, 200);
+	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
+
 	// fucken hell this took me so long
 	if (!ds.isActive) // || dialogueJustStarted
 	{
@@ -248,7 +254,7 @@ void game_update(void) {
 	TransitionFadeIn(.5f, 0, 0, 0, 255);
 	TransitionFadeOut(.5f, MAIN);
 
-	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
+	
 	/*if (lastFrameTime <= CP_System_GetSeconds()) {
 		lastFrameTime = CP_System_GetSeconds() + CP_System_GetDt();
 		printf("Current Player X Position: %.3f\n", playerX);
@@ -328,6 +334,8 @@ void game_update(void) {
 	if (CP_Input_KeyReleased(KEY_P)) {
 		ToggleDebug();
 	}
+
+
 }
 
 void game_exit(void) {
@@ -339,6 +347,7 @@ void game_exit(void) {
 	CP_Image_Free(buttonBG);
 	CP_Image_Free(vignette);
 	CP_Image_Free(youDiedImage);
+	CP_Image_Free(blackbtm);
 	for (int i = 0; i < 3; i++) {
 		CP_Image_Free(Bg1_i[i]);
 	}
@@ -404,7 +413,7 @@ void InitialiseInteractables(void) {
 	oilBlobTest[0] = Interactable_CreateOilBlob(-300.f, 0.f, &OilTest);
 	interactablesArray_a[1] = &oilBlobTest[0];
 
-	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
+	liftTest = Interactable_CreateLift(0.f, -2.1f, &LiftTest);
 	interactablesArray_a[2] = &liftTest;
 
 	//array set b
