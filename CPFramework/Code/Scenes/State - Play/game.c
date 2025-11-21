@@ -29,7 +29,7 @@ Interactable *interactablesArray_a[INTERACTABLES_COUNT];
 Interactable *interactablesArray_b[INTERACTABLES_COUNT];
 Interactable *interactablesArray_c[INTERACTABLES_COUNT];
 
-Interactable oilBlobTest;
+Interactable oilBlobTest[3];
 Interactable doorTest;
 Interactable liftTest;
 
@@ -93,7 +93,11 @@ int DEBUG_ENABLED = 0;
 
 void InitialiseInteractables(void);
 void LockerTest(void);
+
 void OilTest(void);
+void OilTest1(void);
+void OilTest2(void);
+
 void LiftTest(void);
 void InitialiseRooms(void);
 void Room_Update(void);
@@ -274,14 +278,18 @@ void game_update(void) {
 
 	//From edmund: I dont know why or how the farking blobs are all interlinked like some tree ass ah ah thing so i changed the code a bit and this is farked shit just to make it look like a game ahahahahaha
 	
-	if (OilTimer <= 0.f && (abs(roompos) - abs(prevroompos) < 1))
+	if (OilTimer <= 0.f && roompos != prevroompos)
 	{
-		
-		if (oilBlobTest.toDraw == 0)
+		int randomRespawn = CP_Random_RangeInt(0, 2);
+		if (oilBlobTest[randomRespawn].toDraw == 0)
 		{
-			oilBlobTest.toDraw = 1;
-			oilBlobTest.oilAmount = 30.f;
+			oilBlobTest[randomRespawn].toDraw = 1;
+			oilBlobTest[randomRespawn].oilAmount = 30.f;
 		}
+		OilTimer = OilTimerMax;
+	}
+	else if (OilTimer <= 0.f && roompos == prevroompos)
+	{
 		OilTimer = OilTimerMax;
 	}
 	else
@@ -290,9 +298,19 @@ void game_update(void) {
 	}
 
 	LevelTimer += DeltaTime();
-	char scorebuffer[20];
-	snprintf(scorebuffer, sizeof(scorebuffer), "%d", score);
+
+
+	char scorebuffer[2000];
+	snprintf(scorebuffer, sizeof(scorebuffer), "Score: %d", score);
 	CP_Font_DrawText(scorebuffer, CP_System_GetWindowWidth() / 2, 100);
+
+	char timerbuffer[300];
+	snprintf(timerbuffer, sizeof(timerbuffer), "Timer: %5.f", LevelTimer);
+	CP_Font_DrawText(timerbuffer, CP_System_GetWindowWidth() - 300, 100);
+
+	char levelbuffer[100];
+	snprintf(levelbuffer, sizeof(levelbuffer), "Level: %d", level);
+	CP_Font_DrawText(levelbuffer, 300, 100);
 
 	
 	if (IsDebugging()) {
@@ -374,8 +392,8 @@ void InitialiseInteractables(void) {
 	interactablesArray_a[0] = &doorTest;
 
 
-	oilBlobTest = Interactable_CreateOilBlob(-300.f, 0.f, &OilTest);
-	interactablesArray_a[1] = &oilBlobTest;
+	oilBlobTest[0] = Interactable_CreateOilBlob(-300.f, 0.f, &OilTest);
+	interactablesArray_a[1] = &oilBlobTest[0];
 
 	liftTest = Interactable_CreateLift(0.f, 0.f, &LiftTest);
 	interactablesArray_a[2] = &liftTest;
@@ -384,15 +402,15 @@ void InitialiseInteractables(void) {
 	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
 	interactablesArray_b[0] = &doorTest;
 
-	oilBlobTest = Interactable_CreateOilBlob(500.f, 0.f, &OilTest);
-	interactablesArray_b[1] = &oilBlobTest;
+	oilBlobTest[1] = Interactable_CreateOilBlob(500.f, 0.f, &OilTest1);
+	interactablesArray_b[1] = &oilBlobTest[1];
 
 	//array set c
 	doorTest = Interactable_CreateDoor(300.f, 20.f, &LockerTest);
 	interactablesArray_c[0] = &doorTest;
 
-	oilBlobTest = Interactable_CreateOilBlob(0.f, 0.f, &OilTest);
-	interactablesArray_c[1] = &oilBlobTest;
+	oilBlobTest[2] = Interactable_CreateOilBlob(0.f, 0.f, &OilTest2);
+	interactablesArray_c[1] = &oilBlobTest[2];
 }
 
 void LockerTest(void) {
@@ -402,8 +420,26 @@ void LockerTest(void) {
 //Wacky interactables and room code tbh im so im doing something wacky also
 
 void OilTest(void) {
-	Interactable_OilInteraction(&oilBlobTest);
-	if (oilBlobTest.toDraw == 0)
+	Interactable_OilInteraction(&oilBlobTest[0]);
+	if (oilBlobTest[0].toDraw == 0)
+	{
+		prevroompos = roompos;
+	}
+
+}
+
+void OilTest1(void) {
+	Interactable_OilInteraction(&oilBlobTest[1]);
+	if (oilBlobTest[1].toDraw == 0)
+	{
+		prevroompos = roompos;
+	}
+
+}
+
+void OilTest2(void) {
+	Interactable_OilInteraction(&oilBlobTest[2]);
+	if (oilBlobTest[2].toDraw == 0)
 	{
 		prevroompos = roompos;
 	}
@@ -437,11 +473,18 @@ void LiftTest(void) {
 		InitializeBaby();
 
 
-			oilBlobTest.toDraw = 1;
-			oilBlobTest.oilAmount = 30.f;
-		
-			score += setScore(score, level, LevelTimer);
+		for (int i = 0; i < 3; i++)
+		{
+			oilBlobTest[i].toDraw = 1;
+			oilBlobTest[i].oilAmount = 30.f;
+		}
+			
+	
 
+			int tempScore = score;
+			score = setScore(tempScore, level, LevelTimer);
+			LevelTimer = 0.f;
+			level++;
 			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
 			if (!lines) {
 				printf("failed to load dialogue i hope you kill yourself\n");
@@ -472,6 +515,8 @@ void LiftTest(void) {
 		{
 			SpawnMonster(BABY, amtSpawn, -3200.f, 3200.f); //Set room min and max
 		}
+
+		Interactable_DoorInteraction(&doorTest, &player);
 	
 	}
 }
@@ -539,7 +584,8 @@ void Room_Update(void) {
 				if (pX < sightCheckR)
 				{
 					player.currentPositionX += roomCount * 1600;
-					//TeleportMonsterRoom((roomCount * 1600));
+					TeleportMonsterRoom((roomCount * 1600));
+					TeleportRBMonsterRoom((roomCount * 1600));
 					//printf("Looping Left to Right\n");
 				}
 			}
@@ -556,7 +602,8 @@ void Room_Update(void) {
 				if (pX > sightCheckR)
 				{
 					player.currentPositionX -= roomCount * 1600;
-					//TeleportMonsterRoom(-1 * (roomCount * 1600));
+					TeleportMonsterRoom(-1 * (roomCount * 1600));
+					TeleportRBMonsterRoom(-1 * (roomCount * 1600));
 					//printf("Looping Right to Left\n");
 				}
 			}

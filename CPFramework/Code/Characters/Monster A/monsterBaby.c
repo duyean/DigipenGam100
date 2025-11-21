@@ -36,6 +36,8 @@ MonsterBabyObject* createBabyMonster(int x, int y, float movementSpeed, float de
 	new->itself.attackRange = attack;//10.f;
 	new->itself.lostTimer = lost; //15.f;
 	new->itself.lostTimerOriginal = lost;
+	new->itself.moveTimer = 4.f; 
+	new->itself.moveTimerOriginal = 4.f;
 	new->itself.randTimerCheck = 2.f;
 	new->itself.randTimerCheckOriginal = 5.f;
 	new->itself.facingDir = -1;
@@ -157,7 +159,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_PATROL:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		//CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 1.f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Moving
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -173,7 +175,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	case STATE_ALERT:
 	{
 		//JELLY HERE
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		//CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -399,26 +401,40 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_ATTACK, baby);
 		}
+
+
 		//If player disappears into a hiding place or gets too far
 		// add LOST STATE transition here
-		if (distFromPlayer > baby->itself.detectionRange * 1.5f || playerRef->isHiding == 1)
+		if (distFromPlayer > baby->itself.detectionRange * 1.5f)
 		{
 			processing_state_babyFSM(&baby->current_state, STATE_LOST, baby);
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
 		}
-
-
-		//Go left towards player
-		if (normDir.x > 0)
+		else if (playerRef->isHiding == 1 && baby->itself.moveTimer <= 0.f)
 		{
-			baby->itself.facingDir = 1;
+			processing_state_babyFSM(&baby->current_state, STATE_LOST, baby);
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
 		}
-		else //Go right towards player
+		else if (playerRef->isHiding == 1 && baby->itself.moveTimer > 0.f)
 		{
-			baby->itself.facingDir = -1;
+			baby->itself.moveTimer -= CP_System_GetDt();
 		}
 
-		
-		
+
+		if (playerRef->isHiding == 0)
+		{
+			//Go left towards player
+			if (normDir.x > 0)
+			{
+				baby->itself.facingDir = 1;
+			}
+			else //Go right towards player
+			{
+				baby->itself.facingDir = -1;
+			}
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
+		}
+	
 
 		baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
 		break;

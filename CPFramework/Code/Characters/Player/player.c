@@ -111,6 +111,11 @@ void Player_Update(Player *player) {
 	if (CP_Input_KeyReleased(KEY_LEFT_SHIFT) || player->currentStamina <= 0) {
 		player->movementMultiplier = 1.f;
 	}
+
+	//DEBUG
+	if (CP_Input_KeyReleased(KEY_K)) {
+		player->currentOil += 10.f;
+	}
 }
 
 void Player_CheckInteractables(Interactable *interactables[], int count, float relativePosition) {

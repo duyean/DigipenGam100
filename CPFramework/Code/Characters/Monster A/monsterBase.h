@@ -19,6 +19,8 @@ typedef struct MonsterObject
 	float attackRange;
 	float lostTimer;
 	float lostTimerOriginal;
+	float moveTimer;
+	float moveTimerOriginal;
 	int facingDir;
 	float randTimerCheck;
 	float randTimerCheckOriginal;

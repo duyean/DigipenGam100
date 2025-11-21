@@ -38,6 +38,8 @@ MonsterRedBabyObject* createRedBabyMonster(int x, int y, float movementSpeed, fl
 	new->itself.attackRange = attack;//10.f;
 	new->itself.lostTimer = lost; //15.f;
 	new->itself.lostTimerOriginal = lost;
+	new->itself.moveTimer = 4.f;
+	new->itself.moveTimerOriginal = 4.f;
 	new->itself.randTimerCheck = 2.f;
 	new->itself.randTimerCheckOriginal = 5.f;
 	new->itself.facingDir = -1;
@@ -188,7 +190,7 @@ void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_S
 	}
 	case RED_STATE_CHASE:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_0);
 		if (nextState == RED_STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
