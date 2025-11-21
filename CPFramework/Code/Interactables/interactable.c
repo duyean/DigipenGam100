@@ -3,10 +3,9 @@
 #include "../CMP_Interactable_Pak.h"
 #include "../CMP_Sprite_Pak.h"
 #include "../CMP_Player_Pak.h"
+#include "../CMP_Audio_Pak.h"
 
 float interactableProximity = 100.f;
-
-
 
 Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
@@ -50,6 +49,11 @@ Spritesheet doorSpritesheet, blobSpritesheet, liftSpritesheet;
 SpriteData doorSprites[2], blobSprites[4], liftSprites[2];
 Animation doorAnimation, blobAnimation, liftAnimation;
 
+// no variety yet -jelly
+CP_Sound oilSFX = NULL;
+CP_Sound doorElevatorSFX = NULL; 
+CP_Sound footstepsSFX = NULL;
+
 void Interactable_InitialiseData(void) {
 	/*Initialise Door Data Here*/
 	doorImage = CP_Image_Load("./Assets/LockerSpritesheet.png");
@@ -68,6 +72,11 @@ void Interactable_InitialiseData(void) {
 	liftSpritesheet = Spritesheet_Create(liftImage, CP_Image_GetWidth(liftImage) / 2, CP_Image_GetHeight(liftImage));
 	Animation_SetFrames(375, 900, 255.f, liftSprites, 2, 1);
 	liftAnimation = Animation_Create(liftSpritesheet, liftSprites, 15.f, 2, 0, 0);
+
+	// cp sound load doesnt load anything BUT wav lmao fucking hell
+	oilSFX = CP_Sound_Load("./Assets/Audio/Oil_Pickup.wav");
+	doorElevatorSFX = CP_Sound_Load("./Assets/Audio/Door_Elevator.wav");
+	footstepsSFX = CP_Sound_Load("./Assets/Audio/Footstep_1.wav");
 }
 
 void Interactable_Unload(void) {
@@ -95,6 +104,9 @@ Interactable Interactable_CreateLift(float xPostion, float yPosition, void(*Lift
 }
 
 void Interactable_DoorInteraction(Interactable *interactable, Player *player) {
+
+	AudioPlaySFX(doorElevatorSFX);
+
 	player->isHiding = !player->isHiding;
 	player->toDraw = !player->toDraw;
 	Animation_Reset(&interactable->animation);
@@ -102,9 +114,12 @@ void Interactable_DoorInteraction(Interactable *interactable, Player *player) {
 }
 
 void Interactable_OilInteraction(Interactable* interactable) {
+
 	//CHANGE THIS TO BE ON THE PLAYER AND NOT ON THE INTERACTABLE SCRIPT
 	if (interactable->toDraw == 1)
 	{
+		AudioPlaySFX(oilSFX);
+
 		GetPlayer()->currentOil += 10.f;
 		interactable->oilAmount -= 10.f;
 		GetPlayer()->currentOil = CP_Math_ClampFloat(GetPlayer()->currentOil, 0.f, GetPlayer()->maxOil);
@@ -114,20 +129,15 @@ void Interactable_OilInteraction(Interactable* interactable) {
 			interactable->toDraw = 0;
 		}
 	}
-
-	
-
-
 }
 
 void Interactable_LiftInteraction(Interactable* interactable, Player* player) {
+
+	AudioPlaySFX(doorElevatorSFX);
+
 	player->isHiding = !player->isHiding;
 
 	Animation_Reset(&interactable->animation);
 	Animation_PlayState(&interactable->animation, 1);
 	player->toDraw = !player->toDraw;
-	
-	
-
-	
 }
