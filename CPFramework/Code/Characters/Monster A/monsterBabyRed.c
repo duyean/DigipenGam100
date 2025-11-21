@@ -400,20 +400,33 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 		}
 		//If player disappears into a hiding place or gets too far
 		// add LOST STATE transition here
-		if (distFromPlayer > baby->itself.detectionRange * 1.5f || playerRef->isHiding == 1)
+		if (distFromPlayer > baby->itself.detectionRange * 1.5f)
 		{
 			processing_state_RedbabyFSM(&baby->current_state, RED_STATE_LOST, baby);
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
+		}
+		else if (playerRef->isHiding == 1 && baby->itself.moveTimer <= 0.f)
+		{
+			processing_state_RedbabyFSM(&baby->current_state, RED_STATE_LOST, baby);
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
+		}
+		else if (playerRef->isHiding == 1 && baby->itself.moveTimer > 0.f)
+		{
+			baby->itself.moveTimer -= CP_System_GetDt();
 		}
 
-
-		//Go left towards player
-		if (normDir.x > 0)
+		if (playerRef->isHiding == 0)
 		{
-			baby->itself.facingDir = 1;
-		}
-		else //Go right towards player
-		{
-			baby->itself.facingDir = -1;
+			//Go left towards player
+			if (normDir.x > 0)
+			{
+				baby->itself.facingDir = 1;
+			}
+			else //Go right towards player
+			{
+				baby->itself.facingDir = -1;
+			}
+			baby->itself.moveTimer = baby->itself.moveTimerOriginal;
 		}
 
 		
@@ -507,6 +520,11 @@ void TeleportRBMonsterRoom(int amt)
 				continue;
 			}
 			if (obj->current_state == RED_STATE_CHASE)
+			{
+				obj->itself.transform.x += amt;
+				printf("Monster teleported: %f", obj->itself.transform.x);
+			}
+			if (obj->current_state == RED_STATE_PATROL)
 			{
 				obj->itself.transform.x += amt;
 				printf("Monster teleported: %f", obj->itself.transform.x);

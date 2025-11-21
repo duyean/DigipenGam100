@@ -183,6 +183,7 @@ void game_update(void) {
 	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
+	//printf("bruh ");
 	// draw the room first so it blocks everything else from updating
 	// player is gone but will appear when dialogue is over. unintentional-ish
 	// but it kinda makes it look like the player is leaving the lift ykykykyk -jelly
@@ -579,7 +580,7 @@ void Room_Update(void) {
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				roompos = centerRoomIndex - roomCount;
-				Room_Load(roomList[roomCount - 1], player, centerRoomIndex - roomCount);
+				Room_Load(roomList[roomCount - 1], player, (int)(centerRoomIndex - roomCount));
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{

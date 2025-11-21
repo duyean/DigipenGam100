@@ -526,6 +526,11 @@ void TeleportMonsterRoom(int amt)
 				obj->itself.transform.x += amt;
 				printf("Monster teleported: %f", obj->itself.transform.x);
 			}
+			if (obj->current_state == STATE_PATROL)
+			{
+				obj->itself.transform.x += amt;
+				printf("Monster teleported: %f", obj->itself.transform.x);
+			}
 			
 		}
 	}
