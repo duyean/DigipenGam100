@@ -89,6 +89,8 @@ int prevroompos = 0;
 
 int score = 0;
 
+int prevHighscore = 0;
+
 int DEBUG_ENABLED = 0;
 
 void InitialiseInteractables(void);
@@ -160,6 +162,7 @@ void game_init(void) {
 
 	//SpawnMonster(BABY, 1, -3200.f, 3200.f); //Set room min and max
 
+	prevHighscore = viewScore();
 	level++;
 }
 
@@ -304,6 +307,10 @@ void game_update(void) {
 	char scorebuffer[2000];
 	snprintf(scorebuffer, sizeof(scorebuffer), "Score: %d", score);
 	CP_Font_DrawText(scorebuffer, CP_System_GetWindowWidth() / 2, 100);
+
+	char highscorebuffer[2000];
+	snprintf(highscorebuffer, sizeof(highscorebuffer), "High Score: %d", prevHighscore);
+	CP_Font_DrawText(highscorebuffer, CP_System_GetWindowWidth() / 2, 50);
 
 	char timerbuffer[300];
 	snprintf(timerbuffer, sizeof(timerbuffer), "Timer: %5.f", LevelTimer);
