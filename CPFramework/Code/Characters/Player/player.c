@@ -108,7 +108,12 @@ void Player_Update(Player *player) {
 		Sprite_Draw(characterSheet, characterSprites[0], 0, 0, player->faceDirection, 1);
 	}
 
+	if (CP_Input_KeyTriggered(KEY_LEFT_SHIFT) && player->currentStamina > 0)
+	{
+		player->currentStamina -= 15.f;
+	}
 	if (CP_Input_KeyReleased(KEY_LEFT_SHIFT) || player->currentStamina <= 0) {
+	
 		player->movementMultiplier = 1.f;
 	}
 
