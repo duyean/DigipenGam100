@@ -308,6 +308,7 @@ void game_update(void) {
 	snprintf(scorebuffer, sizeof(scorebuffer), "Score: %d", score);
 	CP_Font_DrawText(scorebuffer, CP_System_GetWindowWidth() / 2, 100);
 
+	//previous highest score
 	char highscorebuffer[2000];
 	snprintf(highscorebuffer, sizeof(highscorebuffer), "High Score: %d", prevHighscore);
 	CP_Font_DrawText(highscorebuffer, CP_System_GetWindowWidth() / 2, 50);
