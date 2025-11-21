@@ -152,7 +152,7 @@ void game_init(void) {
 	//Test Background Sprites
 	InitialiseRooms();
 
-	lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
+	lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Tutorial.txt", &lineCount);
 	if (!lines) {
 		printf("failed to load dialogue i hope you kill yourself\n");
 		ds.isActive = 0; // prevent dereferencing
