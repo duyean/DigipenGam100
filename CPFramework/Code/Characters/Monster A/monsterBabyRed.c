@@ -190,6 +190,7 @@ void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_S
 	}
 	case RED_STATE_CHASE:
 	{
+		//testing
 		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_0);
 		if (nextState == RED_STATE_LOST) //Lost player
 		{
