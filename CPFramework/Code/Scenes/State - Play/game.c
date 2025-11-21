@@ -212,7 +212,6 @@ void game_update(void) {
 	//printf("die");
 	Room_Update();
 
-
 	CP_Image_Draw(blackbtm, CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2 + 50, 1600, 900, 200);
 	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
 
@@ -235,9 +234,9 @@ void game_update(void) {
 		return; // skip further updates while dialogue is active lalallaa
 	}
 
-	if (DialogueSystem_IsFinished(&ds)) {
-		CP_Font_DrawText("Dialogue finished!", 400, 360);
-	}
+	//if (DialogueSystem_IsFinished(&ds)) {
+	//	CP_Font_DrawText("Dialogue finished!", 400, 360);
+	//}
 
 	//Room_Update();
 
@@ -267,7 +266,7 @@ void game_update(void) {
 	*/
 
 	// Draw a red box in the center of the screen
-	CP_Settings_Fill(CP_Color_Create(255, 100, 255, 255));
+	//CP_Settings_Fill(CP_Color_Create(255, 100, 255, 255));
 
 	TransitionFadeIn(.5f, 0, 0, 0, 255);
 	TransitionFadeOut(.5f, MAIN);
