@@ -360,6 +360,7 @@ void game_exit(void) {
 	ClearAllMonster();
 	Interactable_Unload();
 
+	//check
 	score = 0.f;
 	level = 0.f;
 	LevelTimer = 0.f;
