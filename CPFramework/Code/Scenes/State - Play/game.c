@@ -276,7 +276,7 @@ void game_update(void) {
 		lastFrameTime = CP_System_GetSeconds() + CP_System_GetDt();
 		printf("Current Player X Position: %.3f\n", playerX);
 	}*/
-	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
+//	CP_Graphics_DrawRect(centerOfScreen.x - playerX, centerOfScreen.y - playerY, 50, 50);
 	//End game if player kenna eaten (throw to a function if you wanna)
 	if (player.currentHealth <= 0 && !player.toDraw)
 	{
@@ -359,6 +359,10 @@ void game_exit(void) {
 	Player_Unload();
 	ClearAllMonster();
 	Interactable_Unload();
+
+	score = 0.f;
+	level = 0.f;
+	LevelTimer = 0.f;
 
 	//Level Unload
 	CP_Image_Free(buttonBG);
