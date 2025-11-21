@@ -150,11 +150,28 @@ void game_init(void) {
 	//Test Background Sprites
 	InitialiseRooms();
 
-	lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
-	if (!lines) {
-		printf("failed to load dialogue i hope you kill yourself\n");
-		ds.isActive = 0; // prevent dereferencing
-		return;
+	switch (level) {
+		case 0:
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
+			break;
+		case 1:
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_b.txt", &lineCount);
+			break;
+		case 2:
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_c.txt", &lineCount);
+			break;
+		case 3:
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_d.txt", &lineCount);
+			break;
+		case 4:
+			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_e.txt", &lineCount);
+			break;
+
+		if (!lines) {
+			printf("failed to load dialogue i hope you kill yourself\n");
+			ds.isActive = 0; // prevent dereferencing
+			return;
+		}
 	}
 
 	DialogueSystem_Init(&ds, lines, lineCount);
@@ -190,6 +207,7 @@ void game_update(void) {
 	// draw the room first so it blocks everything else from updating
 	// player is gone but will appear when dialogue is over. unintentional-ish
 	// but it kinda makes it look like the player is leaving the lift ykykykyk -jelly
+	//printf("die");
 	Room_Update();
 
 	// fucken hell this took me so long
