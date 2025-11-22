@@ -7,20 +7,20 @@
 
 float interactableProximity = 100.f;
 
-Interactable Interactable_Create(float initialXPos, float initialYPos, float proximity, char* name, 
+void Interactable_Initialize(Interactable *interactable, float initialXPos, float initialYPos, float proximity, char* name, 
 	Spritesheet sheet, SpriteData defaultSprite, void (*OnInteract)(void)) {
-	Interactable newInteractable;
-	newInteractable.worldXPosition = newInteractable.drawXPos = initialXPos;
-	newInteractable.worldYPosition = newInteractable.drawYPos = initialYPos;
-	newInteractable.proximity = proximity;
-	newInteractable.name = name == NULL ? "Unnamed Interactable" : name;
-	newInteractable.spritesheet = sheet;
-	newInteractable.defaultSprite = defaultSprite;
-	newInteractable.OnInteract = OnInteract;
-	newInteractable.toDraw = 1;
-	newInteractable.oilAmount = 30.0f; //Oil amount change as you need tbh
-	newInteractable.isAnimated = 0;
-	return newInteractable;
+	interactable->worldXPosition = initialXPos;
+	interactable->worldYPosition = initialYPos;
+	interactable->drawXPos = initialXPos;
+	interactable->drawYPos = initialXPos;
+	interactable->proximity = proximity;
+	interactable->name = name == NULL ? "Unnamed Interactable" : name;
+	interactable->spritesheet = sheet;
+	interactable->defaultSprite = defaultSprite;
+	interactable->OnInteract = OnInteract;
+	interactable->toDraw = 1;
+	interactable->oilAmount = 30.0f; //Oil amount change as you need tbh
+	interactable->isAnimated = 0;
 }
 
 void Interactable_AttachAnimation(Interactable* interactable, Animation animation) {
@@ -39,7 +39,7 @@ void Interactable_Update(Interactable *interactable, float xPos, float yPos) {
 			Animation_Animate(&interactable->animation, xPos, yPos, 1, 1);
 		}
 		else {
-			Sprite_Draw(interactable->spritesheet, interactable->defaultSprite, interactable->drawXPos, interactable->drawYPos, 1, 1);
+			Sprite_Draw(interactable->spritesheet, interactable->defaultSprite, (int)interactable->drawXPos, (int)interactable->drawYPos, 1, 1);
 		}
 	}
 }
@@ -83,24 +83,25 @@ void Interactable_Unload(void) {
 	CP_Image_Free(doorImage);
 	CP_Image_Free(blobImage);
 	CP_Image_Free(liftImage);
+
+	CP_Sound_Free(oilSFX);
+	CP_Sound_Free(doorElevatorSFX);
+	CP_Sound_Free(footstepsSFX);
 }
 
-Interactable Interactable_CreateDoor(float xPostion, float worldYPosition, void(*DoorInteractedEvent)(void)) {
-	Interactable door = Interactable_Create(xPostion, worldYPosition, interactableProximity, "Locker", doorSpritesheet, doorSprites[0], DoorInteractedEvent);
-	Interactable_AttachAnimation(&door, doorAnimation);
-	return door;
+void Interactable_InitDoor(Interactable *door, float xPostion, float worldYPosition, void(*DoorInteractedEvent)(void)) {
+	Interactable_Initialize(door, xPostion, worldYPosition, interactableProximity, "Locker", doorSpritesheet, doorSprites[0], DoorInteractedEvent);
+	Interactable_AttachAnimation(door, doorAnimation);
 }
 
-Interactable Interactable_CreateOilBlob(float xPostion, float worldYPosition, void(*BlobInteractedEvent)(void)) {
-	Interactable blob = Interactable_Create(xPostion, worldYPosition, interactableProximity, "Oil", blobSpritesheet, blobSprites[0], BlobInteractedEvent);
-	Interactable_AttachAnimation(&blob, blobAnimation);
-	return blob;
+void Interactable_InitOilBlob(Interactable *blob, float xPostion, float worldYPosition, void(*BlobInteractedEvent)(void)) {
+	Interactable_Initialize(blob ,xPostion, worldYPosition, interactableProximity, "Oil", blobSpritesheet, blobSprites[0], BlobInteractedEvent);
+	Interactable_AttachAnimation(blob, blobAnimation);
 }
 
-Interactable Interactable_CreateLift(float xPostion, float yPosition, void(*LiftInteractedEvent)(void)) {
-	Interactable lift = Interactable_Create(xPostion, yPosition, interactableProximity, "Lift", liftSpritesheet, liftSprites[0], LiftInteractedEvent);
-	Interactable_AttachAnimation(&lift, liftAnimation);
-	return lift;
+void Interactable_InitLift(Interactable *lift, float xPostion, float yPosition, void(*LiftInteractedEvent)(void)) {
+	Interactable_Initialize(lift, xPostion, yPosition, interactableProximity, "Lift", liftSpritesheet, liftSprites[0], LiftInteractedEvent);
+	Interactable_AttachAnimation(lift, liftAnimation);
 }
 
 void Interactable_DoorInteraction(Interactable *interactable, Player *player) {

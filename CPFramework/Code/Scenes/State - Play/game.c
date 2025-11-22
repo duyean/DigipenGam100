@@ -29,7 +29,7 @@ Interactable *interactablesArray_a[INTERACTABLES_COUNT];
 Interactable *interactablesArray_b[INTERACTABLES_COUNT];
 Interactable *interactablesArray_c[INTERACTABLES_COUNT];
 
-Interactable oilBlobTest[3];
+Interactable oilBlobs[3];
 Interactable doorTest;
 Interactable liftTest;
 
@@ -41,7 +41,7 @@ CP_Vector worldCenterPosition;
 unsigned short int roomCount = 5, centerRoomIndex = 2;
 
 //Test Background Sprites
-Room* roomList[MAX_ROOMS], r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20;
+Room *roomList[MAX_ROOMS], r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20;
 
 CP_Image Bg1_i[3];
 Spritesheet Bg1_ss[3];
@@ -212,7 +212,7 @@ void game_update(void) {
 	//printf("die");
 	Room_Update();
 
-	CP_Image_Draw(blackbtm, CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2 + 50, 1600, 900, 200);
+	CP_Image_Draw(blackbtm, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + 50, 1600, 900, 200);
 	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
 
 	// fucken hell this took me so long
@@ -308,10 +308,10 @@ void game_update(void) {
 	if (OilTimer <= 0.f && roompos != prevroompos)
 	{
 		int randomRespawn = CP_Random_RangeInt(0, 2);
-		if (oilBlobTest[randomRespawn].toDraw == 0)
+		if (oilBlobs[randomRespawn].toDraw == 0)
 		{
-			oilBlobTest[randomRespawn].toDraw = 1;
-			oilBlobTest[randomRespawn].oilAmount = 30.f;
+			oilBlobs[randomRespawn].toDraw = 1;
+			oilBlobs[randomRespawn].oilAmount = 30.f;
 		}
 		OilTimer = OilTimerMax;
 	}
@@ -329,16 +329,16 @@ void game_update(void) {
 
 	char scorebuffer[2000];
 	snprintf(scorebuffer, sizeof(scorebuffer), "Score: %d", score);
-	CP_Font_DrawText(scorebuffer, CP_System_GetWindowWidth() / 2, 100);
+	CP_Font_DrawText(scorebuffer, (float)CP_System_GetWindowWidth() / 2, 100);
 
 	//previous highest score
 	char highscorebuffer[2000];
 	snprintf(highscorebuffer, sizeof(highscorebuffer), "High Score: %d", prevHighscore);
-	CP_Font_DrawText(highscorebuffer, CP_System_GetWindowWidth() / 2, 50);
+	CP_Font_DrawText(highscorebuffer, (float)CP_System_GetWindowWidth() / 2, 50);
 
 	char timerbuffer[300];
 	snprintf(timerbuffer, sizeof(timerbuffer), "Timer: %5.f", LevelTimer);
-	CP_Font_DrawText(timerbuffer, CP_System_GetWindowWidth() - 300, 100);
+	CP_Font_DrawText(timerbuffer, (float)CP_System_GetWindowWidth() - 300.f, 100);
 
 	char levelbuffer[100];
 	snprintf(levelbuffer, sizeof(levelbuffer), "Level: %d", level);
@@ -361,8 +361,8 @@ void game_exit(void) {
 	Interactable_Unload();
 
 	//check
-	score = 0.f;
-	level = 0.f;
+	score = 0;
+	level = 0;
 	LevelTimer = 0.f;
 
 	//Level Unload
@@ -428,29 +428,29 @@ void InitialiseInteractables(void) {
 	Interactable_InitialiseData();
 
 	//array set a
-	doorTest = Interactable_CreateDoor(-300.f, 20.f, &LockerTest);
+	Interactable_InitDoor(&doorTest, -300.f, 20.f, &LockerTest);
 	interactablesArray_a[0] = &doorTest;
 
 
-	oilBlobTest[0] = Interactable_CreateOilBlob(-300.f, 0.f, &OilTest);
-	interactablesArray_a[1] = &oilBlobTest[0];
+	Interactable_InitOilBlob(&oilBlobs[0], - 300.f, 0.f, &OilTest);
+	interactablesArray_a[1] = &oilBlobs[0];
 
-	liftTest = Interactable_CreateLift(0.f, -2.1f, &LiftTest);
+	Interactable_InitLift(&liftTest, 0.f, -2.1f, &LiftTest);
 	interactablesArray_a[2] = &liftTest;
 
 	//array set b
-	doorTest = Interactable_CreateDoor(0.f, 20.f, &LockerTest);
+	Interactable_InitDoor(&doorTest, 0.f, 20.f, &LockerTest);
 	interactablesArray_b[0] = &doorTest;
 
-	oilBlobTest[1] = Interactable_CreateOilBlob(500.f, 0.f, &OilTest1);
-	interactablesArray_b[1] = &oilBlobTest[1];
+	Interactable_InitOilBlob(&oilBlobs[1], 500.f, 0.f, &OilTest1);
+	interactablesArray_b[1] = &oilBlobs[1];
 
 	//array set c
-	doorTest = Interactable_CreateDoor(300.f, 20.f, &LockerTest);
+	Interactable_InitDoor(&doorTest, 300.f, 20.f, &LockerTest);
 	interactablesArray_c[0] = &doorTest;
 
-	oilBlobTest[2] = Interactable_CreateOilBlob(0.f, 0.f, &OilTest2);
-	interactablesArray_c[1] = &oilBlobTest[2];
+	Interactable_InitOilBlob(&oilBlobs[2], 0.f, 0.f, &OilTest2);
+	interactablesArray_c[1] = &oilBlobs[2];
 }
 
 void LockerTest(void) {
@@ -460,8 +460,8 @@ void LockerTest(void) {
 //Wacky interactables and room code tbh im so im doing something wacky also
 
 void OilTest(void) {
-	Interactable_OilInteraction(&oilBlobTest[0]);
-	if (oilBlobTest[0].toDraw == 0)
+	Interactable_OilInteraction(&oilBlobs[0]);
+	if (oilBlobs[0].toDraw == 0)
 	{
 		prevroompos = roompos;
 	}
@@ -469,8 +469,8 @@ void OilTest(void) {
 }
 
 void OilTest1(void) {
-	Interactable_OilInteraction(&oilBlobTest[1]);
-	if (oilBlobTest[1].toDraw == 0)
+	Interactable_OilInteraction(&oilBlobs[1]);
+	if (oilBlobs[1].toDraw == 0)
 	{
 		prevroompos = roompos;
 	}
@@ -478,8 +478,8 @@ void OilTest1(void) {
 }
 
 void OilTest2(void) {
-	Interactable_OilInteraction(&oilBlobTest[2]);
-	if (oilBlobTest[2].toDraw == 0)
+	Interactable_OilInteraction(&oilBlobs[2]);
+	if (oilBlobs[2].toDraw == 0)
 	{
 		prevroompos = roompos;
 	}
@@ -515,8 +515,8 @@ void LiftTest(void) {
 
 		for (int i = 0; i < 3; i++)
 		{
-			oilBlobTest[i].toDraw = 1;
-			oilBlobTest[i].oilAmount = 30.f;
+			oilBlobs[i].toDraw = 1;
+			oilBlobs[i].oilAmount = 30.f;
 		}
 			
 	

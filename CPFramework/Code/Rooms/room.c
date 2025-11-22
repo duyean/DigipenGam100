@@ -24,7 +24,7 @@ Room Room_Create(Spritesheet roomComponents[], SpriteData frame[], int component
 void Room_Load(Room* room, Player player, int position)
 {
 	int roomPos = position * 1600;
-	int relativePos = roomPos - player.currentPositionX;
+	float relativePos = (float)roomPos - player.currentPositionX;
 
 	// Set up background
 	for (int i = 0; i < room->componentCount; i++)
@@ -43,5 +43,5 @@ void Room_Load(Room* room, Player player, int position)
 		Interactable_Update(room->interractibles[i], relativePos + room->interractibles[i]->worldXPosition, room->interractibles[i]->worldYPosition);
 	}
 
-	Player_CheckInteractables(room->interractibles, room->interactibleCount, roomPos);
+	Player_CheckInteractables(room->interractibles, room->interactibleCount, (float)roomPos);
 }

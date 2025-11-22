@@ -133,7 +133,7 @@ void sendRBMonstersToTrap(float trapXPos, float trapYPos)
 void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_STATE nextState, MonsterRedBabyObject* baby)
 {
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
-	int distFromPlayer = CP_Vector_Length(dir);
+	int distFromPlayer = (int)CP_Vector_Length(dir);
 
 	Animation_Reset(&baby->itself.monsterAnimation);
 	switch (*current_state)
@@ -255,7 +255,7 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
 	CP_Vector normDir = CP_Vector_Normalize(dir);
-	int distFromPlayer = CP_Vector_Length(dir);
+	int distFromPlayer = (int)CP_Vector_Length(dir);
 
 
 	
@@ -367,7 +367,7 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 			//walk towards trap triggered location -todo
 			CP_Vector trapDir = CP_Vector_Set(trapTriggeredPos.x - baby->itself.transform.x, trapTriggeredPos.y - baby->itself.transform.y);
 			CP_Vector trapNorm = CP_Vector_Normalize(trapDir);
-			int distFromTrap = CP_Vector_Length(trapDir);
+			int distFromTrap = (int)CP_Vector_Length(trapDir);
 			if (distFromTrap > 5.f)
 			{
 
