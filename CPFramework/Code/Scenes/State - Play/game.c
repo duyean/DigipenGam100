@@ -101,7 +101,7 @@ void OilTest(void);
 void OilTest1(void);
 void OilTest2(void);
 
-void LiftTest(void);
+void LiftInteraction(void);
 void InitialiseRooms(void);
 void Room_Update(void);
 
@@ -425,7 +425,7 @@ void QuitGame(void) {
 }
 
 void InitialiseInteractables(void) {
-	Interactable_InitialiseData();
+	Interactable_InitialiseAssets();
 
 	//array set a
 	Interactable_InitDoor(&doorTest, -300.f, 20.f, &LockerTest);
@@ -435,7 +435,7 @@ void InitialiseInteractables(void) {
 	Interactable_InitOilBlob(&oilBlobs[0], - 300.f, 0.f, &OilTest);
 	interactablesArray_a[1] = &oilBlobs[0];
 
-	Interactable_InitLift(&liftTest, 0.f, -2.1f, &LiftTest);
+	Interactable_InitLift(&liftTest, 0.f, -2.1f, &LiftInteraction);
 	interactablesArray_a[2] = &liftTest;
 
 	//array set b
@@ -486,7 +486,7 @@ void OilTest2(void) {
 
 }
 
-void LiftTest(void) {
+void LiftInteraction(void) {
 	Interactable_LiftInteraction(&liftTest, &player);
 	//End the floor
 	if (player.currentOil >= player.maxOil)
@@ -557,7 +557,6 @@ void LiftTest(void) {
 		}
 
 		Interactable_DoorInteraction(&doorTest, &player);
-	
 	}
 }
 
@@ -619,7 +618,7 @@ void Room_Update(void) {
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				roompos = centerRoomIndex - roomCount;
-				Room_Load(roomList[roomCount - 1], player, (int)(centerRoomIndex - roomCount));
+				Room_Load(roomList[roomCount - 1], player, centerRoomIndex - roomCount);
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{

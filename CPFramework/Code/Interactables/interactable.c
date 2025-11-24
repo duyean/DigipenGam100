@@ -54,7 +54,7 @@ CP_Sound oilSFX = NULL;
 CP_Sound doorElevatorSFX = NULL; 
 CP_Sound footstepsSFX = NULL;
 
-void Interactable_InitialiseData(void) {
+void Interactable_InitialiseAssets(void) {
 	/*Initialise Door Data Here*/
 	doorImage = CP_Image_Load("./Assets/LockerSpritesheet.png");
 	doorSpritesheet = Spritesheet_Create(doorImage, CP_Image_GetWidth(doorImage) / 2, CP_Image_GetHeight(doorImage));

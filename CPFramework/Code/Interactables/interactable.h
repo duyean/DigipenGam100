@@ -27,5 +27,5 @@ void Interactable_LiftInteraction(Interactable* interactable, Player* player);
 void Interactable_OilInteraction(Interactable* interactable);
 
 /*Initialise the Interactable Data to cache the data that will be used*/
-void Interactable_InitialiseData(void);
+void Interactable_InitialiseAssets(void);
 void Interactable_Unload(void);
