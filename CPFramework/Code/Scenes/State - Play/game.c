@@ -21,9 +21,9 @@ enum { INTERACTABLES_COUNT = 3};
 
 CP_Color background;
 Player player;
-Camera* camera;
-float playerX = 0, playerY = 0;
-float lastPlayerX = 0, lastPlayerY = 0;
+//Camera* camera;
+//float playerX = 0, playerY = 0;
+//float lastPlayerX = 0, lastPlayerY = 0;
 
 Interactable *interactablesArray_a[INTERACTABLES_COUNT];
 Interactable *interactablesArray_b[INTERACTABLES_COUNT];
@@ -143,7 +143,7 @@ void game_init(void) {
 	InitializeBaby();
 
 	SetPlayerRef(&player);
-	CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
+	//CreateCamera(&camera, player.currentPositionX, player.currentPositionY);
 
 	worldCenterPosition = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 
@@ -251,12 +251,12 @@ void game_update(void) {
 	DrawButtonUsingImage(settingsButtonBG, &settingsButton, pauseTextTemplate);
 
 	// Calculate player movement delta (velocity) since last frame
-	playerX = player.currentPositionX; playerY = player.currentPositionY;
-	float dx = playerX - lastPlayerX;  // playerDX: horizontal movement from last frame
-	float dy = playerY - lastPlayerY;  // playerDY: vertical movement from last frame
-	lastPlayerX = playerX; lastPlayerY = playerY;
+	//playerX = player.currentPositionX; playerY = player.currentPositionY;
+	//float dx = playerX - lastPlayerX;  // playerDX: horizontal movement from last frame
+	//float dy = playerY - lastPlayerY;  // playerDY: vertical movement from last frame
+	//lastPlayerX = playerX; lastPlayerY = playerY;
 
-	UpdateCamera(&camera, player.currentPositionX, player.currentPositionY, dx, dy, 0.7f); //test case, please edit later. Read camera.c for more info. -day
+	//UpdateCamera(&camera, player.currentPositionX, player.currentPositionY, dx, dy, 0.7f); //test case, please edit later. Read camera.c for more info. -day
 
 	/*
 	using parallex code here for background layers later
