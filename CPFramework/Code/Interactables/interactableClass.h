@@ -2,7 +2,7 @@
 
 #include "../CMP_Sprite_Pak.h"
 
-typedef struct {
+typedef struct Interactable{
 	
 	char* name;						//Used for Debugging
 	float worldXPosition, worldYPosition;		//Used for the 'actual' position

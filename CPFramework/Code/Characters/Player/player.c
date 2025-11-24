@@ -150,7 +150,7 @@ void Player_StaminaUpdate(Player *player) {
 		staminaDrawAlpha += 1000.f * DeltaTime();
 	}
 	staminaDrawAlpha = CP_Math_ClampFloat(staminaDrawAlpha, 0.f, 150.f);
-	SpriteData_Update(&staminaBarSprite, 1200.f * (player->currentStamina / player->maxStamina), 30, staminaDrawAlpha);
+	SpriteData_Update(&staminaBarSprite, (int)(1200.f * (player->currentStamina / player->maxStamina)), 30, staminaDrawAlpha);
 	Sprite_Draw(staminaBarSheet, staminaBarSprite, 0, 400, 1, 1);
 
 	/*This is for testing and should be removed*/
@@ -164,7 +164,7 @@ void Player_OilUpdate(Player* player) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Graphics_DrawRect(750.f + oilImageX, 500.f + oilImageY, 100.f, -player->currentOil);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-	Sprite_Draw(oilContainerSheet, oilContainerSprite, oilImageX, oilImageY, 1, 1);
+	Sprite_Draw(oilContainerSheet, oilContainerSprite, (int)oilImageX, (int)oilImageY, 1, 1);
 }
 
 void Player_Unload(void) {
