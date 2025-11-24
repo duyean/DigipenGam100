@@ -1,10 +1,11 @@
 #include "monsterBabyRed.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include <stdio.h> 
 #include "../../Rewrites/ListFile.h"
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
-#define OriginalSpeed 110.f
+#define OriginalSpeed 210.f
 
 // WORK IN PROGRESS DO NOT REFACTOR
 
@@ -90,7 +91,7 @@ void clearRedBabyMonsterListMemory(void)
 {
 	if (RedbabyList != NULL)
 	{
-		for (int i = 0; i < RedbabyList->size; i++)
+		for (int i = RedbabyList->size - 1; i >= 0; i--)
 		{
 			MonsterRedBabyObject* obj = (MonsterRedBabyObject*)(intptr_t)ListGet(RedbabyList, i);
 			ListRemoveAt(RedbabyList, i);
@@ -333,6 +334,7 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 
 
 		baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
+
 		if (baby->itself.randTimerCheck <= 0.f)
 		{
 			if (CP_Random_RangeInt(0, 100) < 60) //50% chance to go back to idle each frame;
@@ -495,15 +497,6 @@ void UpdateMonsterRedBaby()
 			CP_Settings_Tint(CP_Color_Create(255, 0, 0, 200));
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
 			CP_Settings_Tint(CP_Color_Create(0, 0, 0, 0));
-
-			if (obj->itself.transform.x < -(5 / 2 + 1) * 1600)
-			{
-				obj->itself.transform.x += 5 * 1600;
-			}
-			if (obj->itself.transform.x > (5 / 2 + 1) * 1600)
-			{
-				obj->itself.transform.x -= 5 * 1600;
-			}
 		}
 	}
 }
@@ -524,10 +517,13 @@ void TeleportRBMonsterRoom(int amt)
 				obj->itself.transform.x += amt;
 				printf("Monster teleported: %f", obj->itself.transform.x);
 			}
-			if (obj->current_state == RED_STATE_PATROL)
+			else
 			{
-				obj->itself.transform.x += amt;
-				printf("Monster teleported: %f", obj->itself.transform.x);
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) || (obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000))
+				{
+					obj->itself.transform.x += amt;
+					printf("Monster teleported: %f", obj->itself.transform.x);
+				}
 			}
 			
 		}

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "cprocessing.h"
 #include "game.h"
 #include "../../CMP_Core_Pak.h"
@@ -41,19 +42,19 @@ CP_Vector worldCenterPosition;
 unsigned short int roomCount = 5, centerRoomIndex = 2;
 
 //Test Background Sprites
-Room *roomList[MAX_ROOMS], r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20;
+Room roomList[MAX_ROOMS], r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20;
 
-CP_Image Bg1_i[3];
-Spritesheet Bg1_ss[3];
-SpriteData Bg1_sd[3];
+CP_Image Bg1_i[8];
+Spritesheet Bg1_ss[8];
+SpriteData Bg1_sd[8];
 
-CP_Image Bg2_i[3];
-Spritesheet Bg2_ss[3];
-SpriteData Bg2_sd[3];
+CP_Image Bg2_i[8];
+Spritesheet Bg2_ss[8];
+SpriteData Bg2_sd[8];
 
-CP_Image Bg3_i[3];
-Spritesheet Bg3_ss[3];
-SpriteData Bg3_sd[3];
+CP_Image Bg3_i[8];
+Spritesheet Bg3_ss[8];
+SpriteData Bg3_sd[8];
 
 //Just to reduce the printf occurence
 float lastFrameTime = 0;
@@ -106,8 +107,12 @@ void InitialiseRooms(void);
 void Room_Update(void);
 
 void game_init(void) {
+
+	int x;
+	CP_Random_Seed((unsigned)(uintptr_t)&x ^ (unsigned)clock() ^ (unsigned)time(NULL) ^ (unsigned)rand());
+
 	//I HATE YOU IM JUST GONNA HARDCODE FUCK YOU -day
-	roomList[0] = &r1; 	roomList[1] = &r2; roomList[2] = &r3; roomList[3] = &r4; roomList[4] = &r5; roomList[5] = &r6; 	roomList[6] = &r7; roomList[7] = &r8; roomList[8] = &r9; roomList[9] = &r10;roomList[10] = &r11; roomList[11] = &r12; roomList[12] = &r13; roomList[13] = &r14; roomList[14] = &r15; roomList[15] = &r16; roomList[16] = &r17; roomList[17] = &r18; roomList[18] = &r19; roomList[19] = &r20;
+	//roomList[0] = &r1; 	roomList[1] = &r2; roomList[2] = &r3; roomList[3] = &r4; roomList[4] = &r5; roomList[5] = &r6; 	roomList[6] = &r7; roomList[7] = &r8; roomList[8] = &r9; roomList[9] = &r10;roomList[10] = &r11; roomList[11] = &r12; roomList[12] = &r13; roomList[13] = &r14; roomList[14] = &r15; roomList[15] = &r16; roomList[16] = &r17; roomList[17] = &r18; roomList[18] = &r19; roomList[19] = &r20;
 	//oh my god it is endless. Just like my loathing for you and it's entirety. 
 	//this is for a debugging we might not even have a time to use.
 
@@ -491,17 +496,61 @@ void LiftInteraction(void) {
 	//End the floor
 	if (player.currentOil >= player.maxOil)
 	{
-		
+		Room presetMain;
+		Room presetDefaultA;
+		Room presetDefaultB;
+		Room presetDefaultC;
+		Room presetDefaultD;
+		Room presetDefaultE;
+		Room presetDefaultF;
 		//make new floor
-		Room presetMain = Room_Create(Bg2_ss, Bg2_sd, 3, interactablesArray_a, 3);
-		Room presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
-		Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 3, interactablesArray_c, 2);
+		switch (CP_Random_RangeInt(1, 3))
+		{
+		case 1:
+		{
+			presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
+			presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+			break;
+		}
+		case 2:
+		{
+			presetMain = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
+			presetDefaultA = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultB = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultC = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultD = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultE = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultF = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			break;
+		}
+		case 3:
+		{
+			presetMain = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
+			presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultB = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultC = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultD = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			presetDefaultE = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+			presetDefaultF = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+			break;
+		}
+		}
+	
 
-		Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB };
+		Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB, presetDefaultC, presetDefaultD, presetDefaultE, presetDefaultF };
 
 		for (int i = 0; i < roomCount; i++)
 		{
-			*roomList[i] = GenerateRoom(roomPresets, 2, i == centerRoomIndex);
+			roomList[i] = GenerateRoom(roomPresets, 6, i == centerRoomIndex);
+			if (roomList[i].roomComponents->source == NULL)
+			{
+				fprintf(stderr, "Error: IMAGE IS NULL\n");
+			}
 		}
 		
 
@@ -561,15 +610,34 @@ void LiftInteraction(void) {
 }
 
 void InitialiseRooms(void) {
-	Bg1_i[0] = CP_Image_Load("Assets/BG1Back.png");
-	Bg2_i[0] = CP_Image_Load("Assets/BG2Back.png");
-	Bg3_i[0] = CP_Image_Load("Assets/BG3Back.png");
+	Bg1_i[0] = CP_Image_Load("Assets/Background1/BG1Back.png");
+	Bg1_i[1] = CP_Image_Load("Assets/Background1/BG2Back.png");
+	Bg1_i[2] = CP_Image_Load("Assets/Background1/BG3Back.png");
+	Bg1_i[3] = CP_Image_Load("Assets/Background1/BG4Back.png");
+	Bg1_i[4] = CP_Image_Load("Assets/Background1/BG5Back.png");
+	Bg1_i[5] = CP_Image_Load("Assets/Background1/BG6Back.png");
 
-	Bg1_i[1] = Bg2_i[1] = Bg3_i[1] = CP_Image_Load("Assets/Ground.png");
 
-	Bg1_i[2] = Bg2_i[2] = Bg3_i[2] = CP_Image_Load("Assets/Ceiling.png");
+	Bg2_i[0] = CP_Image_Load("Assets/Background2/BG1Back.png");
+	Bg2_i[1] = CP_Image_Load("Assets/Background2/BG2Back.png");
+	Bg2_i[2] = CP_Image_Load("Assets/Background2/BG3Back.png");
+	Bg2_i[3] = CP_Image_Load("Assets/Background2/BG4Back.png");
+	Bg2_i[4] = CP_Image_Load("Assets/Background2/BG5Back.png");
+	Bg2_i[5] = CP_Image_Load("Assets/Background2/BG6Back.png");
 
-	for (int i = 0; i < 3; i++)
+
+	Bg3_i[0] = CP_Image_Load("Assets/Background3/BG1Back.png");
+	Bg3_i[1] = CP_Image_Load("Assets/Background3/BG2Back.png");
+	Bg3_i[2] = CP_Image_Load("Assets/Background3/BG3Back.png");
+	Bg3_i[3] = CP_Image_Load("Assets/Background3/BG4Back.png");
+	Bg3_i[4] = CP_Image_Load("Assets/Background3/BG5Back.png");
+	Bg3_i[5] = CP_Image_Load("Assets/Background3/BG6Back.png");
+
+	Bg1_i[6] = Bg2_i[6]  = Bg3_i[6] = CP_Image_Load("Assets/Ground.png");
+
+	Bg1_i[7] = Bg2_i[7]  = Bg3_i[7] = CP_Image_Load("Assets/Ceiling.png");
+
+	for (int i = 0; i < 8; i++)
 	{
 		Bg1_sd[i] = Bg2_sd[i] = Bg3_sd[i] = SpriteData_Create(1600, 900, 0, 0, 255.f);
 
@@ -578,16 +646,22 @@ void InitialiseRooms(void) {
 		Bg3_ss[i] = Spritesheet_Create(Bg3_i[i], CP_Image_GetWidth(Bg3_i[i]), CP_Image_GetHeight(Bg3_i[i]));
 	}
 
-	Room presetMain = Room_Create(Bg2_ss, Bg2_sd, 3, interactablesArray_a, 3);
-	Room presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 3, interactablesArray_b, 2);
-	Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 3, interactablesArray_c, 2);
+	Room presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
+	Room presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+	Room presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+	Room presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
 
-	Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB };
+	Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB, presetDefaultC, presetDefaultD, presetDefaultE, presetDefaultF };
 
 	for (int i = 0; i < roomCount; i++)
 	{
-		*roomList[i] = GenerateRoom(roomPresets, 2, i == centerRoomIndex);
+		//roomList[i] = malloc(sizeof(Room));
+		roomList[i] = GenerateRoom(roomPresets, 6, i == centerRoomIndex);
 	}
+	//test
 }
 
 void Room_Update(void) {
@@ -606,7 +680,7 @@ void Room_Update(void) {
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				roompos = i - centerRoomIndex;
-				Room_Load(roomList[i], player, i - centerRoomIndex);
+				Room_Load(&roomList[i], player, i - centerRoomIndex);
 				//printf("Loading Room %d\n", i);
 			}
 		}
@@ -618,7 +692,9 @@ void Room_Update(void) {
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				roompos = centerRoomIndex - roomCount;
-				Room_Load(roomList[roomCount - 1], player, centerRoomIndex - roomCount);
+				Room_Load(&roomList[roomCount - 1], player, centerRoomIndex - roomCount);
+				TeleportMonsterRoom(-1 * (roomCount * 1600));
+				TeleportRBMonsterRoom(-1 * (roomCount * 1600));
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{
@@ -636,7 +712,9 @@ void Room_Update(void) {
 			if (sightCheckR <  sightCheckP1 && sightCheckR > sightCheckP2)
 			{
 				roompos = roomCount - centerRoomIndex;
-				Room_Load(roomList[0], player, roomCount - centerRoomIndex);
+				Room_Load(&roomList[0], player, roomCount - centerRoomIndex);
+				TeleportMonsterRoom((roomCount * 1600));
+				TeleportRBMonsterRoom((roomCount * 1600));
 				//printf("Loading Room: LOOP RIGHT\n");
 				if (pX > sightCheckR)
 				{

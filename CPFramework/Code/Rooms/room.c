@@ -1,18 +1,24 @@
 ﻿#include <stdio.h>
 #include "cprocessing.h"
 #include "roomClass.h"
+#include <time.h> 
 #include "../CMP_Interactable_Pak.h"
 #include "../CMP_Sprite_Pak.h"
 #include "../CMP_Player_Pak.h"
 
-Room Room_Create(Spritesheet roomComponents[], SpriteData frame[], int componentsCount, Interactable *interactables[], int interactableCount)
+Room Room_Create(Spritesheet roomComponents[], SpriteData frame[], int roomBG, int componentsCount, Interactable *interactables[], int interactableCount)
 {
 	static Room newRoom;
-	for (int i = 0; i < componentsCount; i++)
-	{
-		newRoom.roomComponents[i] = roomComponents[i];
-		newRoom.frame[i] = frame[i];
-	}
+
+	int randBg = CP_Random_RangeInt(0, roomBG);
+	newRoom.roomComponents[0] = roomComponents[randBg];
+	newRoom.frame[0] = frame[randBg];
+
+	for (int i = 1; i < componentsCount; i++)
+    {
+	   newRoom.roomComponents[i] = roomComponents[roomBG + i];
+	   newRoom.frame[i] = frame[roomBG + i];
+    }
 
 	for (int i = 0; i < interactableCount; i++) { newRoom.interractibles[i] = interactables[i]; }
 

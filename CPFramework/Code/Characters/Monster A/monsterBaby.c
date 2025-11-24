@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h> 
+#include <time.h>
 #include "../../Rewrites/ListFile.h"
 #define ArraySize(a) (sizeof(a)/sizeof(a[0]))
+#define OriginalSpeed 210.f
 
 // WORK IN PROGRESS DO NOT REFACTOR
 
@@ -92,9 +94,9 @@ void Monsters_Unload(void)
 {
 	if (babyList != NULL)
 	{
-		for (int i = 0; i < babyList->size; i++)
+		for (int i = babyList->size - 1; i >= 0; i--)
 		{
-			MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
+			MonsterBabyObject* obj = (MonsterBabyObject*)(intptr_t)ListGet(babyList, i);
 			ListRemoveAt(babyList, i);
 			destroyBabyMonster(obj);
 		}
@@ -125,7 +127,7 @@ void InitializeBaby(void)
 void externalCreateM_B(int x, int y)
 {
 	//default y=0;
-	ListAppend(babyList, createBabyMonster(x, y, 110.f, 500.f, 50.f, 5.f));
+	ListAppend(babyList, createBabyMonster(x, y, OriginalSpeed, 500.f, 50.f, 5.f));
 }
 
 
@@ -334,8 +336,9 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 		}
 
-
+		
 		baby->itself.transform.x += baby->itself.facingDir * (baby->itself.movementSpeed * CP_System_GetDt());
+
 		if (baby->itself.randTimerCheck <= 0.f)
 		{
 			if (CP_Random_RangeInt(0, 100) < 60) //50% chance to go back to idle each frame;
@@ -483,6 +486,7 @@ void processing_state_baby_logic(MonsterBabyObject* baby)
 
 void UpdateMonsterBaby()
 {
+
 	for (int i = 0; i < babyList->size; i++)
 	{
 		MonsterBabyObject* obj = (MonsterBabyObject*)ListGet(babyList, i);
@@ -495,15 +499,6 @@ void UpdateMonsterBaby()
 			processing_state_baby_logic(obj);
 
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
-
-			if (obj->itself.transform.x < -(5 / 2 + 1) * 1600)
-			{
-				obj->itself.transform.x += 5 * 1600;
-			}
-			if (obj->itself.transform.x > (5 / 2 + 1) * 1600)
-			{
-				obj->itself.transform.x -= 5 * 1600;
-			}
 			//DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
 			//CP_Font_DrawText(intToConstChar((int)obj->current_state), (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY));
 		}
@@ -526,11 +521,17 @@ void TeleportMonsterRoom(int amt)
 				obj->itself.transform.x += amt;
 				printf("Monster teleported: %f", obj->itself.transform.x);
 			}
-			if (obj->current_state == STATE_PATROL)
+			else
 			{
-				obj->itself.transform.x += amt;
-				printf("Monster teleported: %f", obj->itself.transform.x);
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) || (obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000))
+				{
+					obj->itself.transform.x += amt;
+					printf("Monster teleported: %f", obj->itself.transform.x);
+				}
 			}
+
+
+
 			
 		}
 	}

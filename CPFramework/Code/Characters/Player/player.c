@@ -48,7 +48,7 @@ void Player_Initialise(Player *player) {
 
 	player->currentPositionX = 0;
 	player->currentPositionY = 0;
-	player->movementSpeed = 100.f;
+	player->movementSpeed = 200.f;
 	player->movementMultiplier = 1.f;
 	player->faceDirection = 1;
 	player->isInteracting = player->isMoving = 0;
@@ -102,16 +102,16 @@ void Player_Update(Player *player) {
 			float encumberance = player->currentOil / player->maxOil * 10.f;
 			printf("Current encumberance: %.2f\n", encumberance);
 			player->currentStamina -= (45.f + encumberance) * DeltaTime();
-			player->movementMultiplier = 2.5f;
+			player->movementMultiplier = 2.0f;
 	}	}
 	else {
 		Sprite_Draw(characterSheet, characterSprites[0], 0, 0, player->faceDirection, 1);
 	}
 
-	/*if (CP_Input_KeyTriggered(KEY_LEFT_SHIFT) && player->currentStamina > 0)
+	if (CP_Input_KeyTriggered(KEY_LEFT_SHIFT) && player->currentStamina > 0)
 	{
 		player->currentStamina -= 15.f;
-	}*/
+	}
 	if (CP_Input_KeyReleased(KEY_LEFT_SHIFT) || player->currentStamina <= 0) {
 	
 		player->movementMultiplier = 1.f;
