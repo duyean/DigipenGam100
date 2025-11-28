@@ -6,7 +6,7 @@
 int main(void)
 {
 	InitialiseUtilities();
-	SetScene(MAIN);
+	SetScene(INTRO);
 	
 	CP_Engine_Run(1);
 	return 0;

@@ -39,5 +39,9 @@ Press E to enter lockers
 ../assets/Radio.png
 
 Operator
+You have 3 minutes for each floor before we deduct your allowance~
+../assets/Radio.png
+
+Operator
 Good luck! You might see a bonus if you keep at it >3<
 ../assets/Radio.png

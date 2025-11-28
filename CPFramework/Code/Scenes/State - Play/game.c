@@ -346,7 +346,7 @@ void game_update(void) {
 	CP_Font_DrawText(highscorebuffer, (float)CP_System_GetWindowWidth() / 2, 50);
 
 	char timerbuffer[300];
-	snprintf(timerbuffer, sizeof(timerbuffer), "Timer: %5.f", LevelTimer);
+	snprintf(timerbuffer, sizeof(timerbuffer), "Timer: %5.f / 180", LevelTimer);
 	CP_Font_DrawText(timerbuffer, (float)CP_System_GetWindowWidth() - 300.f, 100);
 
 	char levelbuffer[100];
@@ -705,7 +705,7 @@ void Room_Update(void) {
 				if (pX < sightCheckR)
 				{
 					player.currentPositionX += roomCount * 1600;
-s					TeleportMonsterRoom((roomCount * 1600), 1, -2);
+					TeleportMonsterRoom((roomCount * 1600), 1, -2);
 				    //TeleportRBMonsterRoom((roomCount * 1600), 1, roompos);
 					//printf("Looping Left to Right\n");
 				}

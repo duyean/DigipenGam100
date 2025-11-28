@@ -19,7 +19,7 @@ void saveScore(int score)
 
 int setScore(int score, int level, float timeTaken)
 {
-	return score + ((int)((10 * (level * level)) + (((120.f - timeTaken) / 120) * 100) * level));
+	return score + ((int)((10 * (level * level)) + (((180.f - timeTaken) / 180) * 100) * level));
 
 }
 
