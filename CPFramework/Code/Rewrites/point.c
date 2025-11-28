@@ -10,7 +10,7 @@ void saveScore(int score)
 		perror("Error opening save file");
 		return;
 	}
-	int encryptedScore = score ^ KEY;
+	int encryptedScore = score ^ (int)KEY;
 
 	fprintf(fp, "%d\n", encryptedScore);
 	fclose(fp);
@@ -31,7 +31,7 @@ int viewScore(void)
 
 	if (fp == NULL) {
 		perror("File not found");
-		return;
+		return 0;
 	}
 
 	int highScore = 0;
@@ -39,7 +39,7 @@ int viewScore(void)
 	{
 		int readValue = atoi(buffer);
 
-		int decryptedScore = readValue ^ KEY;
+		int decryptedScore = readValue ^ (int)KEY;
 
 		if (decryptedScore > highScore)
 		{

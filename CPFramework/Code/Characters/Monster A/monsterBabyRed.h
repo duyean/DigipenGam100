@@ -33,5 +33,5 @@ void clearRedBabyMonsterListMemory(void);
 void externalCreateM_RB(int x, int y);
 void sendRBMonstersToTrap(float trapXPos, float trapYPos);
 void UpdateMonsterRedBaby();
-void TeleportRBMonsterRoom(int amt);
+void TeleportRBMonsterRoom(int amt, int check);
 #endif

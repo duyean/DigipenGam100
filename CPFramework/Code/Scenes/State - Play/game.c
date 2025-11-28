@@ -207,7 +207,7 @@ void game_update(void) {
 		return; // pauses lol the whole deltatime thing was just a SCAMMMM
 	}
 
-	CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
+	//CP_Vector centerOfScreen = CP_Vector_Set(CP_System_GetWindowWidth() * .5f, CP_System_GetWindowHeight() * .5f);
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 255));
 
 	//printf("bruh ");
@@ -231,6 +231,10 @@ void game_update(void) {
 	if (ds.isActive) {
 		DialogueSystem_Update(&ds);
 		DialogueSystem_Draw(&ds);
+
+		char reminderBuffer[2000];
+		snprintf(reminderBuffer, sizeof(reminderBuffer), "Press Space to Continue");
+		CP_Font_DrawText(reminderBuffer, (float)CP_System_GetWindowWidth() / 2, 100);
 
 		if (dialogueJustStarted) {
 			// allow one update tick before pausing
@@ -496,13 +500,13 @@ void LiftInteraction(void) {
 	//End the floor
 	if (player.currentOil >= player.maxOil)
 	{
-		Room presetMain;
-		Room presetDefaultA;
-		Room presetDefaultB;
-		Room presetDefaultC;
-		Room presetDefaultD;
-		Room presetDefaultE;
-		Room presetDefaultF;
+		Room presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
+		Room presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+		Room presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		Room presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+		Room presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		Room presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
 		//make new floor
 		switch (CP_Random_RangeInt(1, 3))
 		{
@@ -693,14 +697,16 @@ void Room_Update(void) {
 			{
 				roompos = centerRoomIndex - roomCount;
 				Room_Load(&roomList[roomCount - 1], player, centerRoomIndex - roomCount);
-				TeleportMonsterRoom(-1 * (roomCount * 1600));
-				TeleportRBMonsterRoom(-1 * (roomCount * 1600));
+				//if room is loaded
+				// teleport monster in this location to teleport
+				TeleportMonsterRoom(-1 * (roomCount * 1600), 0, -2);
+				//TeleportRBMonsterRoom(-1 * (roomCount * 1600), 0);
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{
 					player.currentPositionX += roomCount * 1600;
-					TeleportMonsterRoom((roomCount * 1600));
-					TeleportRBMonsterRoom((roomCount * 1600));
+s					TeleportMonsterRoom((roomCount * 1600), 1, -2);
+				    //TeleportRBMonsterRoom((roomCount * 1600), 1, roompos);
 					//printf("Looping Left to Right\n");
 				}
 			}
@@ -713,14 +719,14 @@ void Room_Update(void) {
 			{
 				roompos = roomCount - centerRoomIndex;
 				Room_Load(&roomList[0], player, roomCount - centerRoomIndex);
-				TeleportMonsterRoom((roomCount * 1600));
-				TeleportRBMonsterRoom((roomCount * 1600));
+				TeleportMonsterRoom((roomCount * 1600), 0, 2);
+				//TeleportRBMonsterRoom((roomCount * 1600), 0);
 				//printf("Loading Room: LOOP RIGHT\n");
 				if (pX > sightCheckR)
 				{
 					player.currentPositionX -= roomCount * 1600;
-					TeleportMonsterRoom(-1 * (roomCount * 1600));
-					TeleportRBMonsterRoom(-1 * (roomCount * 1600));
+				    TeleportMonsterRoom(-1 * (roomCount * 1600), 1, 2);
+					//TeleportRBMonsterRoom(-1 * (roomCount * 1600), 1, roompos);
 					//printf("Looping Right to Left\n");
 				}
 			}

@@ -505,7 +505,7 @@ void UpdateMonsterBaby()
 	}
 }
 
-void TeleportMonsterRoom(int amt)
+void TeleportMonsterRoom(int amt, int check, int playerPos)
 {
 	for (int i = 0; i < babyList->size; i++)
 	{
@@ -516,22 +516,34 @@ void TeleportMonsterRoom(int amt)
 			{
 				continue;
 			}
-			if (obj->current_state == STATE_CHASE)
+			if (obj->current_state == STATE_CHASE && check == 1)
 			{
 				obj->itself.transform.x += amt;
-				printf("Monster teleported: %f", obj->itself.transform.x);
 			}
-			else
+			else if (obj->current_state == STATE_PATROL && check == 1)
 			{
-				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) || (obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000))
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) && playerPos != 2)				//between 3600 and 2000 monster is in the right room
 				{
-					obj->itself.transform.x += amt;
-					printf("Monster teleported: %f", obj->itself.transform.x);
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+				else if ((obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000) && playerPos != -2) 			//between -3600 and -2000 monster is in left room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
 				}
 			}
+			else if (check == 0)
+			{
+	
 
-
-
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) && playerPos != 2)				//between 3600 and 2000 monster is in the right room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+				else if ((obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000) && playerPos != -2) 			//between -3600 and -2000 monster is in left room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+			}
 			
 		}
 	}

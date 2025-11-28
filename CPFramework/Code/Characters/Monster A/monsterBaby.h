@@ -33,5 +33,5 @@ void Monsters_Unload(void);
 void externalCreateM_B(int x, int y);
 void sendMonstersToTrap(float trapXPos, float trapYPos);
 void UpdateMonsterBaby();
-void TeleportMonsterRoom(int amt);
+void TeleportMonsterRoom(int amt, int check, int playerPos);
 #endif

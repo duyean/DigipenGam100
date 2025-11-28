@@ -501,7 +501,7 @@ void UpdateMonsterRedBaby()
 	}
 }
 
-void TeleportRBMonsterRoom(int amt)
+void TeleportRBMonsterRoom(int amt, int check)
 {
 	for (int i = 0; i < RedbabyList->size; i++)
 	{
@@ -512,7 +512,7 @@ void TeleportRBMonsterRoom(int amt)
 			{
 				continue;
 			}
-			if (obj->current_state == RED_STATE_CHASE)
+			if (obj->current_state == RED_STATE_CHASE && check == 1)
 			{
 				obj->itself.transform.x += amt;
 				printf("Monster teleported: %f", obj->itself.transform.x);
