@@ -184,7 +184,7 @@ void game_init(void) {
 	DialogueSystem_Init(&ds, lines, lineCount);
 	dialogueJustStarted = 1;
 
-	//SpawnMonster(BABY, 1, -3200.f, 3200.f); //Set room min and max
+	SpawnMonster(BABY, 1, -3200.f, 3200.f); //Set room min and max
 
 	prevHighscore = viewScore();
 	level++;
