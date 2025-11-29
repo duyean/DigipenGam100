@@ -101,7 +101,7 @@ void Monsters_Unload(void)
 {
 	if (babyList != NULL)
 	{
-		for (int i = babyList->size - 1; i >= 0; i--)
+		for (int i = (int)babyList->size - 1; i >= 0; i--)
 		{
 			MonsterBabyObject* obj = (MonsterBabyObject*)(intptr_t)ListGet(babyList, i);
 			ListRemoveAt(babyList, i);
@@ -508,7 +508,7 @@ void UpdateMonsterBaby()
 			{
 				char buffer[300];
 				snprintf(buffer, sizeof(buffer), "STATE: %d", (int)obj->current_state);
-				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750,  CP_System_GetWindowHeight() / 2 - 150);
+				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750,  CP_System_GetWindowHeight() / 2 - (float)150);
 			}
 			//DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
 			//CP_Font_DrawText(intToConstChar((int)obj->current_state), (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY));

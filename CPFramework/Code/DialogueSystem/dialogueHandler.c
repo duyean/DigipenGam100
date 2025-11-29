@@ -76,8 +76,8 @@ void DialogueSystem_Draw(DialogueSystem* ds) {
 
     // Draw character sprite with optional shake
     if (line->triggerShake) {
-        float shakeX = (rand() % 5) - 2;
-        float shakeY = (rand() % 5) - 2;
+        float shakeX = (float)((rand() % 5) - 2);
+        float shakeY = (float)((rand() % 5) - 2);
         CP_Image_Draw(ds->currentSprite, 200 + shakeX, 200 + shakeY, 300, 400, 255);
     }
     else {

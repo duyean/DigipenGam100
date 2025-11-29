@@ -98,7 +98,7 @@ void clearRedBabyMonsterListMemory(void)
 {
 	if (RedbabyList != NULL)
 	{
-		for (int i = RedbabyList->size - 1; i >= 0; i--)
+		for (int i = (int)RedbabyList->size - 1; i >= 0; i--)
 		{
 			MonsterRedBabyObject* obj = (MonsterRedBabyObject*)(intptr_t)ListGet(RedbabyList, i);
 			ListRemoveAt(RedbabyList, i);
@@ -138,7 +138,7 @@ void sendRBMonstersToTrap(float trapXPos, float trapYPos)
 void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_STATE nextState, MonsterRedBabyObject* baby)
 {
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
-	int distFromPlayer = (int)CP_Vector_Length(dir);
+	float distFromPlayer = CP_Vector_Length(dir);
 
 	Animation_Reset(&baby->itself.monsterAnimation);
 	switch (*current_state)
@@ -260,7 +260,7 @@ void processing_state_Redbaby_logic(MonsterRedBabyObject* baby)
 
 	CP_Vector dir = CP_Vector_Set(playerRef->currentPositionX - baby->itself.transform.x, playerRef->currentPositionY - baby->itself.transform.y);
 	CP_Vector normDir = CP_Vector_Normalize(dir);
-	int distFromPlayer = (int)CP_Vector_Length(dir);
+	float distFromPlayer = CP_Vector_Length(dir);
 
 
 	
@@ -506,7 +506,7 @@ void UpdateMonsterRedBaby()
 			{
 				char buffer[300];
 				snprintf(buffer, sizeof(buffer), "STATE: %d", (int)obj->current_state);
-				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750, CP_System_GetWindowHeight() / 2 - 150);
+				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750, CP_System_GetWindowHeight() / 2 - (float)150);
 			}
 		}
 	}

@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 
-#define FILENAME "../../Save/scoreSystem.txt"
+#define FILENAME "./Assets/Save/scoreSystem.txt"
 #define KEY 8008135676767
 
 void saveScore(int score);

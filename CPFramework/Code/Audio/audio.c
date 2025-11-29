@@ -10,6 +10,7 @@
 #include "../CMP_Audio_Pak.h"
 #include <stdio.h>
 
+int mainMenuPlaying = 0;
 
 SoundAsset CreateSound(char const* file, float volume, float pitch, CP_SOUND_GROUP group, CP_BOOL loop) {
 	SoundAsset newAsset;
@@ -22,7 +23,7 @@ SoundAsset CreateSound(char const* file, float volume, float pitch, CP_SOUND_GRO
 }
 
 void PlaySound(SoundAsset* asset) {
-	CP_Sound_PlayAdvanced(asset->sound, asset->volume, asset->pitch, asset->pitch, asset->group);
+	CP_Sound_PlayAdvanced(asset->sound, asset->volume, asset->pitch, 0, asset->group);
 }
 
 void FreeSound(SoundAsset* asset) {
@@ -42,7 +43,7 @@ void AudioInitialize(void)
 	mainMenuMusic = CP_Sound_Load("./Assets/Audio/Main.wav");
 	gameplayMusic = CP_Sound_Load("./Assets/Audio/Eerie.wav");
 
-	CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM, 1.0f, TRUE, CP_SOUND_GROUP_1);
+	//CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM, 1.0f, TRUE, CP_SOUND_GROUP_1);
 
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, effectiveBGM);
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_2, effectiveBGM);
@@ -80,13 +81,20 @@ float AudioGetSFXVolume(void) { return effectiveSFX; }
 
 void AudioPlayMainMenuMusic(void)
 {
+	
 	CP_Sound_StopGroup(CP_SOUND_GROUP_2);
-	CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM * masterVolume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+	if (mainMenuPlaying == 0)
+	{
+		CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM * masterVolume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+		mainMenuPlaying = 1;
+	}
+	
 }
 
 void AudioPlayGameplayMusic(void)
 {
 	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	mainMenuPlaying = 0;
 	CP_Sound_PlayAdvanced(gameplayMusic, effectiveBGM * masterVolume, 1.0f, TRUE, CP_SOUND_GROUP_2);
 }
 

@@ -32,13 +32,13 @@ void SpawnMonster(MONSTER_TYPE type, int amount, float minRange, float maxRange)
 		case BABY:
 		{
 			//default 0 here until further notice
-			externalCreateM_B(xPos, 0);
+			externalCreateM_B((int)xPos, 0);
 				break;
 		}
 		case RED_BABY:
 		{
 			//Speed up when chasing
-			externalCreateM_RB(xPos,0);
+			externalCreateM_RB((int)xPos,0);
 			break;
 		}
 		case CHAINS:

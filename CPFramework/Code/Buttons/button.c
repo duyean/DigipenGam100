@@ -101,7 +101,7 @@ Button CreateButton(float x, float y, float w, float h, int a, void* buttonFunc)
 */
 Button AddTextToButton(Button* button, char* text, int xOffset, int yOffset) {
 	button->text = text;
-	button->textOffsetX = xOffset;
-	button->textOffsetY = yOffset;
+	button->textOffsetX = (float)xOffset;
+	button->textOffsetY = (float)yOffset;
 	return *button;
 }

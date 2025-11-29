@@ -45,11 +45,11 @@ void Room_Load(Room* room, Player player, int position)
 	{
 		switch (i)
 		{
-			case 1: //??? Idk have to ask edmund what the fuck this is 卧槽这个是什么？？？
-				Sprite_Draw(room->roomComponents[i], room->frame[i], relativePos, - 210, 1, 1);
+			case 1: //??? Idk have to ask edmund what this is 卧槽这个是什么？？？
+				Sprite_Draw(room->roomComponents[i], room->frame[i], (int)relativePos, - 210, 1, 1);
 				break;
 			default:
-				Sprite_Draw(room->roomComponents[i], room->frame[i], relativePos, 0, 1, 1);
+				Sprite_Draw(room->roomComponents[i], room->frame[i], (int)relativePos, 0, 1, 1);
 				break;
 	}	}
 	for (int i = 0; i < room->interactibleCount; i++)
