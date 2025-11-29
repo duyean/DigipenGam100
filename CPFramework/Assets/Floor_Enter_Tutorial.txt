@@ -7,7 +7,7 @@ No? You needed a job? Anyways...
 ../assets/Radio.png
 
 Operator
-It must be disorientating and dark down there
+Press E to get out of the lift, Press A or D to move Left or Right
 ../assets/Radio.png
 
 Operator
@@ -19,7 +19,7 @@ Shift to Sprint, Watch out for your stamina!
 ../assets/Radio.png
 
 Operator
-Press E to collect the ooze on the wall
+Press E to collect the ooze on the wall or enter Lockers
 ../assets/Radio.png
 
 Operator
@@ -31,19 +31,7 @@ And return to the lift to proceed deeper
 ../assets/Radio.png
 
 Operator
-Our facility is OSHA Certified but if you happen to see...
-../assets/Radio.png
-
-Operator
-Something... Somethings
-../assets/Radio.png
-
-Operator
-Press E to enter lockers
-../assets/Radio.png
-
-Operator
-You have 3 minutes for each floor before we deduct your allowance~
+Take too long and we deduct your points~
 ../assets/Radio.png
 
 Operator

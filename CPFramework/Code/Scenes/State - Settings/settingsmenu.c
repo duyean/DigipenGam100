@@ -10,7 +10,7 @@
 // to do: button below the sliders "Controls" that pops up a short instruction box with just static words and images (optional)
 
 TextTemplate settingsTextTemplate;
-CP_Image settingsBG, backButtonBG, controlsButtonBG;
+CP_Image backButtonBG, controlsButtonBG;
 Button backButton, controlsButton, closePopUpButton;
 
 Slider BGMSlider, SFXSlider, masterSlider;
@@ -32,9 +32,11 @@ void ControlsPopUp(void) {
         CP_Graphics_DrawRect(width, height, CP_System_GetWindowWidth(), CP_System_GetWindowHeight());
 
         // reusing settings bg
-        CP_Image_Draw(settingsBG, width, height, 560.0f, 250.0f, 255);
+        //CP_Image_Draw(settingsBG, width, height, 560.0f, 250.0f, 255);
+        CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+        CP_Graphics_DrawRectAdvanced(width, height, 560.0f, 250.0f, 0, 0);
 
-        CP_Settings_Fill(CP_Color_Create(71, 39, 18, 255));
+        CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
         CP_Settings_TextSize(60.0f);
         CP_Font_DrawText("Controls", width, height - 80.0f);
 
@@ -51,12 +53,11 @@ void settings_menu_init(void) {
 
     // draw settings and the music zzz
     // the filepaths need to be adjusted after merging 
-    settingsBG = CP_Image_Load("./Assets/settings_test.png");
     backButtonBG = CP_Image_Load("./Assets/backButton.png");
     controlsButtonBG = CP_Image_Load("./Assets/controlsButton.png");
 
     // color is being controlled by the font template cuz i cant be assed
-    settingsTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(71, 39, 18, 255));
+    settingsTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
     CP_Font_Set(settingsTextTemplate.font);
 
     backButton = CreateButton(100, 350, 80, 80, 255, &ReturnMenu);
@@ -107,12 +108,11 @@ void settings_menu_update(void) {
     int height = CP_System_GetWindowHeight() / 2.0f;
 
     // placeholder BG and back button
-    CP_Image_Draw(settingsBG, width, height, width, width, 255);
     DrawButtonUsingImage(backButtonBG, &backButton, settingsTextTemplate);
     DrawButtonUsingImage(controlsButtonBG, &controlsButton, settingsTextTemplate);
 
     // texts wow genniuuus
-    CP_Settings_TextSize(100.0f);
+    CP_Settings_TextSize(80.0f);
     CP_Font_DrawText("Master Volume", 700.0f, 150.0f);
     CP_Font_DrawText("Volume", 600.0f, 325.0f);
     CP_Font_DrawText("Sound Effects", 700.0f, 485.0f);
