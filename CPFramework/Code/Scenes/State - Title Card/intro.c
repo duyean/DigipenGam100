@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: intro.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: intro scene for logos
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "../../CMP_Scene_Pak.h"
 #include <stdio.h>

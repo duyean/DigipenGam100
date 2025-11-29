@@ -1,3 +1,12 @@
+/*---------------------------------------------------------------
+  File: game.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: ALL
+  Purpose: main driver file for the actual game
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: mainmenu.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: mainmenu scene
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "mainmenu.h"
 #include "../../CMP_Scene_Pak.h"

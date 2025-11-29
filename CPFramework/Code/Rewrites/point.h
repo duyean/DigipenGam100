@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: point.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: score system and saver
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #ifndef _points_h_
 #define _points_h_

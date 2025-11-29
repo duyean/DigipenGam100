@@ -1,4 +1,12 @@
-﻿#include <stdio.h>
+﻿/*---------------------------------------------------------------
+  File: room.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: room generation code
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
+#include <stdio.h>
 #include "cprocessing.h"
 #include "roomClass.h"
 #include <time.h> 

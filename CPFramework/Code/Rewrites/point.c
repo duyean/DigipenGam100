@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: point.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: score system and saver
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "point.h"
 
 void saveScore(int score)

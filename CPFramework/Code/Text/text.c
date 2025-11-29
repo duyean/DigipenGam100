@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: text.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: Transition
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include <stdio.h>
 #include "cprocessing.h"
 #include "../CMP_Text_Pak.h"

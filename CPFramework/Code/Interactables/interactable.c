@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: interactables.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome, Daniel, Edmund
+  Purpose: interactable objects in the map
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include <stdio.h>
 #include "cprocessing.h"
 #include "../CMP_Interactable_Pak.h"

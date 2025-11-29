@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: transition.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: Transition
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 
 #include "sceneEnum.h" //required for SceneEnum type

@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: Slider.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne
+  Purpose: Menu sliders
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "slider.h"
 #include "../CMP_Settings_Pak.h"

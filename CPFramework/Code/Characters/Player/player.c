@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: player.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome, Daniel, Edmund
+  Purpose: Player controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "../../CMP_Player_Pak.h"
 #include "../../CMP_Sprite_Pak.h"

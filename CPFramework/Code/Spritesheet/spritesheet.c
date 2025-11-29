@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: spritesheet.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: spritesheet loader
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "spriteClass.h"
 #include <stdio.h>
 #include <stdlib.h>

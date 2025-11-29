@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: credits.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne
+  Purpose: credits page
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "credits.h"
 #include "../../CMP_Scene_Pak.h"

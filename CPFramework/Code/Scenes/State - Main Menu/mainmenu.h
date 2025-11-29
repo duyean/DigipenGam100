@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: mainmenu.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: mainmenu scene
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 
 void main_menu_init(void);

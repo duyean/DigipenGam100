@@ -1,4 +1,12 @@
-﻿#pragma once
+﻿/*---------------------------------------------------------------
+  File: room.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: room generation code
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
+#pragma once
 
 #include "roomClass.h"
 

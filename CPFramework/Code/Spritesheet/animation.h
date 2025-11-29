@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: animation.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: animation handler
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 
 #include "animateClass.h" //required for Animation type

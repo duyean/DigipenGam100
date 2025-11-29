@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: Slider.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne
+  Purpose: Menu sliders
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "cprocessing.h"
 #include <stdbool.h>
@@ -11,7 +19,7 @@ typedef struct
 
 } Slider;
 
-void DrawSlider(Slider* s, float volume);
+void DrawSlider(Slider* s, float volume, CP_Color knobColor);
 void SliderValues(Slider* s, float x, float y);
 void HandleSliderInput(Slider* s, float* volume, CP_SOUND_GROUP group);
 

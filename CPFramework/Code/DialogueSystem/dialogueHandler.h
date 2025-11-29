@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: dialogueHandler.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: dialogue system controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "dialogueSystemClass.h"
 #include "dialogueLineClass.h"

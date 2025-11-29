@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: monsterBaby.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: Basic monster controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "monsterBaby.h"
 #include <stdlib.h>
 #include <stdbool.h>

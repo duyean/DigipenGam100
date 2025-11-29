@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: button.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: buttons to press for mainmenu
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include <stdio.h>
 #include <math.h>
 #include "cprocessing.h"

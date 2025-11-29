@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: fileReader.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: reading of text files for dialogue
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

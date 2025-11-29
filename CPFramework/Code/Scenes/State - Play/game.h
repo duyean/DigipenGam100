@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: game.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: ALL
+  Purpose: main driver file for the actual game
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 
 void game_init(void);

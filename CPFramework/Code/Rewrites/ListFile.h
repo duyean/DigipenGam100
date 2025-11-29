@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: listfile.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: dynamical array
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #ifndef _Dynamic_Array_
 #define _Dynamic_Array_

@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: listfile.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: dynamical array
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

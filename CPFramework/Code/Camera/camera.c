@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: camera.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome, Daniel
+  Purpose: camera class for moving of camera n functions
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "cameraClass.h"
 

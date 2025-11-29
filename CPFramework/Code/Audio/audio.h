@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: audio.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: Audio controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "cprocessing.h"
 #include "audioClass.h"

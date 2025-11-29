@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: monsterBabyRed.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: Monster controller for ramping variant
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "monsterBabyRed.h"
 #include <stdlib.h>
 #include <stdbool.h>

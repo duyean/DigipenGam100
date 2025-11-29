@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: layer.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: background layers
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "layerClass.h"
 #include "layerEnum.h"
 #include "camera.h"

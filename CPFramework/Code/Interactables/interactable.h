@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: interactables.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome, Daniel, Edmund
+  Purpose: interactable objects in the map
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "interactableClass.h"
 #include "../Characters/Player/playerClass.h"

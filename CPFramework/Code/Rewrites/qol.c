@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: qol.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: Qol
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 
 #include "cprocessing.h"

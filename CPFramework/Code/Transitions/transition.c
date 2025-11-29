@@ -1,3 +1,12 @@
+/*---------------------------------------------------------------
+  File: transition.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: Transition
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
+
 #include <stdio.h>
 #include <math.h>
 #include "cprocessing.h"

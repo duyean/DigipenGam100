@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: animation.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Jerome
+  Purpose: animation handler
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "../CMP_Sprite_Pak.h"
 #include "../CMP_Core_Pak.h"
 #include <stdio.h>

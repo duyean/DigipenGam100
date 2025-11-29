@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: dialogueHandler.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: dialogue system controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include <stdlib.h>
 #include "dialogueSystemClass.h"

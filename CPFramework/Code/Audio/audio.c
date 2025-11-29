@@ -1,8 +1,15 @@
+/*---------------------------------------------------------------
+  File: audio.c
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: Audio controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #include "cprocessing.h"
 #include "../CMP_Audio_Pak.h"
 #include <stdio.h>
 
-// mr jerome's code is here
 
 SoundAsset CreateSound(char const* file, float volume, float pitch, CP_SOUND_GROUP group, CP_BOOL loop) {
 	SoundAsset newAsset;

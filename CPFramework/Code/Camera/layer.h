@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: layer.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Daniel
+  Purpose: background layers
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "layerEnum.h"
 #include "layerClass.h"

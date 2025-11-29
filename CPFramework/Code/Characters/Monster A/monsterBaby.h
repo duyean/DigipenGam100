@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: monsterBaby.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: Basic monster controller
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #ifndef _monster_Baby_
 #define _monster_Baby_

@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: monsterBase.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: base file for monsters
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #ifndef _monster_Base_
 #define _monster_Base_

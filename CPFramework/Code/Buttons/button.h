@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: button.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Breanne, Jerome
+  Purpose: buttons to press for mainmenu
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #include "cprocessing.h"
 #include "buttonClass.h" //required for Button type

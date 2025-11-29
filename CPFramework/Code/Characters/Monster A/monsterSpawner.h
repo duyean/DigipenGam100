@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------
+  File: monsterSpawner.h
+  Project: GAM100, Team ChocoMochiPie
+  Author: Edmund
+  Purpose: monster spawning mechanics
+
+  Copyright: 2025, Digipen Institute of Technology, Singapore
+----------------------------------------------------------------*/
 #pragma once
 #ifndef _monster_Spawner_
 #define _monster_Spawner_
