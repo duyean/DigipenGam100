@@ -15,9 +15,9 @@ SceneEnum currentScene;
 * Sub-uses: Used in main.c and FadeInOut Functions
 */
 void SetScene(SceneEnum scene) {
-	printf("\nChanging from Scene: %s\n", sceneNames[currentScene]);
+	//printf("\nChanging from Scene: %s\n", sceneNames[currentScene]);
 	currentScene = scene;
-	printf("Changing to Scene: %s\n\n", sceneNames[currentScene]);
+	//printf("Changing to Scene: %s\n\n", sceneNames[currentScene]);
 	switch (scene){
 	case INTRO:
 		CP_Engine_SetNextGameState(intro_init, intro_update, intro_exit);
@@ -38,7 +38,7 @@ void SetScene(SceneEnum scene) {
 	//	CP_Engine_SetNextGameState(cutscene_init, cutscene_update, cutscene_exit);
 	//	break;
 	default:
-		printf("DEFAULT SET SCENE USED!!! CHECK FOR SWITCH FALL! OR NON-EXISTING ENUM!");
+		//printf("DEFAULT SET SCENE USED!!! CHECK FOR SWITCH FALL! OR NON-EXISTING ENUM!");
 		CP_Engine_SetNextGameState(main_menu_init, main_menu_update, main_menu_exit);
 		break;
 	}
@@ -62,7 +62,7 @@ void TransitionFadeOut(float transitionSpeed, SceneEnum scene) {
 	if (alpha >= 255) {
 		isFadeOut = 0;
 		isFadeIn = 1;
-		printf("Fade Out Completed, Transition to Scene: %s\n", sceneNames[scene]);
+		//printf("Fade Out Completed, Transition to Scene: %s\n", sceneNames[scene]);
 		transitionToSceneFunc(scene);
 	}
 }
@@ -83,7 +83,7 @@ void TransitionFadeIn(float transitionSpeed, int r, int g, int b, int a) {
 	CP_Settings_Fill(CP_Color_Create(r, g, b, alpha));
 	CP_Graphics_DrawRect(800, 450, 1600, 900);
 	if (alpha <= 0) {
-		printf("Fade In Completed\n");
+		//printf("Fade In Completed\n");
 		isFadeIn = 0;
 	}
 }

@@ -11,7 +11,6 @@
 
 List* RedbabyList;
 CP_Vector trapTriggeredPos;
-TextTemplate babyTextTemplate;
 
 SpriteData monsterSprites[5][4];
 Animation AnimationList[5];
@@ -103,7 +102,6 @@ void clearRedBabyMonsterListMemory(void)
 	for (int i = 0; i < 3; i++) {
 		CP_Sound_Free(monsterSfx[i]);
 	}
-	CP_Font_Free(babyTextTemplate.font);
 }
 void InitializeRedBaby(void)
 {
@@ -113,10 +111,8 @@ void InitializeRedBaby(void)
 
 	RedbabyList = ListCreate(10);
 
-	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
 	trapTriggeredPos = CP_Vector_Set(0, 0);
 
-	CP_Font_Set(babyTextTemplate.font);
 }
 
 void externalCreateM_RB(int x, int y)
@@ -172,7 +168,7 @@ void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_S
 	case RED_STATE_ALERT:
 	{
 		//JELLY HERE
-		//CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.8f, 0.1f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_0);
 		if (nextState == RED_STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -192,7 +188,7 @@ void processing_state_RedbabyFSM(RED_BABY_AI_STATE* current_state, RED_BABY_AI_S
 	case RED_STATE_CHASE:
 	{
 		//testing
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange(distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_0);
+	
 		if (nextState == RED_STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -494,14 +490,21 @@ void UpdateMonsterRedBaby()
 			}
 			processing_state_Redbaby_logic(obj);
 
-			CP_Settings_Tint(CP_Color_Create(255, 0, 0, 200));
+			CP_Settings_Tint(CP_Color_Create(255, 0, 0, 180));
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
 			CP_Settings_Tint(CP_Color_Create(0, 0, 0, 0));
+
+			if (playerRef->isDebugMode == 1)
+			{
+				char buffer[300];
+				snprintf(buffer, sizeof(buffer), "STATE: %d", (int)obj->current_state);
+				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750, CP_System_GetWindowHeight() / 2 - 150);
+			}
 		}
 	}
 }
 
-void TeleportRBMonsterRoom(int amt, int check)
+void TeleportRBMonsterRoom(int amt, int check, int playerPos)
 {
 	for (int i = 0; i < RedbabyList->size; i++)
 	{
@@ -515,17 +518,32 @@ void TeleportRBMonsterRoom(int amt, int check)
 			if (obj->current_state == RED_STATE_CHASE && check == 1)
 			{
 				obj->itself.transform.x += amt;
-				printf("Monster teleported: %f", obj->itself.transform.x);
 			}
-			else
+			else if (obj->current_state == RED_STATE_PATROL && check == 1)
 			{
-				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) || (obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000))
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) && playerPos != 2)				//between 3600 and 2000 monster is in the right room
 				{
-					obj->itself.transform.x += amt;
-					printf("Monster teleported: %f", obj->itself.transform.x);
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+				else if ((obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000) && playerPos != -2) 			//between -3600 and -2000 monster is in left room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
 				}
 			}
-			
+			else if (check == 0)
+			{
+
+
+				if ((obj->itself.transform.x < 3600 && obj->itself.transform.x > 2000) && playerPos != 2)				//between 3600 and 2000 monster is in the right room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+				else if ((obj->itself.transform.x > -3600 && obj->itself.transform.x < -2000) && playerPos != -2) 			//between -3600 and -2000 monster is in left room
+				{
+					obj->itself.transform.x = !obj->itself.transform.x;
+				}
+			}
+
 		}
 	}
 }

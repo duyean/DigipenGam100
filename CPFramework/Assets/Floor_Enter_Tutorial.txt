@@ -15,6 +15,10 @@ Once you're out of the Lift, Press A or D to move Left and Right
 ../assets/Radio.png
 
 Operator
+Shift to Sprint, Watch out for your stamina!
+../assets/Radio.png
+
+Operator
 Press E to collect the ooze on the wall
 ../assets/Radio.png
 

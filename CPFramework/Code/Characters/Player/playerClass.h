@@ -8,6 +8,8 @@ typedef struct {
 	int faceDirection;
 	int toDraw;
 	int isHiding;
+	int isDialogue;
+	int isDebugMode;
 	float movementSpeed;
 	float movementMultiplier;
 }Player;

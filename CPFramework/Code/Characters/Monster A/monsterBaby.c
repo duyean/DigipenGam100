@@ -11,7 +11,6 @@
 
 List* babyList;
 CP_Vector trapTriggeredPos;
-TextTemplate babyTextTemplate;
 
 SpriteData monsterSprites[5][4];
 Animation AnimationList[5];
@@ -106,7 +105,7 @@ void Monsters_Unload(void)
 	for (int i = 0; i < 3; i++) {
 		CP_Sound_Free(monsterSfx[i]);
 	}
-	CP_Font_Free(babyTextTemplate.font);
+	
 }
 
 
@@ -118,9 +117,6 @@ void InitializeBaby(void)
 
 	babyList = ListCreate(10);
 
-	babyTextTemplate = CreateTextTemplate("./Assets/Fonts/CaviarDreams_Bold.ttf", CP_Color_Create(0, 0, 0, 255));
-
-	CP_Font_Set(babyTextTemplate.font);
 	trapTriggeredPos = CP_Vector_Set(0, 0);
 ;}
 
@@ -177,7 +173,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	case STATE_ALERT:
 	{
 		//JELLY HERE
-		//CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0,2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 0.8f, 0.1f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_0);
 		if (nextState == STATE_IDLE) //Finish Player not found
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -196,7 +192,7 @@ void processing_state_babyFSM(BABY_AI_STATE* current_state, BABY_AI_STATE nextSt
 	}
 	case STATE_CHASE:
 	{
-		CP_Sound_PlayAdvanced(monsterSfx[CP_Random_RangeInt(0, 2)], changeRange((float)distFromPlayer, 0.f, 0.6f, 0.f, (baby->itself.detectionRange * 2)), CP_Random_RangeFloat(0.f, 0.8f), FALSE, CP_SOUND_GROUP_SFX);
+		
 		if (nextState == STATE_LOST) //Lost player
 		{
 			baby->itself.monsterAnimation = AnimationList[0];
@@ -499,6 +495,13 @@ void UpdateMonsterBaby()
 			processing_state_baby_logic(obj);
 
 			Animation_Animate(&obj->itself.monsterAnimation, (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY), obj->itself.facingDir * -1, 1);
+
+			if(playerRef->isDebugMode == 1)
+			{
+				char buffer[300];
+				snprintf(buffer, sizeof(buffer), "STATE: %d", (int)obj->current_state);
+				CP_Font_DrawText(buffer, (obj->itself.transform.x - playerRef->currentPositionX) + 750,  CP_System_GetWindowHeight() / 2 - 150);
+			}
 			//DrawSprite(obj->itself.monsterSheet, 1, 0, obj->itself.transform.x, obj->itself.transform.y, 1, 1);
 			//CP_Font_DrawText(intToConstChar((int)obj->current_state), (obj->itself.transform.x - playerRef->currentPositionX), (obj->itself.transform.y - playerRef->currentPositionY));
 		}

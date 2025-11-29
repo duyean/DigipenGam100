@@ -9,13 +9,13 @@ SceneEnum currentScene;
 
 static void ShowCurrentScene(void) {
 
-	CP_Font_DrawText("Current Scene: ", 1480, 820);
-	CP_Font_DrawText(sceneNames[currentScene], 1540, 820);
+	CP_Font_DrawText("Current Scene: ", 120, 830);
+	CP_Font_DrawText(sceneNames[currentScene], 120, 860);
 }
 
 void ShowDebugInfo(void) {
-	CP_Settings_TextSize(15.0f);
-	CP_Font_DrawText("Debug Info:", 1500, 800);
+	CP_Settings_TextSize(40.0f);
+	CP_Font_DrawText("Debug Info:", 100, 800);
 	ShowCurrentScene();
 }
 

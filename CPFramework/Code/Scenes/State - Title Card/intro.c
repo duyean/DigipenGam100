@@ -27,7 +27,7 @@ void intro_update(void) {
 			CP_Image_Draw(digipen, 800, 450, (float)CP_Image_GetWidth(digipen), (float)CP_Image_GetHeight(digipen), alpha);
 			if (alpha >= 255) {
 				transitionState = 1;
-				printf("Transition state 0 completed\n");
+				//printf("Transition state 0 completed\n");
 			}
 			break;
 		case 1:
@@ -37,7 +37,7 @@ void intro_update(void) {
 			CP_Image_Draw(digipen, 800, 450, (float)CP_Image_GetWidth(digipen), (float)CP_Image_GetHeight(digipen), alpha);
 			if (alpha <= 0) {
 				transitionState = 2;
-				printf("Transition state 1 completed\n");
+				//printf("Transition state 1 completed\n");
 			}
 			break;
 		case 2:
@@ -47,7 +47,7 @@ void intro_update(void) {
 			CP_Image_Draw(team, 800, 450, (float)CP_Image_GetWidth(team), (float)CP_Image_GetHeight(team), alpha);
 			if (alpha >= 255) {
 				transitionState = 3;
-				printf("Transition state 2 completed\n");
+				//printf("Transition state 2 completed\n");
 			}
 			break;
 		case 3:
@@ -56,7 +56,7 @@ void intro_update(void) {
 			alpha = CP_Math_ClampInt(alpha, 0, 255);
 			CP_Image_Draw(team, 800, 450, (float)CP_Image_GetWidth(team), (float)CP_Image_GetHeight(team), alpha);
 			if (alpha <= 0) {
-				printf("Transition state 3 completed\n");
+				//printf("Transition state 3 completed\n");
 				openTransition = 0;
 				StartTransition();
 			}

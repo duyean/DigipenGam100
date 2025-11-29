@@ -95,6 +95,10 @@ int prevHighscore = 0;
 
 int DEBUG_ENABLED = 0;
 
+bool isFadingIn = false;
+bool isFadingOut = false;
+float transitionA = 0.f;
+
 void InitialiseInteractables(void);
 void LockerTest(void);
 
@@ -105,6 +109,7 @@ void OilTest2(void);
 void LiftInteraction(void);
 void InitialiseRooms(void);
 void Room_Update(void);
+void ReInitFloor(void);
 
 void game_init(void) {
 
@@ -175,7 +180,10 @@ void game_init(void) {
 			break;
 
 		if (!lines) {
-			printf("failed to load dialogue i hope you kill yourself\n");
+			if (player.isDebugMode == 1)
+			{
+				printf("failed to load dialogue\n");
+			}
 			ds.isActive = 0; // prevent dereferencing
 			return;
 		}
@@ -218,14 +226,44 @@ void game_update(void) {
 	Room_Update();
 
 	CP_Image_Draw(blackbtm, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + 50, 1600, 900, 200);
-	CP_Image_Draw(vignette, 800, 450, 1600, 900, 170);
+	CP_Image_Draw(vignette, 800, 450, 1600, 900, 240);
+
+	if(isFadingIn)
+	{
+		transitionA += 0.8f * DeltaTime();
+		int alpha = CP_Math_LerpInt(0, 255, transitionA);
+		alpha = CP_Math_ClampInt(alpha, 0, 255);
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, alpha));
+		CP_Graphics_DrawRect(800, 450, 1600, 900);
+		if (alpha >= 255) {
+			ReInitFloor();
+			isFadingIn = false;
+			isFadingOut = true;
+		}
+		return;
+	}
+	if (isFadingOut)
+	{
+		transitionA -= 0.8f * DeltaTime();
+		int alpha = CP_Math_LerpInt(0, 255, transitionA);
+		alpha = CP_Math_ClampInt(alpha, 0, 255);
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, alpha));
+		CP_Graphics_DrawRect(800, 450, 1600, 900);
+		if (alpha <= 0) {
+			isFadingIn = false;
+			isFadingOut = false;
+		}
+		return;
+	}
+
 
 	// fucken hell this took me so long
 	if (!ds.isActive) // || dialogueJustStarted
 	{
 		UpdateMonsterRedBaby();
-		UpdateMonsterBaby();
+ 		UpdateMonsterBaby();
 		Player_Update(&player);
+		player.isDialogue = 0;
 	}
 
 	if (ds.isActive) {
@@ -235,11 +273,18 @@ void game_update(void) {
 		char reminderBuffer[2000];
 		snprintf(reminderBuffer, sizeof(reminderBuffer), "Press Space to Continue");
 		CP_Font_DrawText(reminderBuffer, (float)CP_System_GetWindowWidth() / 2, 100);
+		player.isDialogue = 1;
+
+		if (ds.isActive == 0 && player.isHiding == 1)
+		{
+			Interactable_LiftInteraction(&liftTest, &player);
+		}
 
 		if (dialogueJustStarted) {
 			// allow one update tick before pausing
 			dialogueJustStarted = 0; // next frame will be paused
 		} 
+
 		return; // skip further updates while dialogue is active lalallaa
 	}
 
@@ -312,7 +357,7 @@ void game_update(void) {
 
 
 
-	//From edmund: I dont know why or how the farking blobs are all interlinked like some tree ass ah ah thing so i changed the code a bit and this is farked shit just to make it look like a game ahahahahaha
+	//From edmund: I dont know why or how the blobs are all interlinked like some tree ah ah thing so i changed the code a bit just to make it look like a game ahahahahaha
 	
 	if (OilTimer <= 0.f && roompos != prevroompos)
 	{
@@ -500,117 +545,123 @@ void LiftInteraction(void) {
 	//End the floor
 	if (player.currentOil >= player.maxOil)
 	{
-		Room presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
-		Room presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-		Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-		Room presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-		Room presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-		Room presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-		Room presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-		//make new floor
-		switch (CP_Random_RangeInt(1, 3))
-		{
-		case 1:
-		{
-			presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
-			presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
-			break;
-		}
-		case 2:
-		{
-			presetMain = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
-			presetDefaultA = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultB = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultC = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultD = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultE = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultF = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			break;
-		}
-		case 3:
-		{
-			presetMain = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
-			presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultB = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultC = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultD = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			presetDefaultE = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
-			presetDefaultF = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
-			break;
-		}
-		}
-	
-
-		Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB, presetDefaultC, presetDefaultD, presetDefaultE, presetDefaultF };
-
-		for (int i = 0; i < roomCount; i++)
-		{
-			roomList[i] = GenerateRoom(roomPresets, 6, i == centerRoomIndex);
-			if (roomList[i].roomComponents->source == NULL)
-			{
-				fprintf(stderr, "Error: IMAGE IS NULL\n");
-			}
-		}
-		
-
-		player.currentOil = 0.f;
-		ClearAllMonster();
-
-
-		InitializeRedBaby();
-		InitializeBaby();
-
-
-		for (int i = 0; i < 3; i++)
-		{
-			oilBlobs[i].toDraw = 1;
-			oilBlobs[i].oilAmount = 30.f;
-		}
-			
-	
-
-			int tempScore = score;
-			score = setScore(tempScore, level, LevelTimer);
-			LevelTimer = 0.f;
-			level++;
-			lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
-			if (!lines) {
-				printf("failed to load dialogue i hope you kill yourself\n");
-				ds.isActive = 0; // prevent dereferencing
-				return;
-			}
-
-			DialogueSystem_Init(&ds, lines, lineCount);
-			dialogueJustStarted = 1;
-
-		int amtSpawn = 1 + (level / 3);
-		if (level >= 5) // start spawn chains
-		{
-			
-			int split = CP_Random_RangeInt(0, amtSpawn);
-			int splitAgain = CP_Random_RangeInt(0, amtSpawn - split);
-			//SpawnMonster(CHAINS, (amtSpawn - split) - splitAgain, -3200.f, 3200.f); //Set room min and max
-			SpawnMonster(RED_BABY, splitAgain, -3200.f, 3200.f); //Set room min and max
-			SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
-		}
-		else if (level >= 3)
-		{
-			int split = CP_Random_RangeInt(0, amtSpawn);
-			SpawnMonster(RED_BABY, amtSpawn - split, -3200.f, 3200.f); //Set room min and max
-			SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
-		}
-		else
-		{
-			SpawnMonster(BABY, amtSpawn, -3200.f, 3200.f); //Set room min and max
-		}
-
-		Interactable_DoorInteraction(&doorTest, &player);
+		isFadingIn = true;
 	}
+}
+
+void ReInitFloor(void) {
+	Room presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
+	Room presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+	Room presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+	Room presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+	Room presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+	//make new floor
+	switch (CP_Random_RangeInt(1, 3))
+	{
+	case 1:
+	{
+		presetMain = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_a, 3);
+		presetDefaultA = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultB = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultC = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultD = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultE = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultF = Room_Create(Bg1_ss, Bg1_sd, 5, 3, interactablesArray_c, 2);
+		break;
+	}
+	case 2:
+	{
+		presetMain = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
+		presetDefaultA = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultB = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultC = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultD = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultE = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultF = Room_Create(Bg2_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		break;
+	}
+	case 3:
+	{
+		presetMain = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_a, 3);
+		presetDefaultA = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultB = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultC = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultD = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		presetDefaultE = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_b, 2);
+		presetDefaultF = Room_Create(Bg3_ss, Bg3_sd, 5, 3, interactablesArray_c, 2);
+		break;
+	}
+	}
+
+
+	Room roomPresets[] = { presetMain, presetDefaultA, presetDefaultB, presetDefaultC, presetDefaultD, presetDefaultE, presetDefaultF };
+
+	for (int i = 0; i < roomCount; i++)
+	{
+		roomList[i] = GenerateRoom(roomPresets, 6, i == centerRoomIndex);
+		if (roomList[i].roomComponents->source == NULL && player.isDebugMode == 1)
+		{
+			fprintf(stderr, "Error: IMAGE IS NULL\n");
+		}
+	}
+
+
+	player.currentOil = 0.f;
+	ClearAllMonster();
+
+
+	InitializeRedBaby();
+	InitializeBaby();
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		oilBlobs[i].toDraw = 1;
+		oilBlobs[i].oilAmount = 30.f;
+	}
+
+
+
+	int tempScore = score;
+	score = setScore(tempScore, level, LevelTimer);
+	LevelTimer = 0.f;
+	level++;
+	lines = LoadDialogueFromTextFile("./Assets/Floor_Enter_Default_a.txt", &lineCount);
+	if (!lines) {
+		if (player.isDebugMode == 1)
+		{
+			printf("failed to load dialogue\n");
+		}
+		ds.isActive = 0; // prevent dereferencing
+		return;
+	}
+
+	DialogueSystem_Init(&ds, lines, lineCount);
+	dialogueJustStarted = 1;
+
+	int amtSpawn = 1 + (level / 3);
+	if (level >= 5) // start spawn chains
+	{
+
+		int split = CP_Random_RangeInt(0, amtSpawn);
+		int splitAgain = CP_Random_RangeInt(0, amtSpawn - split);
+		//SpawnMonster(CHAINS, (amtSpawn - split) - splitAgain, -3200.f, 3200.f); //Set room min and max
+		SpawnMonster(RED_BABY, splitAgain, -3200.f, 3200.f); //Set room min and max
+		SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
+	}
+	else if (level >= 3)
+	{
+		int split = CP_Random_RangeInt(0, amtSpawn);
+		SpawnMonster(RED_BABY, amtSpawn - split, -3200.f, 3200.f); //Set room min and max
+		SpawnMonster(BABY, split, -3200.f, 3200.f); //Set room min and max
+	}
+	else
+	{
+		SpawnMonster(BABY, amtSpawn, -3200.f, 3200.f); //Set room min and max
+	}
+
 }
 
 void InitialiseRooms(void) {
@@ -700,13 +751,13 @@ void Room_Update(void) {
 				//if room is loaded
 				// teleport monster in this location to teleport
 				TeleportMonsterRoom(-1 * (roomCount * 1600), 0, -2);
-				//TeleportRBMonsterRoom(-1 * (roomCount * 1600), 0);
+				TeleportRBMonsterRoom(-1 * (roomCount * 1600), 0, -2);
 				//printf("Loading Room: LOOP LEFT\n");
 				if (pX < sightCheckR)
 				{
 					player.currentPositionX += roomCount * 1600;
 					TeleportMonsterRoom((roomCount * 1600), 1, -2);
-				    //TeleportRBMonsterRoom((roomCount * 1600), 1, roompos);
+				    TeleportRBMonsterRoom((roomCount * 1600), 1, -2);
 					//printf("Looping Left to Right\n");
 				}
 			}
@@ -720,13 +771,13 @@ void Room_Update(void) {
 				roompos = roomCount - centerRoomIndex;
 				Room_Load(&roomList[0], player, roomCount - centerRoomIndex);
 				TeleportMonsterRoom((roomCount * 1600), 0, 2);
-				//TeleportRBMonsterRoom((roomCount * 1600), 0);
+				TeleportRBMonsterRoom((roomCount * 1600), 0, 2);
 				//printf("Loading Room: LOOP RIGHT\n");
 				if (pX > sightCheckR)
 				{
 					player.currentPositionX -= roomCount * 1600;
 				    TeleportMonsterRoom(-1 * (roomCount * 1600), 1, 2);
-					//TeleportRBMonsterRoom(-1 * (roomCount * 1600), 1, roompos);
+					TeleportRBMonsterRoom(-1 * (roomCount * 1600), 1, 2);
 					//printf("Looping Right to Left\n");
 				}
 			}

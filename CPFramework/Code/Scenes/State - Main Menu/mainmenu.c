@@ -78,7 +78,7 @@ void main_menu_exit(void) {
 }
 
 void PlayButtonPressed() {
-	printf("PlayerButtonPressed in mainmenu.c\n");
+	//printf("PlayerButtonPressed in mainmenu.c\n");
 
 	AudioPlayGameplayMusic();
 
@@ -87,18 +87,18 @@ void PlayButtonPressed() {
 }
 
 void SettingsButtonPressed() {
-	printf("SettingsButtonPressed in mainmenu.c\n");
+	//printf("SettingsButtonPressed in mainmenu.c\n");
 	StartTransition();
 	nextScene = SETTINGS;
 }
 
 void QuitButtonPressed() {
-	printf("QuitButtonPressed in mainmenu.c\n");
+	//printf("QuitButtonPressed in mainmenu.c\n");
 	CP_Engine_Terminate();
 }
 
 void CreditsButtonPressed() {
-	printf("CreditsButtonPressed in mainmenu.c\n");
+	//printf("CreditsButtonPressed in mainmenu.c\n");
 	StartTransition();
 	nextScene = CREDITS;
 }

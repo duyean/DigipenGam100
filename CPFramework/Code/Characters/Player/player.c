@@ -53,7 +53,9 @@ void Player_Initialise(Player *player) {
 	player->faceDirection = 1;
 	player->isInteracting = player->isMoving = 0;
 	player->toDraw = 1;
+	player->isDebugMode = 0;
 	player->isHiding = 0;
+	player->isDialogue = 0;
 
 	player->maxHealth = player->currentHealth = 1;
 	player->maxStamina = player->currentStamina = 100.f;
@@ -83,11 +85,11 @@ void Player_Update(Player *player) {
 	Player_StaminaUpdate(player);
 
 	if (!player->toDraw) return; //Check for whether player is hiding and therefore not drawn
-	if (CP_Input_KeyDown(KEY_D)) {
+	if (CP_Input_KeyDown(KEY_D) || CP_Input_KeyDown(KEY_RIGHT)) {
 		player->faceDirection = 1;
 		player->isMoving = 1;
 	}
-	else if (CP_Input_KeyDown(KEY_A)) {
+	else if (CP_Input_KeyDown(KEY_A) || CP_Input_KeyDown(KEY_LEFT)) {
 		player->faceDirection = -1;
 		player->isMoving = 1;
 	}
@@ -100,7 +102,10 @@ void Player_Update(Player *player) {
 		Animation_Animate(&characterAnimation, 0, 0, player->faceDirection, 1);
 		if (CP_Input_KeyDown(KEY_LEFT_SHIFT) && player->currentStamina > 0) {
 			float encumberance = player->currentOil / player->maxOil * 10.f;
-			printf("Current encumberance: %.2f\n", encumberance);
+			if (player->isDebugMode == 1)
+			{
+				printf("Current encumberance: %.2f\n", encumberance);
+			}
 			player->currentStamina -= (45.f + encumberance) * DeltaTime();
 			player->movementMultiplier = 2.0f;
 	}	}
@@ -118,25 +123,48 @@ void Player_Update(Player *player) {
 	}
 
 	//DEBUG
-	if (CP_Input_KeyReleased(KEY_K)) {
+	if (CP_Input_KeyReleased(KEY_P)) {
+		player->isDebugMode = player->isDebugMode == 0 ? 1 : 0;
+	}
+
+	if (player->isDebugMode == 1)
+	{
+		char buffer[300];
+		snprintf(buffer, sizeof(buffer), "Debug Mode activated");
+		CP_Font_DrawText(buffer, 250, 200);
+	}
+	
+	if (CP_Input_KeyReleased(KEY_K) && player->isDebugMode == 1) {
 		player->currentOil += 10.f;
 	}
 }
 
 void Player_CheckInteractables(Interactable *interactables[], int count, float relativePosition) {
-	if (CP_Input_KeyReleased(KEY_E)) {
-		printf("\nAttempting Interaction!!!\n");
+	if (CP_Input_KeyReleased(KEY_E) && thisPlayer->isDialogue == 0) {
+		if (thisPlayer->isDebugMode == 1)
+		{
+			printf("\nAttempting Interaction!!!\n");
+		}
 		for (int i = 0; i < count; i++) {
 			Interactable* currInteractable = interactables[i];
 			float globalPosition = relativePosition + currInteractable->worldXPosition;
 			if (currInteractable->proximity > fabs(globalPosition - thisPlayer->currentPositionX)) {
 				//printf("PRINT FROM PLAYER.C -> Interact with %s from Position: %f\n", currInteractable->name, currInteractable->worldXPosition);
 				currInteractable->OnInteract();
-				printf("ALLOWS = Interact with %s from Position: %.3f with offset of %.3f\n", currInteractable->name, globalPosition, currInteractable->proximity);
+				if (thisPlayer->isDebugMode == 1)
+				{
+					printf("ALLOWS = Interact with %s from Position: %.3f with offset of %.3f\n", currInteractable->name, globalPosition, currInteractable->proximity);
+				}
 			}
-			printf("Active Interractible at Position: %.3f\n", globalPosition);
+			if (thisPlayer->isDebugMode == 1)
+			{
+				printf("Active Interractible at Position: %.3f\n", globalPosition);
+			}
 		}
-		printf("Player Position: %.3f\n", thisPlayer->currentPositionX);
+		if (thisPlayer->isDebugMode == 1)
+		{
+			printf("Player Position: %.3f\n", thisPlayer->currentPositionX);
+		}
 	}
 }
 
@@ -154,17 +182,18 @@ void Player_StaminaUpdate(Player *player) {
 	Sprite_Draw(staminaBarSheet, staminaBarSprite, 0, 400, 1, 1);
 
 	/*This is for testing and should be removed*/
-	if (CP_Input_KeyDown(KEY_SPACE)) {
+	if (CP_Input_KeyDown(KEY_SPACE) && player->isDebugMode == 1) {
 		player->currentStamina = 100.f;
 	}
 }
 
 void Player_OilUpdate(Player* player) {
-	CP_Settings_Fill(CP_Color_Create(100, 100, 100, 255));
+	CP_Settings_Fill(CP_Color_Create(120, 220, 120, 200));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Graphics_DrawRect(750.f + oilImageX, 500.f + oilImageY, 100.f, -player->currentOil);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	Sprite_Draw(oilContainerSheet, oilContainerSprite, (int)oilImageX, (int)oilImageY, 1, 1);
+	CP_Settings_Fill(CP_Color_Create(100, 100, 100, 255));
 }
 
 void Player_Unload(void) {
