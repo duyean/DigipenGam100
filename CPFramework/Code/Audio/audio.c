@@ -32,7 +32,7 @@ float effectiveBGM = 1.0f;
 
 void AudioInitialize(void)
 {
-	mainMenuMusic = CP_Sound_Load("./Assets/Main.wav");
+	mainMenuMusic = CP_Sound_Load("./Assets/Audio/Main.wav");
 	gameplayMusic = CP_Sound_Load("./Assets/Audio/Eerie.wav");
 
 	CP_Sound_PlayAdvanced(mainMenuMusic, effectiveBGM, 1.0f, TRUE, CP_SOUND_GROUP_1);
