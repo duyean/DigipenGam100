@@ -22,7 +22,7 @@ Main Role: `Leader/Project Manager` :sob::smiling_face_with_three_hearts::smilin
 Discord: `duyean`
 
 ### Edmund (Eki)
-Main Role:
+Main Role: `Mechanics and State programmer`
 
 Discord: `eltereki`
 
